@@ -57,7 +57,7 @@ function RootLayoutNav() {
                 <Stack screenOptions={{ headerShown: false }}>
                     <Stack.Screen name="(tabs)" />
                     <Stack.Screen
-                        name="modal"
+                        name="search-modal"
                         options={{
                             presentation: 'transparentModal', // ✅ Makes modal background transparent
                             animation: 'fade', // ✅ Smooth transition
