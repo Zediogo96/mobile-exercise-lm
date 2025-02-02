@@ -1,11 +1,11 @@
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
-import { useHottestHotels } from '@/services/react-query/hotels';
+import { useMostPopularHotels } from '@/services/react-query/hotels';
 import { Hotel } from '@/types/hotel.types';
 import Entypo from '@expo/vector-icons/Entypo';
 import { BlurView } from 'expo-blur';
 import { Link } from 'expo-router';
 import React, { useMemo, useRef, useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -13,6 +13,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 import DefaultImage1 from '@/assets/images/hotels/default-hotel-1.jpg';
 import DefaultImage2 from '@/assets/images/hotels/default-hotel-2.jpg';
 import DefaultImage3 from '@/assets/images/hotels/default-hotel-3.jpg';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 
 // Adjusted dimensions for smaller cards
 const SLIDER_WIDTH = screenWidth;
@@ -22,7 +23,7 @@ const CARD_HEIGHT = screenHeight * 0.15; // Reduced from 0.23 to 0.15
 const MostPopularCarousel = () => {
     const carouselRef = useRef<Carousel<Hotel>>(null);
 
-    const { data, isLoading, error } = useHottestHotels();
+    const { data, isLoading, error } = useMostPopularHotels();
 
     const hotels = useMemo(() => data, [data]);
 
@@ -42,7 +43,9 @@ const MostPopularCarousel = () => {
 
     return (
         <View style={{ marginHorizontal: 20 }}>
-            <Text style={s.title}> Most Popular 🔥 </Text>
+            <Animated.Text entering={FadeInDown.delay(250)} style={s.title}>
+                Most Popular 🔥
+            </Animated.Text>
             <Carousel
                 ref={carouselRef}
                 data={hotels}
@@ -84,34 +87,42 @@ const MostPopularCarouselItem = (item: Hotel) => {
     }, [isLoading, imageError, item.gallery]);
 
     return (
-        <View style={s.card}>
-            <Image
-                onLoad={handleImageLoad}
-                onError={handleImageError}
-                style={s.image}
-                source={imageSource}
-                resizeMode="cover"
-            />
-            <BlurView intensity={65} tint="light" style={s.blurInformationContainer}>
-                <View style={{ flex: 1, rowGap: 3 }}>
-                    <Text style={[s.text, s.textMain]} numberOfLines={1}>
-                        {item.name}
-                    </Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Entypo name="location-pin" size={12} color="white" />
-                        <Text style={s.text} numberOfLines={1}>
-                            {item.location.city}
+        <Link
+            href={{
+                pathname: '/details/[id]',
+                params: { id: item.id },
+            }}
+        >
+            <Animated.View entering={FadeIn.delay(500)} style={s.card}>
+                <Animated.Image
+                    sharedTransitionTag="hotel-image"
+                    onLoad={handleImageLoad}
+                    onError={handleImageError}
+                    style={s.image}
+                    source={imageSource}
+                    resizeMode="cover"
+                />
+                <BlurView intensity={65} tint="light" style={s.blurInformationContainer}>
+                    <View style={{ flex: 1, rowGap: 3 }}>
+                        <Text style={[s.text, s.textMain]} numberOfLines={1}>
+                            {item.name}
                         </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Entypo name="location-pin" size={12} color="white" />
+                            <Text style={s.text} numberOfLines={1}>
+                                {item.location.city}
+                            </Text>
+                        </View>
                     </View>
-                </View>
 
-                <Link href="/modal" style={s.viewDealButton}>
-                    <Text style={[s.text, s.textButton]}>
-                        {currencySymbol} {item.price} / night
-                    </Text>
-                </Link>
-            </BlurView>
-        </View>
+                    <Link href="/modal" style={s.viewDealButton}>
+                        <Text style={[s.text, s.textButton]}>
+                            {currencySymbol} {item.price} / night
+                        </Text>
+                    </Link>
+                </BlurView>
+            </Animated.View>
+        </Link>
     );
 };
 
