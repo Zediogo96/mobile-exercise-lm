@@ -1,39 +1,47 @@
-// PriceSection.tsx
+// PriceAndAction.tsx
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
+import { BlurView } from 'expo-blur';
 import { Link } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-type PriceSectionProps = {
+interface PriceSectionProps {
     hotelId: string;
     price: number;
     currency: string;
-};
+    bottomInset: number;
+}
 
-const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency, hotelId }) => {
+const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency, hotelId, bottomInset }) => {
     const currencySymbol = CURRENCY_SYMBOL_MAP[currency || 'USD'];
 
     return (
-        <View style={styles.container}>
-            {/* Left section */}
-            <View>
-                <Text style={styles.priceText}>Price</Text>
-                <Text style={styles.priceAmount}>
-                    {currencySymbol} {price}
-                    <Text style={styles.perNightText}> / night</Text>
-                </Text>
-            </View>
-
-            {/* Right section */}
-            <Link
-                href={{
-                    pathname: '/book/[id]',
-                    params: { id: hotelId },
-                }}
-                style={styles.viewDealButton}
+        <View style={styles.blurWrapper}>
+            <BlurView
+                intensity={25}
+                tint="light"
+                style={[styles.blurContainer, { paddingBottom: Math.max(bottomInset, 16) }]}
             >
-                <Text style={styles.textButton}>Book now</Text>
-            </Link>
+                {/* Left section */}
+                <View>
+                    <Text style={styles.priceText}>Price</Text>
+                    <Text style={styles.priceAmount}>
+                        {currencySymbol} {price}
+                        <Text style={styles.perNightText}> / night</Text>
+                    </Text>
+                </View>
+
+                {/* Right section */}
+                <Link
+                    href={{
+                        pathname: '/book/[id]',
+                        params: { id: hotelId },
+                    }}
+                    style={styles.viewDealButton}
+                >
+                    <Text style={styles.textButton}>Book now</Text>
+                </Link>
+            </BlurView>
         </View>
     );
 };
@@ -44,7 +52,25 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 25,
         alignItems: 'flex-end',
+        borderRadius: 25,
     },
+    blurWrapper: {
+        borderRadius: 25,
+        overflow: 'hidden', // Ensures the blur effect is clipped
+        position: 'absolute',
+        width: '90%',
+        height: 100,
+
+        bottom: 20,
+        left: '5%',
+    },
+    blurContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 20,
+    },
+
     priceText: {
         fontSize: 16,
         color: '#666',
@@ -62,15 +88,15 @@ const styles = StyleSheet.create({
     },
     viewDealButton: {
         backgroundColor: '#000',
-        paddingVertical: 12, // Add padding to top and bottom
-        paddingHorizontal: 16, // Add padding to left and right
+        paddingVertical: 12,
+        paddingHorizontal: 24,
         borderRadius: 10,
     },
     textButton: {
         fontWeight: '500',
         color: '#fff',
-        fontSize: 15, // Reduced font size
-        textAlign: 'center', // Ensure text is centered if it wraps
+        fontSize: 15,
+        textAlign: 'center',
     },
 });
 

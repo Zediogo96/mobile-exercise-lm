@@ -3,7 +3,6 @@ import Description from '@/components/hotel-details/Description';
 import LocationText from '@/components/hotel-details/LocationText';
 import PriceAndAction from '@/components/hotel-details/Price&Action';
 import RatingStars from '@/components/hotel-details/RatingStars';
-import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
 import { useHotelById } from '@/services/react-query/hotels';
 
 // * Icons
@@ -11,10 +10,13 @@ import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 
 const Details = () => {
+    const insets = useSafeAreaInsets();
+
     const { id } = useLocalSearchParams();
     const { data: hotel } = useHotelById(id as string);
 
@@ -24,64 +26,70 @@ const Details = () => {
 
     const shouldAllowsScroll = hotel?.gallery && hotel.gallery.length > 1;
 
-    const currencySymbol = CURRENCY_SYMBOL_MAP[hotel?.currency || 'USD'];
-
     if (!hotel) return null;
 
     return (
-        <ScrollView style={s.container}>
-            <FlatList
-                data={hotel.gallery}
-                keyExtractor={(item) => item}
-                scrollEnabled={shouldAllowsScroll}
-                renderItem={renderGalleryItem}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                style={s.gallery}
+        <>
+            <ScrollView style={s.container}>
+                <FlatList
+                    data={hotel.gallery}
+                    keyExtractor={(item) => item}
+                    scrollEnabled={shouldAllowsScroll}
+                    renderItem={renderGalleryItem}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    style={s.gallery}
+                />
+
+                <View style={s.detailsContainer}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text style={s.hotelName}>{hotel.name}</Text>
+                        <RatingStars count={hotel.stars} />
+                    </View>
+
+                    <LocationText location={hotel.location} />
+
+                    <CheckInOutDetails checkIn={hotel.checkIn} checkOut={hotel.checkOut} />
+
+                    <Description />
+
+                    {/* Add MapView to show location */}
+                    <View style={s.mapContainer}>
+                        <MapView
+                            style={s.map}
+                            initialRegion={{
+                                latitude: hotel.location?.latitude || 0,
+                                longitude: hotel.location?.longitude || 0,
+                                latitudeDelta: 0.009,
+                                longitudeDelta: 0.009,
+                            }}
+                            scrollEnabled={false}
+                        >
+                            {hotel.location && (
+                                <Marker
+                                    coordinate={{
+                                        latitude: hotel.location.latitude,
+                                        longitude: hotel.location.longitude,
+                                    }}
+                                    title={hotel.name}
+                                    subtitleVisibility="visible"
+                                    description={hotel.name}
+                                />
+                            )}
+                        </MapView>
+                    </View>
+                </View>
+
+                <View style={{ height: 100 }} />
+            </ScrollView>
+            <PriceAndAction
+                price={hotel.price}
+                currency={hotel.currency}
+                hotelId={hotel.id.toString()}
+                bottomInset={insets.bottom}
             />
-
-            <View style={s.detailsContainer}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Text style={s.hotelName}>{hotel.name}</Text>
-                    <RatingStars count={hotel.stars} />
-                </View>
-
-                <LocationText location={hotel.location} />
-
-                <CheckInOutDetails checkIn={hotel.checkIn} checkOut={hotel.checkOut} />
-
-                <Description />
-
-                {/* Add MapView to show location */}
-                <View style={s.mapContainer}>
-                    <MapView
-                        style={s.map}
-                        initialRegion={{
-                            latitude: hotel.location?.latitude || 0,
-                            longitude: hotel.location?.longitude || 0,
-                            latitudeDelta: 0.009,
-                            longitudeDelta: 0.009,
-                        }}
-                        scrollEnabled={false}
-                    >
-                        {hotel.location && (
-                            <Marker
-                                coordinate={{
-                                    latitude: hotel.location.latitude,
-                                    longitude: hotel.location.longitude,
-                                }}
-                                title={hotel.name}
-                                subtitleVisibility="visible"
-                                description={hotel.name}
-                            />
-                        )}
-                    </MapView>
-                </View>
-            </View>
-
-            <PriceAndAction price={hotel.price} currency={hotel.currency} hotelId={hotel.id.toString()} />
-        </ScrollView>
+        </>
     );
 };
 

@@ -158,16 +158,16 @@ const s = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: '40%', // Increased from 30% to accommodate content
-        margin: 8, // Reduced margin
+        height: '40%',
+        margin: 8,
         overflow: 'hidden',
-        padding: 8, // Reduced padding
+        padding: 8,
         borderRadius: 4,
         borderCurve: 'continuous',
     },
     viewDealButton: {
         backgroundColor: '#000',
-        padding: 8, // Reduced padding
+        padding: 8,
         borderRadius: 4,
     },
     text: {
