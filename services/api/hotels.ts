@@ -1,7 +1,9 @@
 import { API_URL } from '@/constants/api-urls';
+import { Hotel } from '@/types/hotel.types';
 import axios from 'axios';
 
-export const fetchHotels = async () => {
+export const fetchHotels = async (): Promise<Hotel[]> => {
     const response = await axios.get(API_URL);
-    return response.data; // Assuming the API returns JSON directly
+    const data: Hotel[] = response.data;
+    return data;
 };
