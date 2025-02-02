@@ -115,11 +115,11 @@ const MostPopularCarouselItem = (item: Hotel) => {
                         </View>
                     </View>
 
-                    <Link href="/modal" style={s.viewDealButton}>
+                    <View style={s.viewDealButton}>
                         <Text style={[s.text, s.textButton]}>
                             {currencySymbol} {item.price} / night
                         </Text>
-                    </Link>
+                    </View>
                 </BlurView>
             </Animated.View>
         </Link>

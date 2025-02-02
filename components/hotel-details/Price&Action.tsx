@@ -2,14 +2,15 @@
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
 import { Link } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 type PriceSectionProps = {
+    hotelId: string;
     price: number;
     currency: string;
 };
 
-const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency }) => {
+const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency, hotelId }) => {
     const currencySymbol = CURRENCY_SYMBOL_MAP[currency || 'USD'];
 
     return (
@@ -24,10 +25,14 @@ const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency }) => {
             </View>
 
             {/* Right section */}
-            <Link href="/modal">
-                <TouchableOpacity style={styles.viewDealButton}>
-                    <Text style={styles.textButton}>Book now</Text>
-                </TouchableOpacity>
+            <Link
+                href={{
+                    pathname: '/book/[id]',
+                    params: { id: hotelId },
+                }}
+                style={styles.viewDealButton}
+            >
+                <Text style={styles.textButton}>Book now</Text>
             </Link>
         </View>
     );

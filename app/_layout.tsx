@@ -64,6 +64,7 @@ function RootLayoutNav() {
                         }}
                     />
                     <Stack.Screen name="hotel-details/[id]/index" />
+                    <Stack.Screen name="book/[id]/index" />
                 </Stack>
             </QueryClientProvider>
         </ThemeProvider>

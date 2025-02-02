@@ -53,7 +53,7 @@ const Details = () => {
                 <Description />
             </View>
 
-            <PriceAndAction price={hotel.price} currency={hotel.currency} />
+            <PriceAndAction price={hotel.price} currency={hotel.currency} hotelId={hotel.id.toString()} />
         </ScrollView>
     );
 };
