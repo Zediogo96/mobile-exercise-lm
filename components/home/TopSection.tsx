@@ -34,8 +34,7 @@ const s = StyleSheet.create({
         borderRadius: 12,
     },
     searchInput: {
-        marginLeft: 16,
+        marginLeft: 40,
         color: '#666',
     },
-
 });

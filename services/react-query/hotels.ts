@@ -18,6 +18,8 @@ const applyFilters = (
         }
     >
 ) => {
+    if (filters.searchQuery === '') return [];
+
     return hotels.filter((hotel) => {
         const matchesPrice = hotel.price >= filters.priceRange.min && hotel.price <= filters.priceRange.max;
         const matchesStars = filters.starRating.length === 0 || filters.starRating.includes(hotel.stars);

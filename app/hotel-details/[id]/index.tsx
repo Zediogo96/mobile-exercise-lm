@@ -10,6 +10,7 @@ import { useHotelById } from '@/services/react-query/hotels';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 const { width } = Dimensions.get('window');
 
@@ -51,6 +52,32 @@ const Details = () => {
                 <CheckInOutDetails checkIn={hotel.checkIn} checkOut={hotel.checkOut} />
 
                 <Description />
+
+                {/* Add MapView to show location */}
+                <View style={s.mapContainer}>
+                    <MapView
+                        style={s.map}
+                        initialRegion={{
+                            latitude: hotel.location?.latitude || 0,
+                            longitude: hotel.location?.longitude || 0,
+                            latitudeDelta: 0.009,
+                            longitudeDelta: 0.009,
+                        }}
+                        scrollEnabled={false}
+                    >
+                        {hotel.location && (
+                            <Marker
+                                coordinate={{
+                                    latitude: hotel.location.latitude,
+                                    longitude: hotel.location.longitude,
+                                }}
+                                title={hotel.name}
+                                subtitleVisibility="visible"
+                                description={hotel.name}
+                            />
+                        )}
+                    </MapView>
+                </View>
             </View>
 
             <PriceAndAction price={hotel.price} currency={hotel.currency} hotelId={hotel.id.toString()} />
@@ -100,6 +127,14 @@ const s = StyleSheet.create({
         color: '#fff',
         fontSize: 15, // Reduced font size
         textAlign: 'center', // Ensure text is centered if it wraps
+    },
+    mapContainer: {
+        height: 250, // Adjust the map height as needed
+        marginTop: 20,
+    },
+    map: {
+        flex: 1,
+        borderRadius: 10,
     },
 });
 

@@ -17,8 +17,8 @@ import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 
 // Adjusted dimensions for smaller cards
 const SLIDER_WIDTH = screenWidth;
-const CARD_WIDTH = screenWidth * 0.6; // Reduced from 0.85 to 0.6
-const CARD_HEIGHT = screenHeight * 0.15; // Reduced from 0.23 to 0.15
+const CARD_WIDTH = screenWidth * 0.45; // Reduced from 0.85 to 0.6
+const CARD_HEIGHT = screenHeight * 0.25; // Reduced from 0.23 to 0.15
 
 const MostPopularCarousel = () => {
     const carouselRef = useRef<Carousel<Hotel>>(null);
@@ -44,7 +44,7 @@ const MostPopularCarousel = () => {
     return (
         <View style={{ marginHorizontal: 20 }}>
             <Animated.Text entering={FadeInDown.delay(250)} style={s.title}>
-                Most Popular 🔥
+                Most Popular
             </Animated.Text>
             <Carousel
                 ref={carouselRef}
