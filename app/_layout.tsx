@@ -56,9 +56,16 @@ function RootLayoutNav() {
             <QueryClientProvider client={queryClient}>
                 <Stack>
                     <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                    <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+                    <Stack.Screen
+                        name="modal"
+                        options={{
+                            presentation: 'transparentModal', // ✅ Makes modal background transparent
+                            headerShown: false, // ✅ Removes header for cleaner look
+                            animation: 'fade', // ✅ Smooth transition
+                        }}
+                    />
                 </Stack>
-            </QueryClientProvider>  
+            </QueryClientProvider>
         </ThemeProvider>
     );
 }

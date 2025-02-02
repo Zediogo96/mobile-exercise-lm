@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
+import MostPopularCarousel from '@/components/home/MostPopularCarousel';
 import { Text, View } from '@/components/Themed';
 import { useHottestHotels } from '@/services/react-query/hotels';
 
@@ -18,9 +18,7 @@ export default function TabOneScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Tab One</Text>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-            <EditScreenInfo path="app/(tabs)/index.tsx" />
+            <MostPopularCarousel />
         </View>
     );
 }
@@ -28,8 +26,6 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     title: {
         fontSize: 20,
