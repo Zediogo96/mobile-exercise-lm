@@ -89,7 +89,7 @@ const MostPopularCarouselItem = (item: Hotel) => {
     return (
         <Link
             href={{
-                pathname: '/details/[id]',
+                pathname: '/hotel-details/[id]',
                 params: { id: item.id },
             }}
         >

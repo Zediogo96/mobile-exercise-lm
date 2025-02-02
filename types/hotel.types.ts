@@ -1,6 +1,18 @@
-type TimeRange = {
+export type TimeRange = {
     from: string;
     to: string;
+};
+
+export type HotelLocation = {
+    address: string;
+    city: string;
+    latitude: number;
+    longitude: number;
+};
+
+export type HotelContact = {
+    email: string;
+    phoneNumber: string;
 };
 
 export interface Hotel {
@@ -10,17 +22,9 @@ export interface Hotel {
     userRating: number;
     price: number;
     currency: string;
-    location: {
-        address: string;
-        city: string;
-        latitude: number;
-        longitude: number;
-    };
+    location: HotelLocation;
     checkIn: TimeRange;
     checkOut: TimeRange;
-    contact: {
-        email: string;
-        phoneNumber: string;
-    };
+    contact: HotelContact;
     gallery: string[];
 }

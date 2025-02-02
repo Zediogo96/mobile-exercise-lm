@@ -63,7 +63,7 @@ function RootLayoutNav() {
                             animation: 'fade', // ✅ Smooth transition
                         }}
                     />
-                    <Stack.Screen name="details/[id]/index" />
+                    <Stack.Screen name="hotel-details/[id]/index" />
                 </Stack>
             </QueryClientProvider>
         </ThemeProvider>
