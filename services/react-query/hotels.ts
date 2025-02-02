@@ -15,6 +15,6 @@ export const useHottestHotels = () => {
         queryKey: ['hotels', 'hottest'],
         queryFn: fetchHotels,
         staleTime: DEFAULT_CACHE_TIME,
-        select: (hotels) => hotels.sort((a, b) => b.userRating - a.userRating).slice(0, 3),
+        select: (hotels) => hotels.sort((a, b) => b.userRating - a.userRating).slice(0, 5),
     });
 };
