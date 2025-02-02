@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 import MostPopularCarousel from '@/components/home/MostPopularCarousel';
-import { Text, View } from '@/components/Themed';
+import TopSection from '@/components/home/TopSection';
+import { Text } from '@/components/Themed';
 import { useHottestHotels } from '@/services/react-query/hotels';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabOneScreen() {
     const { data: hotels, isLoading, error } = useHottestHotels();
@@ -17,9 +19,10 @@ export default function TabOneScreen() {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <TopSection />
             <MostPopularCarousel />
-        </View>
+        </SafeAreaView>
     );
 }
 
