@@ -1,14 +1,15 @@
 import CheckInOutDetails from '@/components/hotel-details/CheckInOutDetails';
 import Description from '@/components/hotel-details/Description';
 import LocationText from '@/components/hotel-details/LocationText';
+import PriceAndAction from '@/components/hotel-details/Price&Action';
 import RatingStars from '@/components/hotel-details/RatingStars';
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
 import { useHotelById } from '@/services/react-query/hotels';
 
 // * Icons
-import { Link, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -52,25 +53,7 @@ const Details = () => {
                 <Description />
             </View>
 
-            <View
-                style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 25, alignItems: 'flex-end' }}
-            >
-                {/* Left section */}
-                <View>
-                    <Text style={{ fontSize: 16, color: '#666', marginBottom: 10 }}>Price</Text>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#333' }}>
-                        {currencySymbol} {hotel.price}
-                        <Text style={{ fontSize: 12, fontWeight: 'normal', color: '#666' }}> / night</Text>
-                    </Text>
-                </View>
-
-                {/* Right section */}
-                <Link href="/modal">
-                    <TouchableOpacity style={s.viewDealButton}>
-                        <Text style={s.textButton}>Book now</Text>
-                    </TouchableOpacity>
-                </Link>
-            </View>
+            <PriceAndAction price={hotel.price} currency={hotel.currency} />
         </ScrollView>
     );
 };
