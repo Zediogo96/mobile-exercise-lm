@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import BudgetPicker from '@/components/filter-modal/BudgetPicker';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function SearchScreen() {
@@ -6,7 +7,7 @@ export default function SearchScreen() {
 
     return (
         <View style={styles.container}>
-            <Text> Filter Screen </Text>
+            <BudgetPicker />
         </View>
     );
 }

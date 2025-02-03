@@ -1,4 +1,3 @@
-// CustomHeader.tsx
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -11,11 +10,7 @@ interface FilterModalHeaderProps {
 
 const FilterModalHeader: React.FC<FilterModalHeaderProps> = ({ title }) => {
     const router = useRouter();
-
-    // Correctly select the resetFilters function
-    const { priceRange, resetFilters } = useFilterStore((state) => state);
-
-    console.log(priceRange);
+    const { resetFilters } = useFilterStore((state) => state);
 
     const handleBackPress = () => {
         router.back();
@@ -27,13 +22,24 @@ const FilterModalHeader: React.FC<FilterModalHeaderProps> = ({ title }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-                <Ionicons name="chevron-back" size={22} color="black" />
-            </TouchableOpacity>
-            <Text style={styles.title}>{title}</Text>
-            <TouchableOpacity onPress={handleResetFilters}>
-                <Text style={styles.resetBtn}> Reset all </Text>
-            </TouchableOpacity>
+            {/* Left section */}
+            <View style={styles.leftContainer}>
+                <TouchableOpacity onPress={handleBackPress} style={styles.iconButton}>
+                    <Ionicons name="chevron-back" size={22} color="black" />
+                </TouchableOpacity>
+            </View>
+
+            {/* Center section */}
+            <View style={styles.centerContainer}>
+                <Text style={styles.title}>{title}</Text>
+            </View>
+
+            {/* Right section */}
+            <View style={styles.rightContainer}>
+                <TouchableOpacity onPress={handleResetFilters}>
+                    <Text style={styles.resetBtn}>Reset all</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
@@ -42,18 +48,32 @@ const styles = StyleSheet.create({
     container: {
         height: 50,
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 10,
         backgroundColor: '#fff',
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+        alignItems: 'center', // Vertically center all sections
     },
-    backButton: {
-        padding: 5,
+    leftContainer: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+
+    rightContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        paddingRight: 10,
+    },
+
+    centerContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    iconButton: {
+        paddingHorizontal: 10,
     },
     title: {
-        flex: 1,
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',

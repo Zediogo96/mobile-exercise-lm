@@ -9,6 +9,7 @@ import 'react-native-reanimated';
 import FilterModalHeader from '@/components/filter-modal/FilterModalHeader';
 import { useColorScheme } from '@/components/useColorScheme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -54,29 +55,31 @@ function RootLayoutNav() {
 
     return (
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <QueryClientProvider client={queryClient}>
-                <Stack screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="(tabs)" />
-                    <Stack.Screen
-                        name="search-modal/index"
-                        options={{
-                            presentation: 'transparentModal', // ✅ Makes modal background transparent
-                            animation: 'fade', // ✅ Smooth transition
-                        }}
-                    />
-                    <Stack.Screen
-                        name="filter-modal/index"
-                        options={{
-                            presentation: 'modal', // ✅ Makes modal background transparent
-                            animation: 'slide_from_bottom', // ✅ Smooth transition
-                            headerShown: true,
-                            header: (props) => <FilterModalHeader title="Filter" />,
-                        }}
-                    />
-                    <Stack.Screen name="hotel-details/[id]/index" />
-                    <Stack.Screen name="book/[id]/index" />
-                </Stack>
-            </QueryClientProvider>
+            <GestureHandlerRootView>
+                <QueryClientProvider client={queryClient}>
+                    <Stack screenOptions={{ headerShown: false }}>
+                        <Stack.Screen name="(tabs)" />
+                        <Stack.Screen
+                            name="search-modal/index"
+                            options={{
+                                presentation: 'transparentModal', // ✅ Makes modal background transparent
+                                animation: 'fade', // ✅ Smooth transition
+                            }}
+                        />
+                        <Stack.Screen
+                            name="filter-modal/index"
+                            options={{
+                                presentation: 'modal', // ✅ Makes modal background transparent
+                                animation: 'slide_from_bottom', // ✅ Smooth transition
+                                headerShown: true,
+                                header: (props) => <FilterModalHeader title="Filter" />,
+                            }}
+                        />
+                        <Stack.Screen name="hotel-details/[id]/index" />
+                        <Stack.Screen name="book/[id]/index" />
+                    </Stack>
+                </QueryClientProvider>
+            </GestureHandlerRootView>
         </ThemeProvider>
     );
 }
