@@ -1,7 +1,13 @@
 import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, useAnimatedProps, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, {
+    runOnJS,
+    useAnimatedProps,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from 'react-native-reanimated';
 
 const RangeSlider = ({
     sliderWidth,
@@ -31,7 +37,7 @@ const RangeSlider = ({
             context.value = position.value;
         })
         .onUpdate((e) => {
-            opacity.value = 1;
+            opacity.value = withTiming(1, { duration: 500 });
             if (context.value + e.translationX < 0) {
                 position.value = 0;
             } else if (context.value + e.translationX > position2.value) {
@@ -43,7 +49,7 @@ const RangeSlider = ({
             }
         })
         .onEnd(() => {
-            opacity.value = 0;
+            opacity.value = withTiming(0, { duration: 500 });
             runOnJS(onValueChange)({
                 min: min + Math.floor(position.value / (sliderWidth / ((max - min) / step))) * step,
                 max: min + Math.floor(position2.value / (sliderWidth / ((max - min) / step))) * step,
@@ -55,7 +61,7 @@ const RangeSlider = ({
             context2.value = position2.value;
         })
         .onUpdate((e) => {
-            opacity2.value = 1;
+            opacity2.value = withTiming(1, { duration: 500 });
             if (context2.value + e.translationX > sliderWidth) {
                 position2.value = sliderWidth;
             } else if (context2.value + e.translationX < position.value) {
@@ -67,7 +73,7 @@ const RangeSlider = ({
             }
         })
         .onEnd(() => {
-            opacity2.value = 0;
+            opacity2.value = withTiming(0, { duration: 500 });
             runOnJS(onValueChange)({
                 min: min + Math.floor(position.value / (sliderWidth / ((max - min) / step))) * step,
                 max: min + Math.floor(position2.value / (sliderWidth / ((max - min) / step))) * step,
@@ -166,8 +172,8 @@ const styles = StyleSheet.create({
     },
     label: {
         position: 'absolute',
-        top: -40,
-        bottom: 20,
+        top: -45,
+        bottom: 25,
 
         width: 65,
         backgroundColor: 'black',
