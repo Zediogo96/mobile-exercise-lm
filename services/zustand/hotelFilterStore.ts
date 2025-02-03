@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 export interface FilterState {
     // Filter parameters
@@ -25,20 +26,24 @@ const defaultFilters = {
     searchQuery: '',
 };
 
-export const useFilterStore = create<FilterState>()((set) => ({
-    // Initial state
-    ...defaultFilters,
+const filters = { ...defaultFilters };
 
-    // Actions
-    setPriceRange: (min: number, max: number) => set({ priceRange: { min, max } }),
+export const useFilterStore = create<FilterState>()(
+    devtools((set) => ({
+        // Initial state
+        ...filters,
 
-    setStarRating: (ratings: number[]) => set({ starRating: ratings }),
+        // Actions
+        setPriceRange: (min: number, max: number) => set({ priceRange: { min, max } }, false, 'setPriceRange'),
 
-    setMinUserRating: (rating: number) => set({ minUserRating: rating }),
+        setStarRating: (ratings: number[]) => set({ starRating: ratings }, false, 'setStarRating'),
 
-    setSelectedCity: (city: string | null) => set({ selectedCity: city }),
+        setMinUserRating: (rating: number) => set({ minUserRating: rating }, false, 'setMinUserRating'),
 
-    setSearchQuery: (query: string) => set({ searchQuery: query }),
+        setSelectedCity: (city: string | null) => set({ selectedCity: city }, false, 'setSelectedCity'),
 
-    resetFilters: () => set(defaultFilters),
-}));
+        setSearchQuery: (query: string) => set({ searchQuery: query }, false, 'setSearchQuery'),
+
+        resetFilters: () => set(defaultFilters, false, 'resetFilters'),
+    }))
+);

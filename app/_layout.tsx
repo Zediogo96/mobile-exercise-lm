@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
+import FilterModalHeader from '@/components/filter-modal/FilterModalHeader';
 import { useColorScheme } from '@/components/useColorScheme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -61,6 +62,15 @@ function RootLayoutNav() {
                         options={{
                             presentation: 'transparentModal', // ✅ Makes modal background transparent
                             animation: 'fade', // ✅ Smooth transition
+                        }}
+                    />
+                    <Stack.Screen
+                        name="filter-modal/index"
+                        options={{
+                            presentation: 'modal', // ✅ Makes modal background transparent
+                            animation: 'slide_from_bottom', // ✅ Smooth transition
+                            headerShown: true,
+                            header: (props) => <FilterModalHeader title="Filter" />,
                         }}
                     />
                     <Stack.Screen name="hotel-details/[id]/index" />

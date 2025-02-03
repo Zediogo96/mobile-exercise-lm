@@ -12,12 +12,15 @@ import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useCallback } from 'react';
-import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { Animated, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import MapView, { Marker } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+
+const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
 const Details = () => {
     const insets = useSafeAreaInsets();
@@ -40,28 +43,44 @@ const Details = () => {
         }
     }, [hotel, bookmarked]);
 
-    const renderGalleryItem = ({ item }: { item: string }) => (
-        <Image source={{ uri: item }} style={s.galleryImage} resizeMode="cover" />
-    );
+    // Animated value for vertical scroll
+    const scrollY = useRef(new Animated.Value(0)).current;
 
-    const shouldAllowScroll = hotel?.gallery && hotel.gallery.length > 1;
+    // Interpolate the scale based on scroll offset.
+    // When pulling down (negative y-offset) the image will scale up.
+    const headerScale = scrollY.interpolate({
+        inputRange: [-150, 0],
+        outputRange: [1.5, 1],
+        extrapolate: 'clamp',
+    });
+
+    const headerTranslateY = scrollY.interpolate({
+        inputRange: [-150, 0],
+        outputRange: [-70, 0],
+        extrapolate: 'clamp',
+    });
 
     if (!hotel) return null;
 
     return (
         <>
-            <ScrollView showsVerticalScrollIndicator={false} style={s.container}>
-                <FlatList
-                    data={hotel.gallery}
-                    keyExtractor={(item) => item}
-                    scrollEnabled={shouldAllowScroll}
-                    renderItem={renderGalleryItem}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    style={s.gallery}
+            <Animated.ScrollView
+                showsVerticalScrollIndicator={false}
+                style={s.container}
+                scrollEventThrottle={16}
+                // Updating scrollY as the user scrolls vertically.
+                onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+                    useNativeDriver: true,
+                })}
+            >
+                {/* Header Image with zoom in effect on pull down */}
+                <AnimatedFastImage
+                    source={{ uri: hotel.gallery[0] }}
+                    style={[s.headerImage, { transform: [{ scale: headerScale }, { translateY: headerTranslateY }] }]}
+                    resizeMode="cover"
                 />
 
+                {/* Floating buttons overlay */}
                 <View style={[s.floatingContainer, { top: insets.top + 5 }]}>
                     <BlurView intensity={25} tint="light" style={s.iconButton}>
                         <TouchableOpacity onPress={router.back}>
@@ -76,8 +95,15 @@ const Details = () => {
                     </BlurView>
                 </View>
 
+                {/* The rest of your content */}
                 <View style={s.detailsContainer}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        }}
+                    >
                         <Text style={s.hotelName}>{hotel.name}</Text>
                         <RatingStars count={hotel.stars} />
                     </View>
@@ -86,7 +112,13 @@ const Details = () => {
 
                     <AmenitiesSection />
 
-                    <View style={{ height: 1, backgroundColor: '#E0E0E0', marginTop: 20 }} />
+                    <View
+                        style={{
+                            height: 1,
+                            backgroundColor: '#E0E0E0',
+                            marginTop: 20,
+                        }}
+                    />
 
                     <Description />
 
@@ -121,7 +153,7 @@ const Details = () => {
                 </View>
 
                 <View style={{ height: 100 }} />
-            </ScrollView>
+            </Animated.ScrollView>
             <PriceAndAction
                 price={hotel.price}
                 currency={hotel.currency}
@@ -137,12 +169,10 @@ const s = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    gallery: {
-        height: Dimensions.get('window').height * 0.35,
-    },
-    galleryImage: {
+    // Header image covers a portion of the screen height
+    headerImage: {
         width: width,
-        height: '100%',
+        height: height * 0.35,
     },
     detailsContainer: {
         flex: 1,
@@ -166,8 +196,7 @@ const s = StyleSheet.create({
         flex: 1,
         borderRadius: 10,
     },
-
-    // Floating Button Container
+    // Floating Buttons container
     floatingContainer: {
         position: 'absolute',
         left: 20,
@@ -175,8 +204,7 @@ const s = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-
-    // Individual Floating Buttons
+    // Individual Floating Button styles
     iconButton: {
         width: 40,
         height: 40,

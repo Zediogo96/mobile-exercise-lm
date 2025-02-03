@@ -1,16 +1,31 @@
+import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import { FontAwesome } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const TopSection = () => {
+    const router = useRouter();
+
+    const navigateToFilterModal = () => {
+        router.push('/filter-modal');
+    };
+
+
+
     return (
         <View style={s.container}>
             <Text style={s.title}>Where would you like to go?</Text>
-            <Link href="/search-modal" style={s.buttonContainer}>
-                <FontAwesome name="search" size={20} color="#666" />
-                <Text style={s.searchInput}>Search for hotels, cities, or places</Text>
-            </Link>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Link href="/search-modal" style={s.buttonContainer}>
+                    <FontAwesome name="search" size={20} color="#666" />
+                    <Text style={s.searchInput}>Search for hotels, cities, or places</Text>
+                </Link>
+
+                <TouchableOpacity style={s.filterButton} onPress={navigateToFilterModal}>
+                    <FontAwesome name="filter" size={20} color="#fff" />
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
@@ -18,6 +33,10 @@ const TopSection = () => {
 export default TopSection;
 
 const s = StyleSheet.create({
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     container: {
         marginHorizontal: 20,
     },
@@ -34,7 +53,12 @@ const s = StyleSheet.create({
         borderRadius: 12,
     },
     searchInput: {
-        marginLeft: 40,
         color: '#666',
+    },
+
+    filterButton: {
+        backgroundColor: '#1C1C1C',
+        padding: 16,
+        borderRadius: 12,
     },
 });
