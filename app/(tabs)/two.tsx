@@ -1,12 +1,24 @@
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
 import { Text, View } from '@/components/Themed';
+import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 
 export default function TabTwoScreen() {
+    const { bookmarks } = useBookmarkStore();
+
+    console.log('🚀 ~ TabTwoScreen ~ bookmarks', bookmarks);
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Tab Two</Text>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+            <FlatList
+                data={Object.values(bookmarks)}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <View key={item.id}>
+                        <Text>{item.name}</Text>
+                    </View>
+                )}
+            />
         </View>
     );
 }

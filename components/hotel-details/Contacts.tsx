@@ -17,12 +17,11 @@ const ContactsSection: React.FC<ContactsSectionProps> = ({ contact }) => {
         <View>
             <Text style={styles.title}>Contacts</Text>
             <View style={styles.card}>
-                {/* Phone */}
                 <TouchableOpacity style={styles.row} onPress={handlePhonePress}>
-                    <FontAwesome5 name="phone-alt" size={15} /> <Text style={styles.text}>{phoneNumber}</Text>
+                    <FontAwesome5 name="phone-alt" size={15} />
+                    <Text style={styles.text}>{phoneNumber}</Text>
                 </TouchableOpacity>
 
-                {/* Email */}
                 <TouchableOpacity style={styles.row} onPress={handleEmailPress}>
                     <MaterialIcons name="email" size={15} />
                     <Text style={styles.text}>{email}</Text>

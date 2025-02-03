@@ -6,12 +6,13 @@ import LocationText from '@/components/hotel-details/LocationText';
 import PriceAndAction from '@/components/hotel-details/Price&Action';
 import RatingStars from '@/components/hotel-details/RatingStars';
 import { useHotelById } from '@/services/react-query/hotels';
+import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 
 // * Icons
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -25,6 +26,20 @@ const Details = () => {
     const { id } = useLocalSearchParams();
     const { data: hotel } = useHotelById(id as string);
 
+    const { addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
+    const bookmarked = hotel?.id ? isBookmarked(hotel.id.toString()) : false;
+    console.log('🚀 ~ Details ~ bookmarked:', bookmarked);
+
+    const handleBookmarkPress = useCallback(() => {
+        if (!hotel) return;
+
+        if (bookmarked) {
+            removeBookmark(hotel.id.toString());
+        } else {
+            addBookmark(hotel);
+        }
+    }, [hotel, bookmarked]);
+
     const renderGalleryItem = ({ item }: { item: string }) => (
         <Image source={{ uri: item }} style={s.galleryImage} resizeMode="cover" />
     );
@@ -36,7 +51,6 @@ const Details = () => {
     return (
         <>
             <ScrollView showsVerticalScrollIndicator={false} style={s.container}>
-                {/* Gallery Section */}
                 <FlatList
                     data={hotel.gallery}
                     keyExtractor={(item) => item}
@@ -48,19 +62,16 @@ const Details = () => {
                     style={s.gallery}
                 />
 
-                {/* Floating Buttons */}
                 <View style={[s.floatingContainer, { top: insets.top + 5 }]}>
-                    {/* Go Back Button */}
                     <BlurView intensity={25} tint="light" style={s.iconButton}>
                         <TouchableOpacity onPress={router.back}>
                             <Ionicons name="chevron-back" size={22} color="black" />
                         </TouchableOpacity>
                     </BlurView>
 
-                    {/* Bookmark Button */}
                     <BlurView intensity={50} tint="light" style={s.iconButton}>
-                        <TouchableOpacity onPress={() => console.log('Bookmark pressed')}>
-                            <Ionicons name="bookmark-outline" size={22} color="black" />
+                        <TouchableOpacity onPress={handleBookmarkPress}>
+                            <Ionicons name={bookmarked ? 'bookmark' : 'bookmark-outline'} size={22} color="black" />
                         </TouchableOpacity>
                     </BlurView>
                 </View>
@@ -75,7 +86,6 @@ const Details = () => {
 
                     <AmenitiesSection />
 
-                    {/* SEPARATOR */}
                     <View style={{ height: 1, backgroundColor: '#E0E0E0', marginTop: 20 }} />
 
                     <Description />
