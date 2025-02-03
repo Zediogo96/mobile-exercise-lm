@@ -85,6 +85,7 @@ const RangeSlider = ({
         })
         .onUpdate((e) => {
             opacity2.value = withTiming(1, { duration: 500 });
+            scaleRightThumb.value = withTiming(1.2, { duration: 200 });
             if (context2.value + e.translationX > sliderWidth) {
                 positionRightThumb.value = sliderWidth;
             } else if (context2.value + e.translationX < positionLeftThumb.value) {
@@ -104,7 +105,7 @@ const RangeSlider = ({
         });
 
     const animatedLeftThumbStyle = useAnimatedStyle(() => ({
-        transform: [{ translateX: positionLeftThumb.value }],
+        transform: [{ translateX: positionLeftThumb.value }, { scale: scaleLeftThumb.value }],
         zIndex: zIndex.value,
     }));
 
