@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -14,79 +14,102 @@ const RangeSlider = ({
     min,
     max,
     step,
+    priceRange,
     onValueChange,
 }: {
     sliderWidth: number;
     min: number;
     max: number;
     step: number;
+    priceRange: { min: number; max: number };
     onValueChange: (range: any) => void;
 }) => {
-    const position = useSharedValue(0);
-    const position2 = useSharedValue(sliderWidth);
-    const opacity = useSharedValue(0);
-    const opacity2 = useSharedValue(0);
-    const zIndex = useSharedValue(0);
-    const zIndex2 = useSharedValue(0);
     const context = useSharedValue(0);
     const context2 = useSharedValue(0);
+
+    // * Opacities
+    const opacity = useSharedValue(0);
+    const opacity2 = useSharedValue(0);
+
+    // * Z-Indexes
+    const zIndex = useSharedValue(0);
+    const zIndex2 = useSharedValue(0);
+
+    // * Positions
+    const positionLeftThumb = useSharedValue(0);
+    const positionRightThumb = useSharedValue(sliderWidth);
+
+    // * Scales
+    const scaleLeftThumb = useSharedValue(1);
+    const scaleRightThumb = useSharedValue(1);
+
+    // Convert price range to slider positions
+    const convertPriceToPosition = (price: number) => (price / (max - min)) * sliderWidth;
+
+    useEffect(() => {
+        // Update slider positions when priceRange changes externally
+        positionLeftThumb.value = convertPriceToPosition(priceRange.min);
+        positionRightThumb.value = convertPriceToPosition(priceRange.max);
+    }, [priceRange.min, priceRange.max]);
 
     // Using new Gesture API
     const pan = Gesture.Pan()
         .onBegin(() => {
-            context.value = position.value;
+            context.value = positionLeftThumb.value;
         })
         .onUpdate((e) => {
             opacity.value = withTiming(1, { duration: 500 });
+            scaleLeftThumb.value = withTiming(1.2, { duration: 200 });
             if (context.value + e.translationX < 0) {
-                position.value = 0;
-            } else if (context.value + e.translationX > position2.value) {
-                position.value = position2.value;
+                positionLeftThumb.value = 0;
+            } else if (context.value + e.translationX > positionRightThumb.value) {
+                positionLeftThumb.value = positionRightThumb.value;
                 zIndex.value = 1;
                 zIndex2.value = 0;
             } else {
-                position.value = context.value + e.translationX;
+                positionLeftThumb.value = context.value + e.translationX;
             }
         })
         .onEnd(() => {
             opacity.value = withTiming(0, { duration: 500 });
+            scaleLeftThumb.value = withTiming(1, { duration: 200 });
             runOnJS(onValueChange)({
-                min: min + Math.floor(position.value / (sliderWidth / ((max - min) / step))) * step,
-                max: min + Math.floor(position2.value / (sliderWidth / ((max - min) / step))) * step,
+                min: min + Math.floor(positionLeftThumb.value / (sliderWidth / ((max - min) / step))) * step,
+                max: min + Math.floor(positionRightThumb.value / (sliderWidth / ((max - min) / step))) * step,
             });
         });
 
     const pan2 = Gesture.Pan()
         .onBegin(() => {
-            context2.value = position2.value;
+            context2.value = positionRightThumb.value;
         })
         .onUpdate((e) => {
             opacity2.value = withTiming(1, { duration: 500 });
             if (context2.value + e.translationX > sliderWidth) {
-                position2.value = sliderWidth;
-            } else if (context2.value + e.translationX < position.value) {
-                position2.value = position.value;
+                positionRightThumb.value = sliderWidth;
+            } else if (context2.value + e.translationX < positionLeftThumb.value) {
+                positionRightThumb.value = positionRightThumb.value;
                 zIndex.value = 0;
                 zIndex2.value = 1;
             } else {
-                position2.value = context2.value + e.translationX;
+                positionRightThumb.value = context2.value + e.translationX;
             }
         })
         .onEnd(() => {
             opacity2.value = withTiming(0, { duration: 500 });
             runOnJS(onValueChange)({
-                min: min + Math.floor(position.value / (sliderWidth / ((max - min) / step))) * step,
-                max: min + Math.floor(position2.value / (sliderWidth / ((max - min) / step))) * step,
+                min: min + Math.floor(positionLeftThumb.value / (sliderWidth / ((max - min) / step))) * step,
+                max: min + Math.floor(positionRightThumb.value / (sliderWidth / ((max - min) / step))) * step,
             });
         });
 
-    const animatedStyle = useAnimatedStyle(() => ({
-        transform: [{ translateX: position.value }],
+    const animatedLeftThumbStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: positionLeftThumb.value }],
         zIndex: zIndex.value,
     }));
 
-    const animatedStyle2 = useAnimatedStyle(() => ({
-        transform: [{ translateX: position2.value }],
+    const animatedRightThumbStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: positionRightThumb.value }, { scale: scaleRightThumb.value }],
         zIndex: zIndex2.value,
     }));
 
@@ -99,8 +122,8 @@ const RangeSlider = ({
     }));
 
     const sliderStyle = useAnimatedStyle(() => ({
-        transform: [{ translateX: position.value }],
-        width: position2.value - position.value,
+        transform: [{ translateX: positionLeftThumb.value }],
+        width: positionRightThumb.value - positionLeftThumb.value,
     }));
 
     // Add this line for Reanimated from v3.5.0
@@ -109,12 +132,12 @@ const RangeSlider = ({
 
     const minLabelText = useAnimatedProps(() => {
         return {
-            text: `$ ${min + Math.floor(position.value / (sliderWidth / ((max - min) / step))) * step}`,
+            text: `$ ${min + Math.floor(positionLeftThumb.value / (sliderWidth / ((max - min) / step))) * step}`,
         };
     });
     const maxLabelText = useAnimatedProps(() => {
         return {
-            text: `$ ${min + Math.floor(position2.value / (sliderWidth / ((max - min) / step))) * step}`,
+            text: `$ ${min + Math.floor(positionRightThumb.value / (sliderWidth / ((max - min) / step))) * step}`,
         };
     });
 
@@ -123,7 +146,7 @@ const RangeSlider = ({
             <View style={[styles.sliderBack, { width: sliderWidth }]} />
             <Animated.View style={[sliderStyle, styles.sliderFront]} />
             <GestureDetector gesture={pan}>
-                <Animated.View style={[animatedStyle, styles.thumb]}>
+                <Animated.View style={[animatedLeftThumbStyle, styles.thumb]}>
                     <Animated.View style={[opacityStyle, styles.label]}>
                         {/* @ts-expect-error: text prop is not available in TextInput, this is a workaround */}
                         <AnimatedTextInput style={styles.labelText} animatedProps={minLabelText} editable={false} />
@@ -131,7 +154,7 @@ const RangeSlider = ({
                 </Animated.View>
             </GestureDetector>
             <GestureDetector gesture={pan2}>
-                <Animated.View style={[animatedStyle2, styles.thumb]}>
+                <Animated.View style={[animatedRightThumbStyle, styles.thumb]}>
                     <Animated.View style={[opacityStyle2, styles.label]}>
                         {/* @ts-expect-error: text prop is not available in TextInput, this is a workaround */}
                         <AnimatedTextInput style={styles.labelText} animatedProps={maxLabelText} editable={false} />

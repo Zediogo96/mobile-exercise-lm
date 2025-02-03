@@ -10,7 +10,7 @@ export interface FilterState {
     searchQuery: string;
 
     // Actions
-    setPriceRange: (min: number, max: number) => void;
+    setPriceRange: (range: { min: number; max: number }) => void;
     setStarRating: (ratings: number[]) => void;
     setMinUserRating: (rating: number) => void;
     setSelectedCity: (city: string | null) => void;
@@ -34,7 +34,7 @@ export const useFilterStore = create<FilterState>()(
         ...filters,
 
         // Actions
-        setPriceRange: (min: number, max: number) => set({ priceRange: { min, max } }, false, 'setPriceRange'),
+        setPriceRange: (range: { min: number; max: number }) => set({ priceRange: { min: range.min, max: range.max } }),
 
         setStarRating: (ratings: number[]) => set({ starRating: ratings }, false, 'setStarRating'),
 

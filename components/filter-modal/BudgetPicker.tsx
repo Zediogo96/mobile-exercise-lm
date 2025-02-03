@@ -1,4 +1,5 @@
 import RangeSlider from '@/components/UI/RangeSlider';
+import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, withSequence, withTiming } from 'react-native-reanimated';
@@ -7,8 +8,7 @@ const BudgetPicker = () => {
     const MIN_DEFAULT = 0;
     const MAX_DEFAULT = 1000;
 
-    const [minValue, setMinValue] = React.useState(MIN_DEFAULT);
-    const [maxValue, setMaxValue] = React.useState(MAX_DEFAULT);
+    const { priceRange, setPriceRange } = useFilterStore();
 
     // these need to be two separate useAnimatedStyle hooks
     // because if there is only one, the animation will be applied to both values
@@ -20,7 +20,7 @@ const BudgetPicker = () => {
                 },
             ],
         }),
-        [minValue]
+        [priceRange.min]
     );
 
     const maxValueStyle = useAnimatedStyle(
@@ -31,7 +31,7 @@ const BudgetPicker = () => {
                 },
             ],
         }),
-        [maxValue]
+        [priceRange.max]
     );
 
     return (
@@ -40,13 +40,13 @@ const BudgetPicker = () => {
 
             <View style={styles.sliderContainer}>
                 <RangeSlider
-                    sliderWidth={250}
+                    sliderWidth={300}
                     min={MIN_DEFAULT}
                     max={MAX_DEFAULT}
                     step={25}
+                    priceRange={priceRange}
                     onValueChange={(range: any) => {
-                        setMinValue(range.min);
-                        setMaxValue(range.max);
+                        setPriceRange(range);
                     }}
                 />
             </View>
@@ -54,12 +54,12 @@ const BudgetPicker = () => {
             <View style={styles.valuesContainer}>
                 <View style={styles.bottomCardContainer}>
                     <Text style={styles.smallLabel}> Min </Text>
-                    <Animated.Text style={[styles.valueText, minValueStyle]}>€ {minValue}</Animated.Text>
+                    <Animated.Text style={[styles.valueText, minValueStyle]}>€ {priceRange.min}</Animated.Text>
                 </View>
                 <Text style={{ fontSize: 20 }}> - </Text>
                 <View style={styles.bottomCardContainer}>
                     <Text style={styles.smallLabel}> Max </Text>
-                    <Animated.Text style={[styles.valueText, maxValueStyle]}>€ {maxValue}</Animated.Text>
+                    <Animated.Text style={[styles.valueText, maxValueStyle]}>€ {priceRange.max}</Animated.Text>
                 </View>
             </View>
         </View>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         // shadow
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
+        shadowOpacity: 0.05,
         shadowRadius: 2.84,
         elevation: 5,
     },
