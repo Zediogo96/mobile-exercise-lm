@@ -70,8 +70,8 @@ export default StarsPicker;
 
 const styles = StyleSheet.create({
     container: {
-        margin: 20,
-        width: '90%',
+        marginVertical: 20,
+        width: '100%',
         padding: 30,
         backgroundColor: '#fff',
         borderRadius: 10,

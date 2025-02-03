@@ -5,14 +5,14 @@ export interface FilterState {
     // Filter parameters
     priceRange: { min: number; max: number };
     starRating: number[];
-    minUserRating: number;
+    userRating: number[];
     selectedCity: string | null;
     searchQuery: string;
 
     // Actions
     setPriceRange: (range: { min: number; max: number }) => void;
     setStarRating: (ratings: number[]) => void;
-    setMinUserRating: (rating: number) => void;
+    setUserRating: (ratings: number[]) => void;
     setSelectedCity: (city: string | null) => void;
     setSearchQuery: (query: string) => void;
     resetFilters: () => void;
@@ -21,7 +21,7 @@ export interface FilterState {
 const defaultFilters = {
     priceRange: { min: 0, max: 1000 },
     starRating: [],
-    minUserRating: 0,
+    userRating: [],
     selectedCity: null,
     searchQuery: '',
 };
@@ -38,7 +38,7 @@ export const useFilterStore = create<FilterState>()(
 
         setStarRating: (ratings: number[]) => set({ starRating: ratings }, false, 'setStarRating'),
 
-        setMinUserRating: (rating: number) => set({ minUserRating: rating }, false, 'setMinUserRating'),
+        setUserRating: (ratings: number[]) => set({ userRating: ratings }, false, 'setUserRating'),
 
         setSelectedCity: (city: string | null) => set({ selectedCity: city }, false, 'setSelectedCity'),
 

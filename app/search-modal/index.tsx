@@ -1,6 +1,6 @@
 import { HotelSmallerCard } from '@/components/search-modal/HotelSmallerCard';
 import { SearchHeader } from '@/components/search-modal/SearchHeader';
-import { useHotels } from '@/services/react-query/hotels';
+import { useQuicksearchHotels } from '@/services/react-query/hotels';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function SearchScreen() {
     const insets = useSafeAreaInsets();
     const { searchQuery, setSearchQuery } = useFilterStore();
-    const { data: filteredHotels } = useHotels();
+    const { data: filteredHotels } = useQuicksearchHotels();
     const router = useRouter();
 
     const handleHotelPress = (hotelId: string) => {

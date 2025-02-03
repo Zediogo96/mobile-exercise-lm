@@ -57,7 +57,7 @@ function RootLayoutNav() {
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <GestureHandlerRootView>
                 <QueryClientProvider client={queryClient}>
-                    <Stack screenOptions={{ headerShown: false }}>
+                    <Stack screenOptions={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal' }}>
                         <Stack.Screen name="(tabs)" />
                         <Stack.Screen
                             name="search-modal/index"
@@ -77,6 +77,8 @@ function RootLayoutNav() {
                         />
                         <Stack.Screen name="hotel-details/[id]/index" />
                         <Stack.Screen name="book/[id]/index" />
+
+                        <Stack.Screen name="filter-results/index" />
                     </Stack>
                 </QueryClientProvider>
             </GestureHandlerRootView>
