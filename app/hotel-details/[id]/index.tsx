@@ -1,3 +1,4 @@
+import AmenitiesSection from '@/components/hotel-details/AmenitiesSection';
 import CheckInOutDetails from '@/components/hotel-details/CheckInOutDetails';
 import ContactsSection from '@/components/hotel-details/Contacts';
 import Description from '@/components/hotel-details/Description';
@@ -7,9 +8,11 @@ import RatingStars from '@/components/hotel-details/RatingStars';
 import { useHotelById } from '@/services/react-query/hotels';
 
 // * Icons
-import { useLocalSearchParams } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
-import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -17,6 +20,7 @@ const { width } = Dimensions.get('window');
 
 const Details = () => {
     const insets = useSafeAreaInsets();
+    const router = useRouter();
 
     const { id } = useLocalSearchParams();
     const { data: hotel } = useHotelById(id as string);
@@ -25,23 +29,41 @@ const Details = () => {
         <Image source={{ uri: item }} style={s.galleryImage} resizeMode="cover" />
     );
 
-    const shouldAllowsScroll = hotel?.gallery && hotel.gallery.length > 1;
+    const shouldAllowScroll = hotel?.gallery && hotel.gallery.length > 1;
 
     if (!hotel) return null;
 
     return (
         <>
             <ScrollView showsVerticalScrollIndicator={false} style={s.container}>
+                {/* Gallery Section */}
                 <FlatList
                     data={hotel.gallery}
                     keyExtractor={(item) => item}
-                    scrollEnabled={shouldAllowsScroll}
+                    scrollEnabled={shouldAllowScroll}
                     renderItem={renderGalleryItem}
                     horizontal
                     pagingEnabled
                     showsHorizontalScrollIndicator={false}
                     style={s.gallery}
                 />
+
+                {/* Floating Buttons */}
+                <View style={[s.floatingContainer, { top: insets.top + 5 }]}>
+                    {/* Go Back Button */}
+                    <BlurView intensity={25} tint="light" style={s.iconButton}>
+                        <TouchableOpacity onPress={router.back}>
+                            <Ionicons name="chevron-back" size={22} color="black" />
+                        </TouchableOpacity>
+                    </BlurView>
+
+                    {/* Bookmark Button */}
+                    <BlurView intensity={50} tint="light" style={s.iconButton}>
+                        <TouchableOpacity onPress={() => console.log('Bookmark pressed')}>
+                            <Ionicons name="bookmark-outline" size={22} color="black" />
+                        </TouchableOpacity>
+                    </BlurView>
+                </View>
 
                 <View style={s.detailsContainer}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -51,7 +73,7 @@ const Details = () => {
 
                     <LocationText location={hotel.location} />
 
-                    
+                    <AmenitiesSection />
 
                     {/* SEPARATOR */}
                     <View style={{ height: 1, backgroundColor: '#E0E0E0', marginTop: 20 }} />
@@ -126,30 +148,33 @@ const s = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
     },
-    viewDealButton: {
-        flex: 1,
-
-        backgroundColor: '#000',
-
-        paddingVertical: 12, // Add padding to top and bottom
-        paddingHorizontal: 16, // Add padding to left and right
-
-        borderRadius: 10,
-    },
-
-    textButton: {
-        fontWeight: '500',
-        color: '#fff',
-        fontSize: 15, // Reduced font size
-        textAlign: 'center', // Ensure text is centered if it wraps
-    },
     mapContainer: {
-        height: 250, // Adjust the map height as needed
+        height: 250,
         marginTop: 20,
     },
     map: {
         flex: 1,
         borderRadius: 10,
+    },
+
+    // Floating Button Container
+    floatingContainer: {
+        position: 'absolute',
+        left: 20,
+        right: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
+    // Individual Floating Buttons
+    iconButton: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+        overflow: 'hidden',
     },
 });
 
