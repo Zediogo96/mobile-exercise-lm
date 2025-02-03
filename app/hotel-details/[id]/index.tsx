@@ -1,4 +1,5 @@
 import CheckInOutDetails from '@/components/hotel-details/CheckInOutDetails';
+import ContactsSection from '@/components/hotel-details/Contacts';
 import Description from '@/components/hotel-details/Description';
 import LocationText from '@/components/hotel-details/LocationText';
 import PriceAndAction from '@/components/hotel-details/Price&Action';
@@ -30,7 +31,7 @@ const Details = () => {
 
     return (
         <>
-            <ScrollView style={s.container}>
+            <ScrollView showsVerticalScrollIndicator={false} style={s.container}>
                 <FlatList
                     data={hotel.gallery}
                     keyExtractor={(item) => item}
@@ -50,11 +51,17 @@ const Details = () => {
 
                     <LocationText location={hotel.location} />
 
-                    <CheckInOutDetails checkIn={hotel.checkIn} checkOut={hotel.checkOut} />
+                    
+
+                    {/* SEPARATOR */}
+                    <View style={{ height: 1, backgroundColor: '#E0E0E0', marginTop: 20 }} />
 
                     <Description />
 
-                    {/* Add MapView to show location */}
+                    <CheckInOutDetails checkIn={hotel.checkIn} checkOut={hotel.checkOut} />
+
+                    <ContactsSection contact={hotel.contact} />
+
                     <View style={s.mapContainer}>
                         <MapView
                             style={s.map}

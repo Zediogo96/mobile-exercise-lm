@@ -23,8 +23,6 @@ const styles = StyleSheet.create({
         marginVertical: 20,
     },
     card: {
-        backgroundColor: '#F8F9FA',
-        borderRadius: 12,
         padding: 16,
     },
     text: {

@@ -9,30 +9,30 @@ type CheckInOutDetailsProps = {
 };
 
 const CheckInOutDetails = ({ checkIn, checkOut }: CheckInOutDetailsProps) => {
+    const renderDetail = (
+        icon: keyof typeof FontAwesome.glyphMap,
+        iconColor: `#${string}`,
+        label: string,
+        time: TimeRange
+    ) => (
+        <View style={s.column}>
+            <View style={s.row}>
+                <FontAwesome name={icon} size={20} color={iconColor} style={{ opacity: 0.8 }} />
+                <Text style={s.label}>{label}</Text>
+            </View>
+            <Text style={s.time}>
+                {time.from} - {time.to}
+            </Text>
+        </View>
+    );
+
     return (
-        <View style={s.checkInOutCard}>
-            <View style={s.checkInOutRow}>
-                <View style={s.iconContainer}>
-                    <FontAwesome name="sign-in" size={20} color="#2E7D32" />
-                </View>
-                <View style={s.checkInOutTextContainer}>
-                    <Text style={s.checkInOutLabel}>Check-in</Text>
-                    <Text style={s.checkInOutTime}>
-                        {checkIn.from} - {checkIn.to}
-                    </Text>
-                </View>
-            </View>
-            <View style={s.checkInOutRow}>
-                <View style={s.iconContainer}>
-                    <FontAwesome name="sign-out" size={20} color="#D32F2F" />
-                </View>
-                <View style={s.checkInOutTextContainer}>
-                    <Text style={s.checkInOutLabel}>Check-out</Text>
-                    <Text style={s.checkInOutTime}>
-                        {checkOut.from} - {checkOut.to}
-                    </Text>
-                </View>
-            </View>
+        <View style={s.card}>
+            <View style={s.columnContainer}>{renderDetail('sign-in', '#2E7D32', 'Check-in', checkIn)}</View>
+
+            <View style={s.separator} />
+
+            <View style={s.columnContainer}>{renderDetail('sign-out', '#D32F2F', 'Check-out', checkOut)}</View>
         </View>
     );
 };
@@ -40,46 +40,37 @@ const CheckInOutDetails = ({ checkIn, checkOut }: CheckInOutDetailsProps) => {
 export default CheckInOutDetails;
 
 const s = StyleSheet.create({
-    checkInOutCard: {
+    card: {
         backgroundColor: '#F8F9FA',
         borderRadius: 12,
         padding: 16,
         marginTop: 16,
-    },
-    checkInOutContainer: {
-        marginTop: 16,
-    },
-    checkInOutRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 8,
-        gap: 8,
     },
-    checkInOutText: {
-        fontSize: 16,
-        color: '#666',
+    columnContainer: {
+        flex: 1, // Ensures two equal columns
     },
-
-    iconContainer: {
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 8,
-        marginRight: 12,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
+    column: {
+        alignItems: 'center',
+        gap: 10,
     },
-    checkInOutTextContainer: {
-        flex: 1,
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
     },
-    checkInOutLabel: {
+    separator: {
+        width: 1,
+        backgroundColor: '#BDBDBD',
+        alignSelf: 'stretch', // Ensures full height
+    },
+    label: {
         fontSize: 14,
-        color: '#666',
+        opacity: 0.8,
         fontWeight: '500',
     },
-    checkInOutTime: {
+    time: {
         fontSize: 16,
         color: '#333',
         fontWeight: '600',
