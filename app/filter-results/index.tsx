@@ -6,9 +6,10 @@ import { useHotelsByFilter } from '@/services/react-query/hotels';
 import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 import { Hotel } from '@/types/hotel.types';
 import { Entypo } from '@expo/vector-icons';
-import React from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation, useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 
 const COLORS = {
     background: '#F5F5F5',
@@ -25,7 +26,10 @@ const CARD_WIDTH = SCREEN_WIDTH * 0.9;
 const IMAGE_HEIGHT = 150;
 const CARD_BORDER_RADIUS = 15;
 
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+
 const HotelCard = ({ hotel }: { hotel: Hotel }) => {
+    const router = useRouter();
     const currencySymbol = CURRENCY_SYMBOL_MAP[hotel.currency || 'USD'];
 
     const { isBookmarked, addBookmark, removeBookmark } = useBookmarkStore();
@@ -40,10 +44,14 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
         }
     };
 
+    const handlePress = () => {
+        router.push(`/hotel-details/${hotel.id}`);
+    };
+
     return (
-        <View style={styles.hotelCard}>
+        <AnimatedTouchableOpacity style={styles.hotelCard} onPress={handlePress}>
             <View style={styles.carouselContainer}>
-                <HotelGallery gallery={hotel.gallery} hotelId={hotel.id.toString()} />;
+                <HotelGallery gallery={hotel.gallery} hotelId={hotel.id.toString()} />
                 <View style={{ position: 'absolute', top: 10, right: 10 }}>
                     <BookmarkButton bookmarked={bookmarked} handleBookmarkPress={handleBookmarkPress} />
                 </View>
@@ -64,45 +72,48 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
                     </View>
 
                     <Text style={styles.price}>
-                        {' '}
                         {currencySymbol} {hotel.price} <Text style={styles.perNightText}> / night</Text>
                     </Text>
                 </View>
             </View>
-        </View>
+        </AnimatedTouchableOpacity>
     );
 };
 
 const HotelList = () => {
-    const insets = useSafeAreaInsets();
     const { data: hotels, isLoading, error } = useHotelsByFilter();
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        // update header right of stack navigator
+        navigation.setOptions({
+            headerRight: () => {
+                if (!hotels) return null;
+                return <Text style={styles.topSectionQueryLength}>{hotels.length} hotels</Text>;
+            },
+        });
+    }, [hotels]);
 
     if (isLoading) return <Text style={styles.statusText}>Loading...</Text>;
     if (error) return <Text style={styles.statusText}>Error loading hotels</Text>;
     if (!hotels?.length) return <Text style={styles.statusText}>No hotels found matching your criteria</Text>;
 
     return (
-        <View style={styles.container}>
-            <View style={[styles.topSection, { paddingTop: insets.top }]}>
-                <Text style={styles.topSectionTitle}>Hotels</Text>
-                <Text style={styles.topSectionQueryLength}>{hotels.length} results</Text>
-            </View>
-
-            <FlatList
-                contentContainerStyle={styles.listContainer}
-                data={hotels}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <HotelCard hotel={item} />}
-            />
-        </View>
+        <Animated.FlatList
+            contentInsetAdjustmentBehavior={'automatic'}
+            contentContainerStyle={styles.listContainer}
+            itemLayoutAnimation={LinearTransition}
+            data={hotels}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <HotelCard hotel={item} />}
+        />
     );
 };
 
 export default HotelList;
 
 const styles = StyleSheet.create({
-    // ... existing styles ...
     container: {
         flex: 1,
         backgroundColor: COLORS.background,

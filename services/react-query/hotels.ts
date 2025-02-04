@@ -75,15 +75,15 @@ export const useHotelsByFilter = () => {
                     return false;
                 }
 
-                // // Search query check (only if there's a query)
-                // if (searchQuery) {
-                //     const searchLower = searchQuery.toLowerCase();
-                //     return (
-                //         hotel.name.toLowerCase().includes(searchLower) ||
-                //         hotel.location.city.toLowerCase().includes(searchLower) ||
-                //         hotel.location.address.toLowerCase().includes(searchLower)
-                //     );
-                // }
+                // Search query check (only if there's a query)
+                if (searchQuery) {
+                    const searchLower = searchQuery.toLowerCase();
+                    return (
+                        hotel.name.toLowerCase().includes(searchLower) ||
+                        hotel.location.city.toLowerCase().includes(searchLower) ||
+                        hotel.location.address.toLowerCase().includes(searchLower)
+                    );
+                }
 
                 return true;
             });

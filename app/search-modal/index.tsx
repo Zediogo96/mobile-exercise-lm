@@ -40,6 +40,7 @@ export default function SearchScreen() {
                 <SearchHeader searchQuery={searchQuery} onSearchChange={setSearchQuery} topInset={insets.top} />
 
                 <ScrollView
+                    keyboardDismissMode="on-drag"
                     showsVerticalScrollIndicator={false}
                     style={styles.scrollView}
                     contentContainerStyle={styles.scrollViewContent}
