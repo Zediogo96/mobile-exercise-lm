@@ -31,7 +31,6 @@ const Details = () => {
 
     const { addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
     const bookmarked = hotel?.id ? isBookmarked(hotel.id.toString()) : false;
-    console.log('🚀 ~ Details ~ bookmarked:', bookmarked);
 
     const handleBookmarkPress = useCallback(() => {
         if (!hotel) return;

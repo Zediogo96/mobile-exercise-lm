@@ -1,7 +1,9 @@
+import FastImageWrapper from '@/components/Helper/FastImageWrapper';
+import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
+import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import Carousel from 'react-native-snap-carousel';
 
@@ -60,21 +62,40 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({ length, activeIndex
 
 interface HotelGalleryProps {
     gallery: string[];
+    hotelId: string;
 }
 
-const HotelGallery: React.FC<HotelGalleryProps> = ({ gallery }) => {
+const HotelGallery: React.FC<HotelGalleryProps> = ({ gallery, hotelId }: HotelGalleryProps) => {
     const [activeSlide, setActiveSlide] = useState(0);
 
+    const { addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
+    const bookmarked = hotelId ? isBookmarked(hotelId) : false;
+
     const renderCarouselItem = ({ item }: { item: string }) => (
-        <FastImage source={{ uri: item }} style={styles.carouselImage} resizeMode="cover" />
+        <FastImageWrapper source={{ uri: item }} style={styles.carouselImage} resizeMode="cover" />
     );
 
     if (gallery.length === 1) {
-        return <FastImage source={{ uri: gallery[0] }} style={styles.carouselImage} resizeMode="cover" />;
+        return <FastImageWrapper source={{ uri: gallery[0] }} style={styles.carouselImage} resizeMode="cover" />;
     }
+
+    const handleBookmarkPress = () => {
+        if (!hotelId) return;
+
+        if (bookmarked) {
+            removeBookmark(hotelId);
+        } else {
+            addBookmark(hotelId);
+        }
+    };
 
     return (
         <View style={styles.container}>
+            <BlurView intensity={50} tint="light" style={styles.iconButton}>
+                <TouchableOpacity onPress={handleBookmarkPress}>
+                    <Ionicons name={bookmarked ? 'bookmark' : 'bookmark-outline'} size={22} color="black" />
+                </TouchableOpacity>
+            </BlurView>
             <Carousel
                 data={gallery}
                 renderItem={renderCarouselItem}
@@ -89,6 +110,7 @@ const HotelGallery: React.FC<HotelGalleryProps> = ({ gallery }) => {
                 firstItem={0}
                 onSnapToItem={setActiveSlide}
             />
+
             <CustomPagination length={gallery.length} activeIndex={activeSlide} />
         </View>
     );
@@ -127,5 +149,18 @@ const styles = StyleSheet.create({
     dot: {
         borderRadius: ACTIVE_DOT_SIZE / 2,
         marginHorizontal: 4,
+    },
+
+    iconButton: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+        overflow: 'hidden',
     },
 });

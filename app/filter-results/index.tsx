@@ -24,15 +24,13 @@ const IMAGE_HEIGHT = 150;
 const CARD_BORDER_RADIUS = 15;
 
 const HotelCard = ({ hotel }: { hotel: Hotel }) => {
-    const renderImageContent = () => {
-        return <HotelGallery gallery={hotel.gallery} />;
-    };
-
     const currencySymbol = CURRENCY_SYMBOL_MAP[hotel.currency || 'USD'];
 
     return (
         <View style={styles.hotelCard}>
-            <View style={styles.carouselContainer}>{renderImageContent()}</View>
+            <View style={styles.carouselContainer}>
+                <HotelGallery gallery={hotel.gallery} hotelId={hotel.id.toString()} />;
+            </View>
 
             <View style={styles.informationContainer}>
                 <View style={styles.headerRow}>

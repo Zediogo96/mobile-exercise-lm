@@ -16,7 +16,6 @@ export const useBookmarkStore = create<BookmarkStore>()(
             bookmarks: {},
             addBookmark: (hotel: Hotel) =>
                 set((state) => {
-                    console.log('hotel', hotel);
                     return { bookmarks: { ...state.bookmarks, [hotel.id]: hotel } };
                 }),
             removeBookmark: (id) =>
@@ -27,7 +26,6 @@ export const useBookmarkStore = create<BookmarkStore>()(
                 }),
             isBookmarked: (id) => {
                 const bookmarks = get().bookmarks;
-                console.log('bookmarks', bookmarks);
                 return !!bookmarks[id];
             },
         }),
