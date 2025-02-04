@@ -13,7 +13,10 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 import DefaultImage1 from '@/assets/images/hotels/default-hotel-1.jpg';
 import DefaultImage2 from '@/assets/images/hotels/default-hotel-2.jpg';
 import DefaultImage3 from '@/assets/images/hotels/default-hotel-3.jpg';
+import FastImageWrapper from '@/components/Helper/FastImageWrapper';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+
+const AnimatedFastImageWrapper = Animated.createAnimatedComponent(FastImageWrapper);
 
 // Adjusted dimensions for smaller cards
 const SLIDER_WIDTH = screenWidth;
@@ -94,7 +97,7 @@ const MostPopularCarouselItem = (item: Hotel) => {
             }}
         >
             <Animated.View entering={FadeIn.delay(500)} style={s.card}>
-                <Animated.Image
+                <AnimatedFastImageWrapper
                     sharedTransitionTag="hotel-image"
                     onLoad={handleImageLoad}
                     onError={handleImageError}

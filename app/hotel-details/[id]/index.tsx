@@ -1,3 +1,4 @@
+import FastImageWrapper from '@/components/Helper/FastImageWrapper';
 import AmenitiesSection from '@/components/hotel-details/AmenitiesSection';
 import CheckInOutDetails from '@/components/hotel-details/CheckInOutDetails';
 import ContactsSection from '@/components/hotel-details/Contacts';
@@ -5,6 +6,7 @@ import Description from '@/components/hotel-details/Description';
 import LocationText from '@/components/hotel-details/LocationText';
 import PriceAndAction from '@/components/hotel-details/Price&Action';
 import RatingStars from '@/components/hotel-details/RatingStars';
+import BookmarkButton from '@/components/UI/BookmarkButton';
 import { useHotelById } from '@/services/react-query/hotels';
 import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 
@@ -14,13 +16,12 @@ import { BlurView } from 'expo-blur';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useRef } from 'react';
 import { Animated, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import MapView, { Marker } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
 
-const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
+const AnimatedFastImageWrapper = Animated.createAnimatedComponent(FastImageWrapper);
 
 const Details = () => {
     const insets = useSafeAreaInsets();
@@ -73,7 +74,7 @@ const Details = () => {
                 })}
             >
                 {/* Header Image with zoom in effect on pull down */}
-                <AnimatedFastImage
+                <AnimatedFastImageWrapper
                     source={{ uri: hotel.gallery[0] }}
                     style={[s.headerImage, { transform: [{ scale: headerScale }, { translateY: headerTranslateY }] }]}
                     resizeMode="cover"
@@ -87,11 +88,7 @@ const Details = () => {
                         </TouchableOpacity>
                     </BlurView>
 
-                    <BlurView intensity={50} tint="light" style={s.iconButton}>
-                        <TouchableOpacity onPress={handleBookmarkPress}>
-                            <Ionicons name={bookmarked ? 'bookmark' : 'bookmark-outline'} size={22} color="black" />
-                        </TouchableOpacity>
-                    </BlurView>
+                    <BookmarkButton bookmarked={bookmarked} handleBookmarkPress={handleBookmarkPress} />
                 </View>
 
                 {/* The rest of your content */}

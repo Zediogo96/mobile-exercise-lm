@@ -57,7 +57,7 @@ export const useHotelsByFilter = () => {
         staleTime: DEFAULT_CACHE_TIME,
         select: (hotels) => {
             return hotels.filter((hotel) => {
-                // Apply all filters in a single pass
+                // Retrieve Filters
                 const { priceRange, starRating, userRating, selectedCity, searchQuery } = filters;
 
                 // Price range check
@@ -71,14 +71,9 @@ export const useHotelsByFilter = () => {
                 }
 
                 // User rating check
-                if (userRating.length > 0 && !userRating.includes(Math.floor(hotel.userRating))) {
+                if (userRating.length > 0 && Math.min(...userRating) > hotel.userRating * 10) {
                     return false;
                 }
-
-                // // City check
-                // if (selectedCity && hotel.location.city.toLowerCase() !== selectedCity.toLowerCase()) {
-                //     return false;
-                // }
 
                 // // Search query check (only if there's a query)
                 // if (searchQuery) {

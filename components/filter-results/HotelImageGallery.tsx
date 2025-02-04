@@ -1,9 +1,7 @@
 import FastImageWrapper from '@/components/Helper/FastImageWrapper';
-import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
-import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import Carousel from 'react-native-snap-carousel';
 
@@ -68,9 +66,6 @@ interface HotelGalleryProps {
 const HotelGallery: React.FC<HotelGalleryProps> = ({ gallery, hotelId }: HotelGalleryProps) => {
     const [activeSlide, setActiveSlide] = useState(0);
 
-    const { addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
-    const bookmarked = hotelId ? isBookmarked(hotelId) : false;
-
     const renderCarouselItem = ({ item }: { item: string }) => (
         <FastImageWrapper source={{ uri: item }} style={styles.carouselImage} resizeMode="cover" />
     );
@@ -79,23 +74,8 @@ const HotelGallery: React.FC<HotelGalleryProps> = ({ gallery, hotelId }: HotelGa
         return <FastImageWrapper source={{ uri: gallery[0] }} style={styles.carouselImage} resizeMode="cover" />;
     }
 
-    const handleBookmarkPress = () => {
-        if (!hotelId) return;
-
-        if (bookmarked) {
-            removeBookmark(hotelId);
-        } else {
-            addBookmark(hotelId);
-        }
-    };
-
     return (
         <View style={styles.container}>
-            <BlurView intensity={50} tint="light" style={styles.iconButton}>
-                <TouchableOpacity onPress={handleBookmarkPress}>
-                    <Ionicons name={bookmarked ? 'bookmark' : 'bookmark-outline'} size={22} color="black" />
-                </TouchableOpacity>
-            </BlurView>
             <Carousel
                 data={gallery}
                 renderItem={renderCarouselItem}

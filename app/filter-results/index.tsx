@@ -1,7 +1,9 @@
 import HotelGallery from '@/components/filter-results/HotelImageGallery';
 import RatingStars from '@/components/hotel-details/RatingStars';
+import BookmarkButton from '@/components/UI/BookmarkButton';
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
 import { useHotelsByFilter } from '@/services/react-query/hotels';
+import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 import { Hotel } from '@/types/hotel.types';
 import { Entypo } from '@expo/vector-icons';
 import React from 'react';
@@ -26,10 +28,25 @@ const CARD_BORDER_RADIUS = 15;
 const HotelCard = ({ hotel }: { hotel: Hotel }) => {
     const currencySymbol = CURRENCY_SYMBOL_MAP[hotel.currency || 'USD'];
 
+    const { isBookmarked, addBookmark, removeBookmark } = useBookmarkStore();
+
+    const bookmarked = isBookmarked(hotel.id.toString());
+
+    const handleBookmarkPress = () => {
+        if (bookmarked) {
+            removeBookmark(hotel.id.toString());
+        } else {
+            addBookmark(hotel);
+        }
+    };
+
     return (
         <View style={styles.hotelCard}>
             <View style={styles.carouselContainer}>
                 <HotelGallery gallery={hotel.gallery} hotelId={hotel.id.toString()} />;
+                <View style={{ position: 'absolute', top: 10, right: 10 }}>
+                    <BookmarkButton bookmarked={bookmarked} handleBookmarkPress={handleBookmarkPress} />
+                </View>
             </View>
 
             <View style={styles.informationContainer}>
