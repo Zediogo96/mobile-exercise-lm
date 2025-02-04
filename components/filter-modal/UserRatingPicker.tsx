@@ -75,23 +75,25 @@ const UserRating: React.FC = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <>
             <Text style={styles.title}>User Rating</Text>
-            {ratingOptions.map((option) => (
-                <View key={option.value} style={styles.ratingRow}>
-                    <View style={styles.ratingInfo}>
-                        <View style={[styles.scoreContainer, { backgroundColor: option.backgroundColor }]}>
-                            <Text style={styles.scoreText}>{option.score}</Text>
+            <View style={styles.container}>
+                {ratingOptions.map((option) => (
+                    <View key={option.value} style={styles.ratingRow}>
+                        <View style={styles.ratingInfo}>
+                            <View style={[styles.scoreContainer, { backgroundColor: option.backgroundColor }]}>
+                                <Text style={styles.scoreText}>{option.score}</Text>
+                            </View>
+                            <Text style={styles.ratingLabel}>{option.label}</Text>
                         </View>
-                        <Text style={styles.ratingLabel}>{option.label}</Text>
+                        <AnimatedCheckbox
+                            selected={userRating.includes(option.value)}
+                            onPress={() => toggleRating(option.value)}
+                        />
                     </View>
-                    <AnimatedCheckbox
-                        selected={userRating.includes(option.value)}
-                        onPress={() => toggleRating(option.value)}
-                    />
-                </View>
-            ))}
-        </View>
+                ))}
+            </View>
+        </>
     );
 };
 
@@ -111,10 +113,10 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: {
-        fontSize: 20,
-        marginBottom: 40,
+        fontSize: 18,
+        marginBottom: 20,
         fontWeight: 'bold',
-        color: '#000',
+        color: '#666',
     },
     ratingRow: {
         flexDirection: 'row',

@@ -54,15 +54,17 @@ const StarsPicker = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Rate Your Experience</Text>
-            {[5, 4, 3, 2, 1].map((stars, index) => (
-                <View key={index} style={styles.ratingRow}>
-                    <View style={styles.starsContainer}>{renderStars(stars)}</View>
-                    <AnimatedCheckbox selected={starRating.includes(stars)} onPress={() => checkSelected(stars)} />
-                </View>
-            ))}
-        </View>
+        <>
+            <Text style={styles.title}> Stars </Text>
+            <View style={styles.container}>
+                {[5, 4, 3, 2, 1].map((stars, index) => (
+                    <View key={index} style={styles.ratingRow}>
+                        <View style={styles.starsContainer}>{renderStars(stars)}</View>
+                        <AnimatedCheckbox selected={starRating.includes(stars)} onPress={() => checkSelected(stars)} />
+                    </View>
+                ))}
+            </View>
+        </>
     );
 };
 
@@ -83,10 +85,11 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: {
-        fontSize: 20,
-        marginBottom: 40,
+        fontSize: 18,
+        marginTop: 20,
+
         fontWeight: 'bold',
-        color: '#000',
+        color: '#666',
     },
     ratingRow: {
         flexDirection: 'row',

@@ -35,34 +35,35 @@ const BudgetPicker = () => {
     );
 
     return (
-        <View style={styles.cardContainer}>
+        <>
             <Text style={styles.title}>Budget</Text>
-
-            <View style={styles.sliderContainer}>
-                <RangeSlider
-                    sliderWidth={300}
-                    min={MIN_DEFAULT}
-                    max={MAX_DEFAULT}
-                    step={25}
-                    priceRange={priceRange}
-                    onValueChange={(range: any) => {
-                        setPriceRange(range);
-                    }}
-                />
-            </View>
-
-            <View style={styles.valuesContainer}>
-                <View style={styles.bottomCardContainer}>
-                    <Text style={styles.smallLabel}> Min </Text>
-                    <Animated.Text style={[styles.valueText, minValueStyle]}>€ {priceRange.min}</Animated.Text>
+            <View style={styles.cardContainer}>
+                <View style={styles.sliderContainer}>
+                    <RangeSlider
+                        sliderWidth={300}
+                        min={MIN_DEFAULT}
+                        max={MAX_DEFAULT}
+                        step={25}
+                        priceRange={priceRange}
+                        onValueChange={(range: any) => {
+                            setPriceRange(range);
+                        }}
+                    />
                 </View>
-                <Text style={{ fontSize: 20 }}> - </Text>
-                <View style={styles.bottomCardContainer}>
-                    <Text style={styles.smallLabel}> Max </Text>
-                    <Animated.Text style={[styles.valueText, maxValueStyle]}>€ {priceRange.max}</Animated.Text>
+
+                <View style={styles.valuesContainer}>
+                    <View style={styles.bottomCardContainer}>
+                        <Text style={styles.smallLabel}> Min </Text>
+                        <Animated.Text style={[styles.valueText, minValueStyle]}>€ {priceRange.min}</Animated.Text>
+                    </View>
+                    <Text style={{ fontSize: 20 }}> - </Text>
+                    <View style={styles.bottomCardContainer}>
+                        <Text style={styles.smallLabel}> Max </Text>
+                        <Animated.Text style={[styles.valueText, maxValueStyle]}>€ {priceRange.max}</Animated.Text>
+                    </View>
                 </View>
             </View>
-        </View>
+        </>
     );
 };
 
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2.84,
         elevation: 5,
     },
-    title: { fontSize: 20, marginBottom: 20, fontWeight: 'bold' },
+    title: { color: '#666', fontSize: 18, marginBottom: 20, fontWeight: 'bold' },
     sliderContainer: { flex: 1, marginTop: 40 },
 
     valuesContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 30 },
