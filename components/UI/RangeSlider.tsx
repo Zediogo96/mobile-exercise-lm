@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     },
     sliderFront: {
         height: 8,
-        backgroundColor: '#747474',
+        backgroundColor: '#8F8F8F',
         borderRadius: 20,
         position: 'absolute',
     },
@@ -190,17 +190,23 @@ const styles = StyleSheet.create({
         height: 20,
         position: 'absolute',
         backgroundColor: 'white',
-        borderColor: 'black',
-        borderWidth: 2,
+
         borderRadius: 10,
+        // Subtle shadow for elevation
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2.84,
+        elevation: 5,
     },
     label: {
         position: 'absolute',
         top: -45,
         bottom: 25,
 
-        width: 65,
-        backgroundColor: 'black',
+        height: 30,
+        width: 60,
+        backgroundColor: '#8F8F8F',
         borderRadius: 5,
         alignSelf: 'center',
     },
@@ -208,8 +214,9 @@ const styles = StyleSheet.create({
         color: 'white',
         padding: 5,
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 14,
         width: '100%',
+        height: '100%',
         textAlign: 'center',
     },
 });

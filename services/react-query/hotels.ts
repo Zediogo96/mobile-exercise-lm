@@ -17,18 +17,6 @@ const applyQuickFilters = (hotels: Hotel[], searchQuery: string) => {
     });
 };
 
-export const useQuicksearchHotels = () => {
-    return useQuery({
-        queryKey: ['hotels'],
-        queryFn: fetchHotels,
-        staleTime: DEFAULT_CACHE_TIME,
-        select: (hotels) => {
-            const filter = useFilterStore.getState();
-            return applyQuickFilters(hotels, filter.searchQuery);
-        },
-    });
-};
-
 export const useMostPopularHotels = () => {
     return useQuery({
         queryKey: ['hotels', 'hottest'],
@@ -45,5 +33,65 @@ export const useHotelById = (id: string) => {
         queryFn: fetchHotels,
         staleTime: DEFAULT_CACHE_TIME,
         select: (hotels) => hotels.find((hotel) => hotel.id.toString() === id),
+    });
+};
+
+export const useQuicksearchHotels = () => {
+    return useQuery({
+        queryKey: ['hotels'],
+        queryFn: fetchHotels,
+        staleTime: DEFAULT_CACHE_TIME,
+        select: (hotels) => {
+            const filter = useFilterStore.getState();
+            return applyQuickFilters(hotels, filter.searchQuery);
+        },
+    });
+};
+
+export const useHotelsByFilter = () => {
+    const filters = useFilterStore();
+
+    return useQuery({
+        queryKey: ['hotels', 'search', filters],
+        queryFn: fetchHotels,
+        staleTime: DEFAULT_CACHE_TIME,
+        select: (hotels) => {
+            return hotels.filter((hotel) => {
+                // Apply all filters in a single pass
+                const { priceRange, starRating, userRating, selectedCity, searchQuery } = filters;
+
+                // Price range check
+                if (hotel.price < priceRange.min || hotel.price > priceRange.max) {
+                    return false;
+                }
+
+                // Star rating check
+                if (starRating.length > 0 && !starRating.includes(hotel.stars)) {
+                    return false;
+                }
+
+                // User rating check
+                if (userRating.length > 0 && !userRating.includes(Math.floor(hotel.userRating))) {
+                    return false;
+                }
+
+                // // City check
+                // if (selectedCity && hotel.location.city.toLowerCase() !== selectedCity.toLowerCase()) {
+                //     return false;
+                // }
+
+                // // Search query check (only if there's a query)
+                // if (searchQuery) {
+                //     const searchLower = searchQuery.toLowerCase();
+                //     return (
+                //         hotel.name.toLowerCase().includes(searchLower) ||
+                //         hotel.location.city.toLowerCase().includes(searchLower) ||
+                //         hotel.location.address.toLowerCase().includes(searchLower)
+                //     );
+                // }
+
+                return true;
+            });
+        },
     });
 };

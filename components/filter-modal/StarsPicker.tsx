@@ -37,9 +37,6 @@ const StarsPicker = () => {
             if (i <= count) {
                 // Filled star in yellow
                 stars.push(<FontAwesome key={i} color="#FFD700" size={20} name="star" />);
-            } else {
-                // Unfilled star in light gray
-                stars.push(<FontAwesome key={i} color="#CCC" size={20} name="star" />);
             }
         }
         return stars;
