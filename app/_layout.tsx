@@ -11,6 +11,7 @@ import { useColorScheme } from '@/components/useColorScheme';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export {
@@ -97,16 +98,23 @@ function RootLayoutNav() {
                                     headerShown: true,
                                     headerBlurEffect: 'regular',
                                     headerTransparent: true,
-                                    headerBackButtonMenuEnabled: true,
+
                                     headerTitle: 'Hotels',
                                     headerShadowVisible: false,
-                                    headerBackVisible: true,
+                                    headerLeft: () => {
+                                        return (
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    router.replace('/(tabs)');
+                                                }}
+                                                style={{ marginLeft: 5 }}
+                                            >
+                                                <FontAwesome name="chevron-left" size={15} color="black" />
+                                            </TouchableOpacity>
+                                        );
+                                    },
 
                                     headerTintColor: 'black',
-                                    headerBackTitle: 'b',
-                                    headerBackTitleStyle: {
-                                        fontSize: 1,
-                                    },
 
                                     headerSearchBarOptions: {
                                         placeholder: 'Search for hotels',
