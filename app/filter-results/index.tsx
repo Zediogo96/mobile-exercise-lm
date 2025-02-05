@@ -1,5 +1,7 @@
+import FilterAndSortActions from '@/components/filter-results/FilterAndSortActions';
 import HotelGallery from '@/components/filter-results/HotelImageGallery';
 import HotelListSkeleton from '@/components/filter-results/HotelListSkeleton';
+import SortOptions from '@/components/filter-results/SortOptions';
 import RatingStars from '@/components/hotel-details/RatingStars';
 import BookmarkButton from '@/components/UI/BookmarkButton';
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
@@ -8,8 +10,9 @@ import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 import { Hotel } from '@/types/hotel.types';
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation, useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
-import { Dimensions, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 
 const COLORS = {
@@ -26,8 +29,6 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const CARD_WIDTH = SCREEN_WIDTH * 0.9;
 const IMAGE_HEIGHT = 150;
 const CARD_BORDER_RADIUS = 15;
-
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 const HotelCard = ({ hotel }: { hotel: Hotel }) => {
     const router = useRouter();
@@ -86,9 +87,9 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
 const HotelList = () => {
     const { data: hotels, isLoading, error } = useHotelsByFilter();
     const navigation = useNavigation();
+    const actionSheetRef = useRef<ActionSheetRef>(null);
 
     useEffect(() => {
-        // update header right of stack navigator
         navigation.setOptions({
             headerRight: () => {
                 if (!hotels) return null;
@@ -97,20 +98,31 @@ const HotelList = () => {
         });
     }, [hotels]);
 
+    const openBottomSheet = () => {
+        actionSheetRef.current?.show();
+    };
+
     if (isLoading) return <HotelListSkeleton />;
     if (error) return <Text style={styles.statusText}>Error loading hotels</Text>;
     if (!hotels?.length) return <Text style={styles.statusText}>No hotels found matching your criteria</Text>;
 
     return (
-        <Animated.FlatList
-            contentInsetAdjustmentBehavior={'automatic'}
-            contentContainerStyle={styles.listContainer}
-            itemLayoutAnimation={LinearTransition}
-            data={hotels}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <HotelCard hotel={item} />}
-        />
+        <View style={styles.container}>
+            <Animated.FlatList
+                contentInsetAdjustmentBehavior="automatic"
+                contentContainerStyle={styles.listContainer}
+                itemLayoutAnimation={LinearTransition}
+                data={hotels}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <HotelCard hotel={item} />}
+            />
+            <FilterAndSortActions handleSortPress={openBottomSheet} />
+
+            <ActionSheet gestureEnabled={true} ref={actionSheetRef} containerStyle={styles.bottomSheetContainer}>
+                <SortOptions onClose={() => actionSheetRef.current?.hide()} />
+            </ActionSheet>
+        </View>
     );
 };
 
@@ -121,6 +133,26 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.background,
     },
+
+    bottomSheetContainer: {
+        height: '50%',
+        padding: 20,
+        backgroundColor: '#FFFFFF',
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    option: {
+        paddingVertical: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#E0E0E0',
+    },
+    optionText: {
+        fontSize: 16,
+    },
+
     listContainer: {
         alignItems: 'center',
         paddingVertical: 16,

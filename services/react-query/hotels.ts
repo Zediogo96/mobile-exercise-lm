@@ -1,5 +1,6 @@
 import { DEFAULT_CACHE_TIME } from '@/constants/react-query';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
+import { SortOption } from '@/types/filter.types';
 import { Hotel } from '@/types/hotel.types';
 import { useQuery } from '@tanstack/react-query';
 import { fetchHotels } from '../api/hotels';
@@ -56,7 +57,8 @@ export const useHotelsByFilter = () => {
         queryFn: fetchHotels,
         staleTime: DEFAULT_CACHE_TIME,
         select: (hotels) => {
-            return hotels.filter((hotel) => {
+            // First apply filters
+            let filteredHotels = hotels.filter((hotel) => {
                 // Retrieve Filters
                 const { priceRange, starRating, userRating, selectedCity, searchQuery } = filters;
 
@@ -75,6 +77,11 @@ export const useHotelsByFilter = () => {
                     return false;
                 }
 
+                // Selected city check
+                if (selectedCity && hotel.location.city.toLowerCase() !== selectedCity.toLowerCase()) {
+                    return false;
+                }
+
                 // Search query check (only if there's a query)
                 if (searchQuery) {
                     const searchLower = searchQuery.toLowerCase();
@@ -87,6 +94,41 @@ export const useHotelsByFilter = () => {
 
                 return true;
             });
+
+            // Then apply sorting
+            const { sortOption } = filters;
+
+            switch (sortOption) {
+                case SortOption.PRICE_LOW_TO_HIGH:
+                    return [...filteredHotels].sort((a, b) => a.price - b.price);
+
+                case SortOption.PRICE_HIGH_TO_LOW:
+                    return [...filteredHotels].sort((a, b) => b.price - a.price);
+
+                case SortOption.STARS_LOW_TO_HIGH:
+                    return [...filteredHotels].sort((a, b) => a.stars - b.stars);
+
+                case SortOption.STARS_HIGH_TO_LOW:
+                    return [...filteredHotels].sort((a, b) => b.stars - a.stars);
+
+                case SortOption.RECOMMENDED:
+                default:
+                    // For recommended, we'll sort by a combination of rating and price
+                    return [...filteredHotels].sort((a, b) => {
+                        // Create a score based on stars and normalized price
+                        const getScore = (hotel: Hotel) => {
+                            const maxPrice = Math.max(...filteredHotels.map((h) => h.price));
+                            const normalizedPrice = 1 - hotel.price / maxPrice; // Higher score for lower price
+                            const starScore = hotel.stars / 5; // Normalize stars to 0-1
+                            const userRatingScore = hotel.userRating || 0; // Already 0-1
+
+                            // Weight factors (adjust these based on your preference)
+                            return starScore * 0.4 + normalizedPrice * 0.3 + userRatingScore * 0.3;
+                        };
+
+                        return getScore(b) - getScore(a); // Higher score first
+                    });
+            }
         },
     });
 };
