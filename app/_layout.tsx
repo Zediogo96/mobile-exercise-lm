@@ -1,7 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack, useNavigation } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
@@ -53,7 +53,7 @@ const queryClient = new QueryClient();
 
 function RootLayoutNav() {
     const colorScheme = useColorScheme();
-    const navigation = useNavigation();
+    const router = useRouter();
 
     const { searchQuery, setSearchQuery } = useFilterStore();
 
@@ -61,7 +61,14 @@ function RootLayoutNav() {
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <GestureHandlerRootView>
                 <QueryClientProvider client={queryClient}>
-                    <Stack screenOptions={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal' }}>
+                    <Stack
+                        screenOptions={{
+                            headerShown: false,
+                            gestureEnabled: true,
+                            headerBackTitle: '',
+                            gestureDirection: 'horizontal',
+                        }}
+                    >
                         <Stack.Screen name="(tabs)" />
                         <Stack.Screen
                             name="search-modal/index"
@@ -90,19 +97,18 @@ function RootLayoutNav() {
                                 headerTransparent: true,
                                 headerBackButtonMenuEnabled: true,
                                 headerTitle: 'Hotels',
-
                                 headerShadowVisible: false,
-
                                 headerBackVisible: true,
-                                headerTintColor: 'black',
 
+                                headerTintColor: 'black',
+                                headerBackTitle: 'b',
                                 headerBackTitleStyle: {
-                                    fontSize: 0,
+                                    fontSize: 1,
                                 },
+
                                 headerSearchBarOptions: {
                                     placeholder: 'Search for hotels',
-                                    hideWhenScrolling: true,
-
+                                    hideWhenScrolling: false, // Changed this to false
                                     onChangeText: (text) => {
                                         setSearchQuery(text.nativeEvent.text);
                                     },

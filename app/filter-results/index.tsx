@@ -1,4 +1,5 @@
 import HotelGallery from '@/components/filter-results/HotelImageGallery';
+import HotelListSkeleton from '@/components/filter-results/HotelListSkeleton';
 import RatingStars from '@/components/hotel-details/RatingStars';
 import BookmarkButton from '@/components/UI/BookmarkButton';
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
@@ -8,8 +9,8 @@ import { Hotel } from '@/types/hotel.types';
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { LinearTransition } from 'react-native-reanimated';
+import { Dimensions, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 
 const COLORS = {
     background: '#F5F5F5',
@@ -49,9 +50,11 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
     };
 
     return (
-        <AnimatedTouchableOpacity style={styles.hotelCard} onPress={handlePress}>
+        <Animated.View style={styles.hotelCard} key={hotel.id} entering={FadeIn}>
             <View style={styles.carouselContainer}>
-                <HotelGallery gallery={hotel.gallery} hotelId={hotel.id.toString()} />
+                <Pressable onPress={handlePress} style={{ flex: 1 }}>
+                    <HotelGallery gallery={hotel.gallery} hotelId={hotel.id.toString()} />
+                </Pressable>
                 <View style={{ position: 'absolute', top: 10, right: 10 }}>
                     <BookmarkButton bookmarked={bookmarked} handleBookmarkPress={handleBookmarkPress} />
                 </View>
@@ -76,7 +79,7 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
                     </Text>
                 </View>
             </View>
-        </AnimatedTouchableOpacity>
+        </Animated.View>
     );
 };
 
@@ -94,7 +97,7 @@ const HotelList = () => {
         });
     }, [hotels]);
 
-    if (isLoading) return <Text style={styles.statusText}>Loading...</Text>;
+    if (isLoading) return <HotelListSkeleton />;
     if (error) return <Text style={styles.statusText}>Error loading hotels</Text>;
     if (!hotels?.length) return <Text style={styles.statusText}>No hotels found matching your criteria</Text>;
 
