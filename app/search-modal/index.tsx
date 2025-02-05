@@ -11,8 +11,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function SearchScreen() {
     const insets = useSafeAreaInsets();
-    const { searchQuery, setSearchQuery } = useFilterStore();
+
     const { data: filteredHotels } = useQuicksearchHotels();
+    const { searchQuery, setSearchQuery } = useFilterStore();
     const router = useRouter();
 
     const handleHotelPress = (hotelId: string) => {
@@ -37,7 +38,11 @@ export default function SearchScreen() {
     return (
         <View style={styles.container}>
             <BlurView intensity={35} tint="dark" style={[styles.blurContainer, { paddingTop: insets.top }]}>
-                <SearchHeader searchQuery={searchQuery} onSearchChange={setSearchQuery} topInset={insets.top} />
+                <SearchHeader
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    hotelsCount={filteredHotels?.length || 0}
+                />
 
                 <ScrollView
                     keyboardDismissMode="on-drag"

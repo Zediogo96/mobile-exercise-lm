@@ -40,11 +40,11 @@ export const HotelSmallerCard = ({ hotel, index, onPress }: HotelCardProps) => {
 };
 const styles = StyleSheet.create({
     centeredRow: {
-        flex: 1,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginRight: 50,
     },
     card: {
         flex: 1,
@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     address: {
         fontSize: 12,
         color: '#666',
-        width: '80%',
     },
     title: {
         fontSize: 15,

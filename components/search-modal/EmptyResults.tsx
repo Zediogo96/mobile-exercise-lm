@@ -1,22 +1,27 @@
-import LottieView from 'lottie-react-native';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-
-import anim from '@/assets/animations/empty-hotels-result.json';
+import { StyleSheet } from 'react-native';
+import Animated, { FadeInLeft } from 'react-native-reanimated';
 
 const EmptyResults = () => {
     return (
-        <View>
-            <LottieView source={anim} autoPlay loop style={styles.animation} />
-        </View>
+        <Animated.Text entering={FadeInLeft} style={styles.text}>
+            No hotels found.
+        </Animated.Text>
     );
 };
 
 export default EmptyResults;
 
 const styles = StyleSheet.create({
-    animation: {
-        width: 200,
-        height: 200,
+    text: {
+        fontSize: 16,
+        color: 'white',
+        marginHorizontal: 20,
+        fontWeight: 'bold',
+
+        // text shadow
+        textShadowColor: 'rgba(0, 0, 0, 0.5)',
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 2,
     },
 });
