@@ -5,8 +5,6 @@ import TopSection from '@/components/home/TopSection';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-
-
 export default function TabOneScreen() {
     return (
         <SafeAreaView style={styles.container}>

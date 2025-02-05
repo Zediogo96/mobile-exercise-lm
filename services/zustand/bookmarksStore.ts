@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 type BookmarkStore = {
-    bookmarks: Record<string, any>; // Key-value store (hotel ID -> hotel data)
+    bookmarks: Record<string, Hotel>; // Key-value store (hotel ID -> hotel data)
     addBookmark: (hotel: any) => void;
     removeBookmark: (id: string) => void;
     isBookmarked: (id: string) => boolean;

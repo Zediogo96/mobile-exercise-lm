@@ -6,15 +6,14 @@ import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 export default function TabTwoScreen() {
     const { bookmarks } = useBookmarkStore();
 
-    console.log('🚀 ~ TabTwoScreen ~ bookmarks', bookmarks);
-
     return (
         <View style={styles.container}>
             <FlatList
+                style={{ width: '100%', backgroundColor: 'transparent' }}
                 data={Object.values(bookmarks)}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item, index) => `${item.id}-${index}`}
                 renderItem={({ item }) => (
-                    <View key={item.id}>
+                    <View>
                         <Text>{item.name}</Text>
                     </View>
                 )}
@@ -26,8 +25,6 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     title: {
         fontSize: 20,
