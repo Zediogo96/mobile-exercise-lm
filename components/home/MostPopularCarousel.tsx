@@ -14,7 +14,7 @@ import DefaultImage1 from '@/assets/images/hotels/default-hotel-1.jpg';
 import DefaultImage2 from '@/assets/images/hotels/default-hotel-2.jpg';
 import DefaultImage3 from '@/assets/images/hotels/default-hotel-3.jpg';
 import FastImageWrapper from '@/components/Helper/FastImageWrapper';
-import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInLeft } from 'react-native-reanimated';
 
 const AnimatedFastImageWrapper = Animated.createAnimatedComponent(FastImageWrapper);
 
@@ -46,7 +46,7 @@ const MostPopularCarousel = () => {
 
     return (
         <View style={{ marginHorizontal: 20 }}>
-            <Animated.Text entering={FadeInDown.delay(250)} style={s.title}>
+            <Animated.Text entering={FadeInLeft.delay(250)} style={s.title}>
                 Most Popular
             </Animated.Text>
             <Carousel
@@ -96,7 +96,7 @@ const MostPopularCarouselItem = (item: Hotel) => {
                 params: { id: item.id },
             }}
         >
-            <Animated.View entering={FadeIn.delay(500)} style={s.card}>
+            <Animated.View entering={FadeIn.duration(500)} style={s.card}>
                 <AnimatedFastImageWrapper
                     sharedTransitionTag="hotel-image"
                     onLoad={handleImageLoad}
