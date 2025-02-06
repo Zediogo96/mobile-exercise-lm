@@ -14,6 +14,7 @@ import DefaultImage1 from '@/assets/images/hotels/default-hotel-1.jpg';
 import DefaultImage2 from '@/assets/images/hotels/default-hotel-2.jpg';
 import DefaultImage3 from '@/assets/images/hotels/default-hotel-3.jpg';
 import FastImageWrapper from '@/components/Helper/FastImageWrapper';
+import RatingStars from '@/components/hotel-details/RatingStars';
 import Animated, { FadeIn, FadeInLeft } from 'react-native-reanimated';
 
 const AnimatedFastImageWrapper = Animated.createAnimatedComponent(FastImageWrapper);
@@ -105,6 +106,10 @@ const MostPopularCarouselItem = (item: Hotel) => {
                     source={imageSource}
                     resizeMode="cover"
                 />
+                <BlurView intensity={40} tint="dark" style={s.topRightContainer}>
+                    <RatingStars count={item.stars} fontStyle={{ color: 'white', fontSize: 14 }} />
+                </BlurView>
+
                 <BlurView intensity={65} tint="light" style={s.blurInformationContainer}>
                     <View style={{ flex: 1, rowGap: 3 }}>
                         <Text style={[s.text, s.textMain]} numberOfLines={1}>
@@ -116,12 +121,6 @@ const MostPopularCarouselItem = (item: Hotel) => {
                                 {item.location.city}
                             </Text>
                         </View>
-                    </View>
-
-                    <View style={s.viewDealButton}>
-                        <Text style={[s.text, s.textButton]}>
-                            {currencySymbol} {item.price} / night
-                        </Text>
                     </View>
                 </BlurView>
             </Animated.View>
@@ -161,21 +160,24 @@ const s = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: '40%',
+        height: '25%',
         margin: 8,
         overflow: 'hidden',
         padding: 8,
         borderRadius: 4,
         borderCurve: 'continuous',
     },
-    viewDealButton: {
-        backgroundColor: '#000',
-        padding: 8,
+    topRightContainer: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        padding: 5,
         borderRadius: 4,
+        overflow: 'hidden',
     },
     text: {
         color: '#fff',
-        fontSize: 11, // Reduced font size
+        fontSize: 11,
     },
     textMain: {
         fontWeight: 'bold',

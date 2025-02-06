@@ -10,13 +10,13 @@ const NUMBER_OF_SKELETONS = 3;
 const GetInspiredSkeleton = () => {
     return (
         <>
-            <SkeletonPlaceholder highlightColor="#f0f0f0">
+            <SkeletonPlaceholder highlightColor="#d6d6d6" speed={1000}>
                 <View style={styles.title}>
                     <View style={{ width: 150, height: 25, marginBottom: 10 }} />
                 </View>
             </SkeletonPlaceholder>
 
-            <SkeletonPlaceholder>
+            <SkeletonPlaceholder speed={1000}>
                 <View style={styles.container}>
                     {[...Array(NUMBER_OF_SKELETONS)].map((_, index) => (
                         <View
