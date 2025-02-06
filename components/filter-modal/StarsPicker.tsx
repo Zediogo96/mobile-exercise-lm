@@ -1,5 +1,5 @@
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
-import { FontAwesome } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -36,7 +36,7 @@ const StarsPicker = () => {
         for (let i = 1; i <= 5; i++) {
             if (i <= count) {
                 // Filled star in yellow
-                stars.push(<FontAwesome key={i} color="#FFD700" size={20} name="star" />);
+                stars.push(<Entypo key={i} color="#FFD700" size={16} name="star" />);
             }
         }
         return stars;
@@ -70,12 +70,14 @@ export default StarsPicker;
 const styles = StyleSheet.create({
     container: {
         marginVertical: 20,
-        width: '100%',
+
+        width: '95%',
+        alignSelf: 'center',
         padding: 30,
         backgroundColor: '#fff',
         borderRadius: 10,
         // Subtle shadows for elevation
-        shadowColor: '#000',
+        shadowColor: '#666',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.05,
         shadowRadius: 2.84,
@@ -99,18 +101,26 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
     checkbox: {
-        width: 24,
-        height: 24,
-        borderWidth: 1.5,
-        borderColor: '#666',
+        width: 20,
+        height: 20,
+
         borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center',
+
+        backgroundColor: '#fff',
+
+        // shadow
+        shadowColor: '#000',
+        shadowOffset: { width: 0.5, height: 0.5 },
+        shadowOpacity: 0.5,
+        shadowRadius: 1.5,
+        elevation: 5,
     },
     checkboxInner: {
         width: 14,
         height: 14,
-        borderRadius: 2,
-        backgroundColor: 'black',
+        borderRadius: 4,
+        backgroundColor: '#aaa',
     },
 });

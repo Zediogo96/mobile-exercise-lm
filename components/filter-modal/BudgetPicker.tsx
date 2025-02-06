@@ -16,7 +16,7 @@ const BudgetPicker = () => {
         () => ({
             transform: [
                 {
-                    scale: withSequence(withTiming(1.2, { duration: 200 }), withTiming(1, { duration: 200 })),
+                    scale: withSequence(withTiming(1.1, { duration: 200 }), withTiming(1, { duration: 200 })),
                 },
             ],
         }),
@@ -27,7 +27,7 @@ const BudgetPicker = () => {
         () => ({
             transform: [
                 {
-                    scale: withSequence(withTiming(1.2, { duration: 200 }), withTiming(1, { duration: 200 })),
+                    scale: withSequence(withTiming(1.1, { duration: 200 }), withTiming(1, { duration: 200 })),
                 },
             ],
         }),
@@ -40,7 +40,7 @@ const BudgetPicker = () => {
             <View style={styles.cardContainer}>
                 <View style={styles.sliderContainer}>
                     <RangeSlider
-                        sliderWidth={300}
+                        sliderWidth={265}
                         min={MIN_DEFAULT}
                         max={MAX_DEFAULT}
                         step={25}
@@ -71,7 +71,9 @@ export default BudgetPicker;
 
 const styles = StyleSheet.create({
     cardContainer: {
-        height: 250,
+        height: 200,
+        width: '95%',
+        alignSelf: 'center',
 
         backgroundColor: 'white',
         borderRadius: 10,
@@ -85,14 +87,29 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: { color: '#666', fontSize: 18, marginBottom: 20, fontWeight: 'bold' },
-    sliderContainer: { flex: 1, marginTop: 40 },
+    sliderContainer: { flex: 1, marginTop: 20 },
 
     valuesContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 30 },
-    bottomCardContainer: { flex: 1, backgroundColor: '#ECECEC', padding: 10, borderRadius: 5, maxWidth: '40%', gap: 5 },
+    bottomCardContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+        padding: 10,
+        borderRadius: 5,
+        maxWidth: '40%',
+        gap: 5,
 
-    smallLabel: { fontSize: 12, color: '#747474' },
+        // shadow
+        shadowColor: '#000',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 1.5,
+        elevation: 5,
+    },
+
+    smallLabel: { fontSize: 12, color: 'black', letterSpacing: 1 },
     valueText: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: '#999',
     },
 });

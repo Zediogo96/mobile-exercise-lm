@@ -30,19 +30,7 @@ export default function FilterModal() {
                 <View style={{ height: insets.bottom + 50 }} />
             </ScrollView>
             {/* View results button */}
-            <BlurView
-                intensity={20}
-                tint="light"
-                style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 100,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
+            <BlurView intensity={20} tint="light" style={styles.bottomContainer}>
                 <TouchableOpacity style={styles.button} onPress={onViewResults}>
                     <Text style={styles.buttonText}>View Results</Text>
                 </TouchableOpacity>
@@ -52,6 +40,15 @@ export default function FilterModal() {
 }
 
 const styles = StyleSheet.create({
+    bottomContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     container: {
         flex: 1,
     },

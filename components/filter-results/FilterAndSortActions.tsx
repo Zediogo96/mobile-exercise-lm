@@ -7,9 +7,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type FilterAndSortActionsProps = {
     handleSortPress: () => void;
+    disabled?: boolean;
 };
 
-const FilterAndSortActions = ({ handleSortPress }: FilterAndSortActionsProps) => {
+const FilterAndSortActions = ({ handleSortPress, disabled }: FilterAndSortActionsProps) => {
     const router = useRouter();
     const { hasFiltersApplied, hasSortApplied } = useFilterStore();
 
@@ -30,7 +31,7 @@ const FilterAndSortActions = ({ handleSortPress }: FilterAndSortActionsProps) =>
 
                 <View style={styles.separator} />
 
-                <TouchableOpacity style={styles.button} onPress={handleSortPress}>
+                <TouchableOpacity style={styles.button} onPress={handleSortPress} disabled={disabled}>
                     <Text style={styles.buttonText}>Sort</Text>
                     <View>
                         <MaterialIcons name="sort" size={24} color="white" />

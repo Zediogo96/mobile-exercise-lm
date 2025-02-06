@@ -17,6 +17,8 @@ import GetInspiredRelax from '@/assets/images/get-inspired/get-inspired-relax.jp
 import GetInspiredRustic from '@/assets/images/get-inspired/get-inspired-rustic.jpg';
 import { BlurView } from 'expo-blur';
 
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const CARD_WIDTH = SCREEN_WIDTH * 0.4;
 const CARD_HEIGHT = 200;
@@ -49,9 +51,7 @@ const GetInspiredSection = () => {
             <Animated.Text entering={FadeInLeft.delay(250)} style={styles.title}>
                 Get Inspired
             </Animated.Text>
-            <Animated.Text entering={FadeInLeft.delay(350)} style={styles.subtitle}>
-                Discover the best places to travel this summer
-            </Animated.Text>
+            <Animated.Text style={styles.subtitle}>Discover the best places to travel this summer</Animated.Text>
             <View style={styles.container}>
                 <Animated.FlatList
                     ref={flatListRef}
@@ -72,8 +72,6 @@ const GetInspiredSection = () => {
 };
 
 const CarouselItem = ({ item, index, scrollX }: { item: any; index: number; scrollX: any }) => {
-    console.log('Rendering item:', item); // Debugging line
-
     const animatedStyle = useAnimatedStyle(() => {
         const inputRange = [
             (index - 1) * (CARD_WIDTH + MARGIN_CARDS),
@@ -108,8 +106,12 @@ const CarouselItem = ({ item, index, scrollX }: { item: any; index: number; scro
     });
 
     return (
-        <TouchableOpacity activeOpacity={0.9} style={styles.cardContainer}>
-            <Animated.View entering={FadeIn.duration(250).delay(250)} style={[styles.card, animatedStyle]}>
+        <AnimatedTouchableOpacity
+            activeOpacity={0.9}
+            style={styles.cardContainer}
+            entering={FadeIn.duration(250).delay(250)}
+        >
+            <Animated.View style={[styles.card, animatedStyle]}>
                 <Animated.Image source={item.source} style={[styles.image, imageAnimatedStyle]} resizeMode="cover" />
                 <BlurView
                     intensity={10}
@@ -120,7 +122,7 @@ const CarouselItem = ({ item, index, scrollX }: { item: any; index: number; scro
                     </Animated.Text>
                 </BlurView>
             </Animated.View>
-        </TouchableOpacity>
+        </AnimatedTouchableOpacity>
     );
 };
 

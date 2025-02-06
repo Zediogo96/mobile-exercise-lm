@@ -106,7 +106,18 @@ const MostPopularCarouselItem = (item: Hotel) => {
                     source={imageSource}
                     resizeMode="cover"
                 />
-                <BlurView intensity={40} tint="dark" style={s.topRightContainer}>
+                <BlurView
+                    intensity={40}
+                    tint="dark"
+                    style={{
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                        padding: 5,
+                        borderRadius: 4,
+                        overflow: 'hidden',
+                    }}
+                >
                     <RatingStars count={item.stars} fontStyle={{ color: 'white', fontSize: 14 }} />
                 </BlurView>
 
@@ -167,13 +178,10 @@ const s = StyleSheet.create({
         borderRadius: 4,
         borderCurve: 'continuous',
     },
-    topRightContainer: {
-        position: 'absolute',
-        top: 10,
-        right: 10,
-        padding: 5,
+    viewDealButton: {
+        backgroundColor: '#000',
+        padding: 8,
         borderRadius: 4,
-        overflow: 'hidden',
     },
     text: {
         color: '#fff',

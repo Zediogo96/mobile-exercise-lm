@@ -1,13 +1,12 @@
 import FilterAndSortActions from '@/components/filter-results/FilterAndSortActions';
-import HotelCard from '@/components/filter-results/HotelCard';
 import HotelListSkeleton from '@/components/filter-results/HotelListSkeleton';
+import ResultsList from '@/components/filter-results/ResultsList';
 import SortOptions from '@/components/filter-results/SortOptions';
 import { useHotelsByFilter } from '@/services/react-query/hotels';
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Animated, { LinearTransition } from 'react-native-reanimated';
 
 const COLORS = {
     background: '#F5F5F5',
@@ -53,34 +52,25 @@ const HotelList = () => {
 
     if (isLoading) return <HotelListSkeleton />;
     if (error) return <Text style={styles.statusText}>Error loading hotels</Text>;
-    if (!hotels?.length) return <Text style={styles.statusText}>No hotels found matching your criteria</Text>;
+
+    const hasResults = hotels && hotels.length > 0;
 
     return (
-        <BottomSheetModalProvider>
-            <View style={styles.container}>
-                <Animated.FlatList
-                    contentInsetAdjustmentBehavior="automatic"
-                    contentContainerStyle={styles.listContainer}
-                    itemLayoutAnimation={LinearTransition}
-                    data={hotels}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => <HotelCard hotel={item} />}
-                />
-                <FilterAndSortActions handleSortPress={openBottomSheet} />
+        <View style={styles.container}>
+            <ResultsList hotels={hotels} />
+            <FilterAndSortActions handleSortPress={openBottomSheet} disabled={!hasResults} />
 
-                <BottomSheetModal
-                    ref={bottomSheetModalRef}
-                    index={0}
-                    snapPoints={snapPoints}
-                    enablePanDownToClose
-                    backdropComponent={renderBackdrop}
-                    backgroundStyle={styles.bottomSheetContainer}
-                >
-                    <SortOptions onClose={handleSheetClose} />
-                </BottomSheetModal>
-            </View>
-        </BottomSheetModalProvider>
+            <BottomSheetModal
+                ref={bottomSheetModalRef}
+                index={0}
+                snapPoints={snapPoints}
+                enablePanDownToClose
+                backdropComponent={renderBackdrop}
+                backgroundStyle={styles.bottomSheetContainer}
+            >
+                <SortOptions onClose={handleSheetClose} />
+            </BottomSheetModal>
+        </View>
     );
 };
 
@@ -107,10 +97,7 @@ const styles = StyleSheet.create({
     optionText: {
         fontSize: 16,
     },
-    listContainer: {
-        alignItems: 'center',
-        paddingVertical: 16,
-    },
+
     statusText: {
         textAlign: 'center',
         marginTop: 20,

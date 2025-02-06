@@ -7,7 +7,7 @@ interface RatingOption {
     score: string;
     label: string;
     backgroundColor: string;
-    // Use a numeric value if you need to compare further
+
     value: number;
 }
 
@@ -15,25 +15,25 @@ const ratingOptions: RatingOption[] = [
     {
         score: '90+',
         label: 'Excellent',
-        backgroundColor: '#28a745', // Vibrant green
+        backgroundColor: 'rgba(40, 167, 69, 0.8)', // Vibrant green with 80% opacity
         value: 90,
     },
     {
         score: '81+',
         label: 'Very Good',
-        backgroundColor: '#4caf50', // Less vibrant green
+        backgroundColor: 'rgba(76, 175, 80, 0.8)', // Less vibrant green with 80% opacity
         value: 81,
     },
     {
         score: '75+',
         label: 'Good',
-        backgroundColor: '#cddc39', // Greenish yellow
+        backgroundColor: 'rgba(205, 220, 57, 0.8)', // Greenish yellow with 80% opacity
         value: 75,
     },
     {
         score: '60+',
         label: 'Pleasant',
-        backgroundColor: '#ffeb3b', // Warm yellow
+        backgroundColor: 'rgba(255, 235, 59, 0.8)', // Warm yellow with 80% opacity
         value: 60,
     },
 ];
@@ -101,12 +101,15 @@ export default UserRating;
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
+        marginVertical: 20,
+
+        width: '95%',
+        alignSelf: 'center',
         padding: 30,
         backgroundColor: '#fff',
         borderRadius: 10,
-        // Subtle shadow for elevation
-        shadowColor: '#000',
+        // Subtle shadows for elevation
+        shadowColor: '#666',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.05,
         shadowRadius: 2.84,
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 18,
-        marginBottom: 20,
+
         fontWeight: 'bold',
         color: '#666',
     },
@@ -135,31 +138,45 @@ const styles = StyleSheet.create({
 
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12,
+        marginRight: 20,
+
+        // shadow
+        shadowColor: '#000',
+        shadowOffset: { width: 0.5, height: 0.5 },
+        shadowOpacity: 0.5,
+        shadowRadius: 1.5,
+        elevation: 5,
     },
     scoreText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 14,
     },
     ratingLabel: {
-        fontSize: 16,
         color: 'gray',
         fontWeight: '600',
     },
     checkbox: {
-        width: 24,
-        height: 24,
-        borderWidth: 1.5,
-        borderColor: '#666',
+        width: 20,
+        height: 20,
+
         borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center',
+
+        backgroundColor: '#fff',
+
+        // shadow
+        shadowColor: '#000',
+        shadowOffset: { width: 0.5, height: 0.5 },
+        shadowOpacity: 0.5,
+        shadowRadius: 1.5,
+        elevation: 5,
     },
     checkboxInner: {
         width: 14,
         height: 14,
-        borderRadius: 2,
-        backgroundColor: 'black',
+        borderRadius: 4,
+        backgroundColor: '#aaa',
     },
 });

@@ -6,6 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type SortOptionsProps = {
     onClose?: () => void;
+    disabled?: boolean;
 };
 
 const SortOptions = ({ onClose }: SortOptionsProps) => {

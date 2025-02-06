@@ -48,8 +48,8 @@ const RangeSlider = ({
 
     useEffect(() => {
         // Update slider positions when priceRange changes externally
-        positionLeftThumb.value = convertPriceToPosition(priceRange.min);
-        positionRightThumb.value = convertPriceToPosition(priceRange.max);
+        positionLeftThumb.value = withTiming(convertPriceToPosition(priceRange.min));
+        positionRightThumb.value = withTiming(convertPriceToPosition(priceRange.max));
     }, [priceRange.min, priceRange.max]);
 
     // Using new Gesture API
@@ -175,12 +175,14 @@ const styles = StyleSheet.create({
     },
     sliderBack: {
         height: 8,
-        backgroundColor: 'lightgray',
+
+        borderWidth: 0.3,
+        borderColor: '#666',
         borderRadius: 20,
     },
     sliderFront: {
         height: 8,
-        backgroundColor: '#8F8F8F',
+        backgroundColor: '#999',
         borderRadius: 20,
         position: 'absolute',
     },
@@ -192,7 +194,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
 
         borderRadius: 10,
-        // Subtle shadow for elevation
+
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,

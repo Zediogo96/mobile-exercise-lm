@@ -1,3 +1,4 @@
+import { useMostPopularHotels } from '@/services/react-query/hotels';
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -5,6 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const TopSection = () => {
     const router = useRouter();
+    const { isLoading } = useMostPopularHotels();
 
     const navigateToFilterModal = () => {
         router.push('/filter-modal');
@@ -18,12 +20,17 @@ const TopSection = () => {
         <View style={s.container}>
             <Text style={s.title}>Where would you like to go?</Text>
             <View style={s.row}>
-                <TouchableOpacity style={s.buttonContainer} onPress={navigateToSearchModal}>
+                <TouchableOpacity style={s.buttonContainer} onPress={navigateToSearchModal} disabled={isLoading}>
                     <FontAwesome style={s.searchIcon} name="search" size={16} color="#888" />
                     <Text style={s.searchInput}>Search for hotels, cities, or places</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={s.filterButton} onPress={navigateToFilterModal}>
+                <TouchableOpacity
+                    style={s.filterButton}
+                    onPress={navigateToFilterModal}
+                    disabled={isLoading}
+                    activeOpacity={0.8}
+                >
                     <FontAwesome name="filter" size={18} color="#fff" />
                 </TouchableOpacity>
             </View>
