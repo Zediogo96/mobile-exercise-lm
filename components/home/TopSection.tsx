@@ -19,12 +19,12 @@ const TopSection = () => {
             <Text style={s.title}>Where would you like to go?</Text>
             <View style={s.row}>
                 <TouchableOpacity style={s.buttonContainer} onPress={navigateToSearchModal}>
-                    <FontAwesome style={s.searchIcon} name="search" size={15} color="#666" />
+                    <FontAwesome style={s.searchIcon} name="search" size={16} color="#888" />
                     <Text style={s.searchInput}>Search for hotels, cities, or places</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={s.filterButton} onPress={navigateToFilterModal}>
-                    <FontAwesome name="filter" size={20} color="#fff" />
+                    <FontAwesome name="filter" size={18} color="#fff" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -34,45 +34,61 @@ const TopSection = () => {
 export default TopSection;
 
 const s = StyleSheet.create({
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        gap: 16,
-    },
     container: {
         marginHorizontal: 20,
     },
     title: {
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: 'bold',
-        marginVertical: 20,
+        marginBottom: 20,
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+        marginVertical: 10,
     },
     buttonContainer: {
         flex: 1,
-        width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#F8F9FA',
-        padding: 16,
-        borderRadius: 12,
-        // Shadow
+        paddingVertical: 14,
+        paddingHorizontal: 16,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 1.84,
+        shadowOpacity: 0.15,
+        shadowRadius: 3.84,
+        elevation: 2, // Android shadow
     },
     searchIcon: {
-        marginRight: 10,
+        marginRight: 12,
     },
     searchInput: {
-        color: '#666',
+        color: '#888',
+        fontSize: 14,
     },
     filterButton: {
         backgroundColor: '#1C1C1C',
-        padding: 16,
-        borderRadius: 12,
+        padding: 14,
+        borderRadius: 14,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 48, // Makes it circular
+        height: 48,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 3.84,
+        elevation: 3, // Android shadow
     },
 });

@@ -21,7 +21,7 @@ const applyQuickFilters = (hotels: Hotel[], searchQuery: string) => {
 export const useMostPopularHotels = () => {
     return useQuery({
         queryKey: ['hotels', 'hottest'],
-        queryFn: fetchHotels,
+        queryFn: () => fetchHotels({ shouldFakeLoadingTime: true, fakeLoadingTime: 5000 }),
         staleTime: DEFAULT_CACHE_TIME,
         select: (hotels) => hotels.sort((a, b) => b.userRating - a.userRating).slice(0, 5),
     });
@@ -31,7 +31,7 @@ export const useMostPopularHotels = () => {
 export const useHotelById = (id: string) => {
     return useQuery({
         queryKey: ['hotels', id],
-        queryFn: fetchHotels,
+        queryFn: () => fetchHotels(),
         staleTime: DEFAULT_CACHE_TIME,
         select: (hotels) => hotels.find((hotel) => hotel.id.toString() === id),
     });
@@ -40,7 +40,7 @@ export const useHotelById = (id: string) => {
 export const useQuicksearchHotels = () => {
     return useQuery({
         queryKey: ['hotels'],
-        queryFn: fetchHotels,
+        queryFn: () => fetchHotels(),
         staleTime: DEFAULT_CACHE_TIME,
         select: (hotels) => {
             const filter = useFilterStore.getState();
@@ -54,7 +54,7 @@ export const useHotelsByFilter = () => {
 
     return useQuery({
         queryKey: ['hotels', 'search', filters],
-        queryFn: fetchHotels,
+        queryFn: () => fetchHotels({ shouldFakeLoadingTime: true, fakeLoadingTime: 1000 }),
         staleTime: DEFAULT_CACHE_TIME,
         select: (hotels) => {
             // First apply filters
