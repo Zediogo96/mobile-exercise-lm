@@ -4,10 +4,12 @@ import CheckInOutDetails from '@/components/hotel-details/CheckInOutDetails';
 import ContactsSection from '@/components/hotel-details/Contacts';
 import Description from '@/components/hotel-details/Description';
 import ImageCounter from '@/components/hotel-details/ImageCount';
+import LocationMap from '@/components/hotel-details/LocationMap';
 import LocationText from '@/components/hotel-details/LocationText';
 import PriceAndAction from '@/components/hotel-details/Price&Action';
 import RatingStars from '@/components/hotel-details/RatingStars';
 import BookmarkButton from '@/components/UI/BookmarkButton';
+
 import { useHotelById } from '@/services/react-query/hotels';
 import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,7 +17,6 @@ import { BlurView } from 'expo-blur';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
@@ -63,7 +64,7 @@ const Details = () => {
     if (!hotel) return null;
 
     // Determine if there's only one image
-    const showListAndImgCounter = hotel.gallery.length > 1;
+    const showListAndImageCounter = hotel.gallery.length > 1;
 
     return (
         <>
@@ -75,7 +76,7 @@ const Details = () => {
                     useNativeDriver: true,
                 })}
             >
-                {showListAndImgCounter ? (
+                {showListAndImageCounter ? (
                     <Animated.FlatList
                         data={hotel.gallery}
                         horizontal
@@ -84,6 +85,7 @@ const Details = () => {
                         snapToInterval={width}
                         decelerationRate="fast"
                         bounces={false}
+                        scrollEventThrottle={16}
                         style={{ transform: [{ scale: headerScale }, { translateY: headerTranslateY }] }}
                         onScroll={(event) => {
                             const totalWidth = event.nativeEvent.layoutMeasurement.width;
@@ -123,7 +125,7 @@ const Details = () => {
                     <BookmarkButton bookmarked={bookmarked} handleBookmarkPress={handleBookmarkPress} />
                 </View>
 
-                {showListAndImgCounter && (
+                {showListAndImageCounter && (
                     <ImageCounter currentIndex={currentIndex} totalImages={hotel.gallery.length} />
                 )}
 
@@ -146,30 +148,7 @@ const Details = () => {
 
                     <ContactsSection contact={hotel.contact} />
 
-                    <View style={s.mapContainer}>
-                        <MapView
-                            style={s.map}
-                            initialRegion={{
-                                latitude: hotel.location?.latitude || 0,
-                                longitude: hotel.location?.longitude || 0,
-                                latitudeDelta: 0.009,
-                                longitudeDelta: 0.009,
-                            }}
-                            scrollEnabled={false}
-                        >
-                            {hotel.location && (
-                                <Marker
-                                    coordinate={{
-                                        latitude: hotel.location.latitude,
-                                        longitude: hotel.location.longitude,
-                                    }}
-                                    title={hotel.name}
-                                    subtitleVisibility="visible"
-                                    description={hotel.name}
-                                />
-                            )}
-                        </MapView>
-                    </View>
+                    <LocationMap hotel={hotel} />
                 </View>
 
                 <View style={s.bottomSpacer} />
@@ -207,14 +186,7 @@ const s = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
     },
-    mapContainer: {
-        height: 250,
-        marginTop: 20,
-    },
-    map: {
-        flex: 1,
-        borderRadius: 10,
-    },
+
     floatingContainer: {
         position: 'absolute',
         left: 20,

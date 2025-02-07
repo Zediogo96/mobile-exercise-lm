@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "lastquarter.com",
-    "slug": "lastquarter.com",
+    "name": "lastminute.com",
+    "slug": "lastminute.com",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -15,14 +15,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.lastquarter.com"
+      "bundleIdentifier": "com.anonymous.lastminute.com"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.lastquarter.com"
+      "package": "com.anonymous.lastminute.com"
     },
     "web": {
       "bundler": "metro",

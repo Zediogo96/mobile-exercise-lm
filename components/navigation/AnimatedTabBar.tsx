@@ -70,10 +70,8 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         borderRadius: 25,
         borderCurve: 'continuous',
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 10 },
-        shadowRadius: 10,
-        shadowOpacity: 0.1,
+
+        boxShadow: '0px 1px 2px 2px rgba(0, 0, 0, 0.15)',
     },
     tabbarItem: {
         flex: 1,

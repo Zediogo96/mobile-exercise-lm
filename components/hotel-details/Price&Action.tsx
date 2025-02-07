@@ -18,7 +18,7 @@ const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency, hotelId,
     return (
         <View style={styles.blurWrapper}>
             <BlurView
-                intensity={25}
+                intensity={100}
                 tint="light"
                 style={[styles.blurContainer, { paddingBottom: Math.max(bottomInset, 16) }]}
             >

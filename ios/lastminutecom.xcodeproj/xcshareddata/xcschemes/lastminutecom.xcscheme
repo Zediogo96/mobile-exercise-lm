@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "lastquartercom.app"
-               BlueprintName = "lastquartercom"
-               ReferencedContainer = "container:lastquartercom.xcodeproj">
+               BuildableName = "lastminutecom.app"
+               BlueprintName = "lastminutecom"
+               ReferencedContainer = "container:lastminutecom.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "lastquartercomTests.xctest"
-               BlueprintName = "lastquartercomTests"
-               ReferencedContainer = "container:lastquartercom.xcodeproj">
+               BuildableName = "lastminutecomTests.xctest"
+               BlueprintName = "lastminutecomTests"
+               ReferencedContainer = "container:lastminutecom.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "lastquartercom.app"
-            BlueprintName = "lastquartercom"
-            ReferencedContainer = "container:lastquartercom.xcodeproj">
+            BuildableName = "lastminutecom.app"
+            BlueprintName = "lastminutecom"
+            ReferencedContainer = "container:lastminutecom.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "lastquartercom.app"
-            BlueprintName = "lastquartercom"
-            ReferencedContainer = "container:lastquartercom.xcodeproj">
+            BuildableName = "lastminutecom.app"
+            BlueprintName = "lastminutecom"
+            ReferencedContainer = "container:lastminutecom.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

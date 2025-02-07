@@ -65,14 +65,8 @@ const s = StyleSheet.create({
         borderRadius: 14,
         borderWidth: 1,
         borderColor: '#E5E7EB',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.15,
-        shadowRadius: 3.84,
-        elevation: 2, // Android shadow
+
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.15)',
     },
     searchIcon: {
         marginRight: 12,

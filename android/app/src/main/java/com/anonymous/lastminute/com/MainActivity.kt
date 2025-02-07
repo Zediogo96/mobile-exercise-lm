@@ -1,4 +1,4 @@
-package com.anonymous.lastquarter.com
+package com.anonymous.lastminute.com
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

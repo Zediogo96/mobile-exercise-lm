@@ -36,7 +36,10 @@ const BudgetPicker = () => {
 
     return (
         <>
-            <Text style={styles.title}>Budget</Text>
+            <Text style={styles.title}>
+                Budget
+                <Text style={styles.subTitle}> (per night)</Text>
+            </Text>
             <View style={styles.cardContainer}>
                 <View style={styles.sliderContainer}>
                     <RangeSlider
@@ -87,6 +90,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: { color: '#666', fontSize: 18, marginBottom: 20, fontWeight: 'bold' },
+    subTitle: { color: '#666', fontSize: 16, fontWeight: 'normal' },
     sliderContainer: { flex: 1, marginTop: 20 },
 
     valuesContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 30 },

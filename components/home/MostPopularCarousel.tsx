@@ -13,6 +13,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 import DefaultImage1 from '@/assets/images/hotels/default-hotel-1.jpg';
 import DefaultImage2 from '@/assets/images/hotels/default-hotel-2.jpg';
 import DefaultImage3 from '@/assets/images/hotels/default-hotel-3.jpg';
+
 import FastImageWrapper from '@/components/Helper/FastImageWrapper';
 import RatingStars from '@/components/hotel-details/RatingStars';
 import Animated, { FadeIn, FadeInLeft } from 'react-native-reanimated';

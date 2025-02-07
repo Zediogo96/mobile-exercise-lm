@@ -12,7 +12,7 @@ import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { TouchableOpacity } from 'react-native';
+import { Platform, StatusBar, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export {
@@ -77,8 +77,16 @@ function RootLayoutNav() {
                             <Stack.Screen
                                 name="search-modal/index"
                                 options={{
-                                    presentation: 'transparentModal', // ✅ Makes modal background transparent
-                                    animation: 'fade', // ✅ Smooth transition
+                                    ...Platform.select({
+                                        ios: {
+                                            presentation: 'transparentModal', // ✅ Makes modal background transparent
+                                        },
+                                        android: {
+                                            presentation: 'modal', // ✅ Makes modal background transparent
+                                        },
+                                    }),
+
+                                    animation: 'fade_from_bottom', // ✅ Smooth transition
                                 }}
                             />
                             <Stack.Screen
@@ -87,7 +95,7 @@ function RootLayoutNav() {
                                     presentation: 'modal', // ✅ Makes modal background transparent
                                     animation: 'slide_from_bottom', // ✅ Smooth transition
                                     headerShown: true,
-                                    header: (props) => <FilterModalHeader title="Filter" />,
+                                    header: () => <FilterModalHeader title="Filter" />,
                                 }}
                             />
                             <Stack.Screen name="hotel-details/[id]/index" />
@@ -119,7 +127,7 @@ function RootLayoutNav() {
 
                                     headerSearchBarOptions: {
                                         placeholder: 'Search for hotels',
-                                        hideWhenScrolling: false, // Changed this to false
+                                        hideWhenScrolling: false,
                                         onChangeText: (text) => {
                                             setSearchQuery(text.nativeEvent.text);
                                         },
@@ -130,6 +138,7 @@ function RootLayoutNav() {
                                 }}
                             />
                         </Stack>
+                        <StatusBar translucent backgroundColor="transparent" />
                     </QueryClientProvider>
                 </BottomSheetModalProvider>
             </GestureHandlerRootView>

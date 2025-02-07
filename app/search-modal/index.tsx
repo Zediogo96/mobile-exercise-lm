@@ -1,4 +1,4 @@
-import EmptyResults from '@/components/search-modal/EmptyResults';
+import EmptyResults from '@/components/search-modal/empty-results';
 import { HotelSmallerCard } from '@/components/search-modal/HotelSmallerCard';
 import { SearchHeader } from '@/components/search-modal/SearchHeader';
 import { useQuicksearchHotels } from '@/services/react-query/hotels';

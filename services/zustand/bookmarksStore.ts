@@ -8,6 +8,7 @@ type BookmarkStore = {
     addBookmark: (hotel: any) => void;
     removeBookmark: (id: string) => void;
     isBookmarked: (id: string) => boolean;
+    clearBookmarks: () => void;
 };
 
 export const useBookmarkStore = create<BookmarkStore>()(
@@ -28,6 +29,7 @@ export const useBookmarkStore = create<BookmarkStore>()(
                 const bookmarks = get().bookmarks;
                 return !!bookmarks[id];
             },
+            clearBookmarks: () => set({ bookmarks: {} }),
         }),
         {
             name: 'bookmarks-storage', // Key in AsyncStorage

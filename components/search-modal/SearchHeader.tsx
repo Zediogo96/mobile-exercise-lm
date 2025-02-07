@@ -2,7 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons'; // Import the icon from Expo
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeIn, FadeInRight } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -26,12 +26,12 @@ export const SearchHeader = ({ searchQuery, setSearchQuery, hotelsCount }: Searc
 
     return (
         <>
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer, { ...Platform.select({ android: { paddingTop: 20 } }) }]}>
                 <AnimatedTextInput
                     entering={FadeIn.delay(250)}
                     value={searchQuery}
                     onChangeText={setSearchQuery}
-                    style={[styles.input, { marginTop: inset.top - 50 }]}
+                    style={styles.input}
                     placeholder="Search for hotels, cities, or places"
                 />
                 <AnimatedTouchableOpacity onPress={handlePress} entering={FadeIn.delay(500)}>
