@@ -1,24 +1,17 @@
 // ImageCounter.tsx
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface ImageCounterProps {
     currentIndex: number;
     totalImages: number;
 }
 
-const { height } = Dimensions.get('window');
-const IMAGE_HEIGHT = height * 0.35;
-
 const ImageCounter: React.FC<ImageCounterProps> = ({ currentIndex, totalImages }) => {
-    const insets = useSafeAreaInsets();
-
     return (
         <View
             style={{
-                top: insets.top + IMAGE_HEIGHT / 2 + 10, // value from padding
                 ...styles.container,
             }}
         >
@@ -32,6 +25,8 @@ const ImageCounter: React.FC<ImageCounterProps> = ({ currentIndex, totalImages }
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
+        // zIndex: 10,
+        bottom: 50, // 30 from info container displacement + 20 from bottom
         right: 20,
         width: 75,
         height: 'auto',

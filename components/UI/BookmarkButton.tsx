@@ -27,7 +27,7 @@ const BookmarkButton = ({ bookmarked, handleBookmarkPress }: BookmarkButtonProps
     });
 
     return (
-        <BlurView intensity={20} tint="light" style={styles.iconButton}>
+        <BlurView experimentalBlurMethod="dimezisBlurView" intensity={25} tint="light" style={styles.iconButton}>
             <TouchableOpacity onPress={handleBookmarkPress} activeOpacity={0.7}>
                 <Animated.View style={animatedStyle}>
                     <Ionicons name={bookmarked ? 'bookmark' : 'bookmark-outline'} size={22} color="black" />

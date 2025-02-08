@@ -1,11 +1,14 @@
 import TabBarButton from '@/components/navigation/TabBarButton';
 import Colors from '@/constants/Colors';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { StyleSheet, useColorScheme, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 const AnimatedTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
-    const theme = useColorScheme() ?? 'light';
+    const colors = useColorsFromTheme();
+
+    const styles = useMemo(() => makeStyles(colors), [colors]);
 
     return (
         <View style={styles.tabbar}>
@@ -49,7 +52,7 @@ const AnimatedTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navig
                         onLongPress={onLongPress}
                         isFocused={isFocused}
                         routeName={route.name}
-                        color={isFocused ? Colors[theme].tabBarActiveColor : Colors[theme].tabBarInactiveColor}
+                        color={isFocused ? colors.tabBarActiveColor : colors.tabBarInactiveColor}
                         label={label}
                     />
                 );
@@ -58,25 +61,27 @@ const AnimatedTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navig
     );
 };
 
-const styles = StyleSheet.create({
-    tabbar: {
-        position: 'absolute',
-        bottom: 25,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        marginHorizontal: 20,
-        paddingVertical: 15,
-        borderRadius: 25,
-        borderCurve: 'continuous',
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        tabbar: {
+            position: 'absolute',
+            bottom: 25,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
 
-        boxShadow: '0px 1px 2px 2px rgba(0, 0, 0, 0.15)',
-    },
-    tabbarItem: {
-        flex: 1,
-        alignItems: 'center',
-    },
-});
+            marginHorizontal: 20,
+            paddingVertical: 15,
+            borderRadius: 25,
+            borderCurve: 'continuous',
+
+            backgroundColor: colors.navbarBackground,
+            boxShadow: `0px 1px 2px 2px ${colors.tabBarShadowColor}`,
+        },
+        tabbarItem: {
+            flex: 1,
+            alignItems: 'center',
+        },
+    });
 
 export default AnimatedTabBar;

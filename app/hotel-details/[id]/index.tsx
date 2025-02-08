@@ -76,47 +76,52 @@ const Details = () => {
                     useNativeDriver: true,
                 })}
             >
-                {showListAndImageCounter ? (
-                    <Animated.FlatList
-                        data={hotel.gallery}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={(item, index) => index.toString()}
-                        snapToInterval={width}
-                        decelerationRate="fast"
-                        bounces={false}
-                        scrollEventThrottle={16}
-                        style={{ transform: [{ scale: headerScale }, { translateY: headerTranslateY }] }}
-                        onScroll={(event) => {
-                            const totalWidth = event.nativeEvent.layoutMeasurement.width;
-                            const xPosition = event.nativeEvent.contentOffset.x;
-                            const newIndex = Math.round(xPosition / totalWidth);
-                            if (newIndex !== currentIndex) {
-                                setCurrentIndex(newIndex);
-                            }
-                        }}
-                        renderItem={({ item }) => (
-                            <AnimatedFastImageWrapper
-                                source={{ uri: item }}
-                                style={[s.headerImage]}
-                                resizeMode="cover"
-                            />
-                        )}
-                    />
-                ) : (
-                    <AnimatedFastImageWrapper
-                        source={{ uri: hotel.gallery[0] }}
-                        style={[
-                            s.headerImage,
-                            { transform: [{ scale: headerScale }, { translateY: headerTranslateY }] },
-                        ]}
-                        resizeMode="cover"
-                    />
-                )}
+                <View style={{ height: IMAGE_HEIGHT }}>
+                    {showListAndImageCounter ? (
+                        <Animated.FlatList
+                            data={hotel.gallery}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            keyExtractor={(item, index) => index.toString()}
+                            snapToInterval={width}
+                            decelerationRate="fast"
+                            bounces={false}
+                            scrollEventThrottle={16}
+                            style={{ transform: [{ scale: headerScale }, { translateY: headerTranslateY }] }}
+                            onScroll={(event) => {
+                                const totalWidth = event.nativeEvent.layoutMeasurement.width;
+                                const xPosition = event.nativeEvent.contentOffset.x;
+                                const newIndex = Math.round(xPosition / totalWidth);
+                                if (newIndex !== currentIndex) {
+                                    setCurrentIndex(newIndex);
+                                }
+                            }}
+                            renderItem={({ item }) => (
+                                <AnimatedFastImageWrapper
+                                    source={{ uri: item }}
+                                    style={[s.headerImage]}
+                                    resizeMode="cover"
+                                />
+                            )}
+                        />
+                    ) : (
+                        <AnimatedFastImageWrapper
+                            source={{ uri: hotel.gallery[0] }}
+                            style={[
+                                s.headerImage,
+                                { transform: [{ scale: headerScale }, { translateY: headerTranslateY }] },
+                            ]}
+                            resizeMode="cover"
+                        />
+                    )}
+                    {showListAndImageCounter && (
+                        <ImageCounter currentIndex={currentIndex} totalImages={hotel.gallery.length} />
+                    )}
+                </View>
 
                 {/* Floating buttons overlay */}
                 <View style={[s.floatingContainer, { top: insets.top + 5 }]}>
-                    <BlurView intensity={25} tint="light" style={s.iconButton}>
+                    <BlurView experimentalBlurMethod="dimezisBlurView" intensity={25} tint="light" style={s.iconButton}>
                         <TouchableOpacity onPress={router.back}>
                             <Ionicons name="chevron-back" size={22} color="black" />
                         </TouchableOpacity>
@@ -124,10 +129,6 @@ const Details = () => {
 
                     <BookmarkButton bookmarked={bookmarked} handleBookmarkPress={handleBookmarkPress} />
                 </View>
-
-                {showListAndImageCounter && (
-                    <ImageCounter currentIndex={currentIndex} totalImages={hotel.gallery.length} />
-                )}
 
                 {/* The rest of your content */}
                 <View style={s.detailsContainer}>

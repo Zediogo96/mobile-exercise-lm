@@ -4,16 +4,23 @@ import { SwipeableIOS } from '@/components/UI/SwipeableIOS';
 import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 import { Hotel } from '@/types/hotel.types';
 import React, { useCallback, useRef } from 'react';
-import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
+import { useRouter } from 'expo-router';
 import LottieView from 'lottie-react-native';
 const { width } = Dimensions.get('window');
 
 const BookmarkCard = ({ hotel }: { hotel: Hotel }) => {
+    const router = useRouter();
+
+    const handlePress = () => {
+        router.push(`/hotel-details/${hotel.id}`);
+    };
+
     return (
-        <View style={styles.card}>
+        <Pressable style={styles.card} onPress={handlePress}>
             <FastImageWrapper source={{ uri: hotel.gallery[0] }} style={styles.image} resizeMode="cover" />
             <View style={styles.details}>
                 <Text style={styles.name}>{hotel.name}</Text>
@@ -21,7 +28,7 @@ const BookmarkCard = ({ hotel }: { hotel: Hotel }) => {
                     {hotel.location?.city}, {hotel.location?.address}
                 </Text>
             </View>
-        </View>
+        </Pressable>
     );
 };
 
@@ -103,7 +110,7 @@ const styles = StyleSheet.create({
         height: 80,
 
         marginVertical: 6,
-        boxShadow: '0px 1px 2px 2px rgba(0, 0, 0, 0.15)',
+        boxShadow: '0px 1px 2px 1px rgba(0, 0, 0, 0.15)',
     },
     container: {
         flex: 1,
@@ -115,7 +122,6 @@ const styles = StyleSheet.create({
     },
     card: {
         flexDirection: 'row',
-        alignItems: 'center',
         padding: 12,
     },
     image: {
@@ -127,6 +133,8 @@ const styles = StyleSheet.create({
     details: {
         flex: 1,
         justifyContent: 'space-between',
+        alignItems: 'stretch',
+        paddingVertical: 4,
     },
     name: {
         fontSize: 16,

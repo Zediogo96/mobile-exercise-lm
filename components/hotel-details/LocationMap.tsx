@@ -1,40 +1,39 @@
 import { Hotel } from '@/types/hotel.types';
 import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { StyleSheet, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 type LocationMapProps = {
     hotel: Hotel;
 };
 
 const LocationMap = ({ hotel }: LocationMapProps) => {
-    const config = Platform.OS === 'android' ? { provider: PROVIDER_GOOGLE, key: '' } : {};
-
     return (
         <View style={s.mapContainer}>
-            <MapView
-                {...config}
-                style={s.map}
-                initialRegion={{
-                    latitude: hotel.location?.latitude || 0,
-                    longitude: hotel.location?.longitude || 0,
-                    latitudeDelta: 0.009,
-                    longitudeDelta: 0.009,
-                }}
-                scrollEnabled={false}
-            >
-                {hotel.location && (
-                    <Marker
-                        coordinate={{
-                            latitude: hotel.location.latitude,
-                            longitude: hotel.location.longitude,
-                        }}
-                        title={hotel.name}
-                        subtitleVisibility="visible"
-                        description={hotel.name}
-                    />
-                )}
-            </MapView>
+            <View style={s.mapWrapper}>
+                <MapView
+                    style={s.map}
+                    initialRegion={{
+                        latitude: hotel.location?.latitude || 0,
+                        longitude: hotel.location?.longitude || 0,
+                        latitudeDelta: 0.009,
+                        longitudeDelta: 0.009,
+                    }}
+                    scrollEnabled={false}
+                >
+                    {hotel.location && (
+                        <Marker
+                            coordinate={{
+                                latitude: hotel.location.latitude,
+                                longitude: hotel.location.longitude,
+                            }}
+                            title={hotel.name}
+                            subtitleVisibility="visible"
+                            description={hotel.name}
+                        />
+                    )}
+                </MapView>
+            </View>
         </View>
     );
 };
@@ -46,15 +45,16 @@ const s = StyleSheet.create({
         height: 250,
         marginTop: 20,
         borderRadius: 10,
+        overflow: 'hidden', // Ensure content is clipped
 
-        // shadow
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
+        boxShadow: '0px 1px 2px 1px rgba(0, 0, 0, 0.15)',
+    },
+    mapWrapper: {
+        flex: 1,
+        borderRadius: 10,
+        overflow: 'hidden', // Clip the map inside
     },
     map: {
         flex: 1,
-        borderRadius: 10,
     },
 });

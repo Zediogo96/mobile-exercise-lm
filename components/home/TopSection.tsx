@@ -1,12 +1,16 @@
+import Colors from '@/constants/Colors';
 import { useMostPopularHotels } from '@/services/react-query/hotels';
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { FC, useMemo } from 'react';
+import { StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
 
-const TopSection = () => {
+const TopSection: FC = () => {
     const router = useRouter();
     const { isLoading } = useMostPopularHotels();
+    const theme = useColorScheme() ?? 'light';
+
+    const styles = useMemo(() => makeStyles(Colors[theme]), [theme]);
 
     const navigateToFilterModal = () => {
         router.push('/filter-modal');
@@ -17,16 +21,16 @@ const TopSection = () => {
     };
 
     return (
-        <View style={s.container}>
-            <Text style={s.title}>Where would you like to go?</Text>
-            <View style={s.row}>
-                <TouchableOpacity style={s.buttonContainer} onPress={navigateToSearchModal} disabled={isLoading}>
-                    <FontAwesome style={s.searchIcon} name="search" size={16} color="#888" />
-                    <Text style={s.searchInput}>Search for hotels, cities, or places</Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>Where would you like to go?</Text>
+            <View style={styles.row}>
+                <TouchableOpacity style={styles.buttonContainer} onPress={navigateToSearchModal} disabled={isLoading}>
+                    <FontAwesome style={styles.searchIcon} name="search" size={16} color="#888" />
+                    <Text style={styles.searchInput}>Search for hotels, cities, or places</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={s.filterButton}
+                    style={styles.filterButton}
                     onPress={navigateToFilterModal}
                     disabled={isLoading}
                     activeOpacity={0.8}
@@ -40,56 +44,50 @@ const TopSection = () => {
 
 export default TopSection;
 
-const s = StyleSheet.create({
-    container: {
-        marginHorizontal: 20,
-    },
-    title: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 12,
-        marginVertical: 10,
-    },
-    buttonContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#F8F9FA',
-        paddingVertical: 14,
-        paddingHorizontal: 16,
-        borderRadius: 14,
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
-
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.15)',
-    },
-    searchIcon: {
-        marginRight: 12,
-    },
-    searchInput: {
-        color: '#888',
-        fontSize: 14,
-    },
-    filterButton: {
-        backgroundColor: '#1C1C1C',
-        padding: 14,
-        borderRadius: 14,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 48, // Makes it circular
-        height: 48,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        container: {
+            marginHorizontal: 20,
         },
-        shadowOpacity: 0.15,
-        shadowRadius: 3.84,
-        elevation: 3, // Android shadow
-    },
-});
+        title: {
+            fontSize: 25,
+            fontWeight: 'bold',
+            marginBottom: 20,
+            color: colors.textTitle,
+        },
+        row: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 12,
+            marginVertical: 10,
+        },
+        buttonContainer: {
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: colors.searchBarHomeColor,
+            paddingVertical: 14,
+            paddingHorizontal: 16,
+            borderRadius: 14,
+
+            boxShadow: '0px 1px 4px  rgba(0, 0, 0, 0.35)',
+        },
+        searchIcon: {
+            marginRight: 12,
+        },
+        searchInput: {
+            color: colors.textLightGray,
+            fontSize: 14,
+        },
+        filterButton: {
+            backgroundColor: colors.filterButton,
+            padding: 14,
+            borderRadius: 14,
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 48,
+            height: 48,
+
+            boxShadow: '0px 2px 4px rgba(245, 244, 244, 0.15)',
+        },
+    });

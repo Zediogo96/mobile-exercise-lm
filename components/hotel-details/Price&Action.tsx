@@ -20,6 +20,8 @@ const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency, hotelId,
             <BlurView
                 intensity={100}
                 tint="light"
+                blurReductionFactor={0.5}
+                experimentalBlurMethod="dimezisBlurView"
                 style={[styles.blurContainer, { paddingBottom: Math.max(bottomInset, 16) }]}
             >
                 {/* Left section */}
