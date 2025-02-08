@@ -8,10 +8,8 @@ import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function FilterModal() {
-    const insets = useSafeAreaInsets();
     const router = useRouter();
 
     const colors = useColorsFromTheme();

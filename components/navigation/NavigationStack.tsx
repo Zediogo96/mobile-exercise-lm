@@ -1,7 +1,5 @@
 import FilterModalHeader from '@/components/filter-modal/FilterModalHeader';
-import { JsStack } from '@/components/navigation/JsStack';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { TransitionPresets } from '@react-navigation/stack';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { Platform, TouchableOpacity } from 'react-native';
@@ -15,7 +13,7 @@ const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, head
     const router = useRouter();
 
     return (
-        <JsStack
+        <Stack
             screenOptions={{
                 headerShown: false,
                 gestureEnabled: true,
@@ -39,18 +37,15 @@ const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, head
                     animation: 'fade_from_bottom', // ✅ Smooth transition
                 }}
             />
-
-            <JsStack.Screen
+            <Stack.Screen
                 name="filter-modal/index"
                 options={{
-                    ...TransitionPresets.ModalPresentationIOS,
-                    presentation: 'modal',
-                    gestureEnabled: true,
+                    presentation: Platform.OS === 'ios' ? 'modal' : 'transparentModal',
+                    animation: 'slide_from_bottom', // ✅ Smooth transition
                     headerShown: true,
                     header: () => <FilterModalHeader title="Filter" />,
                 }}
             />
-
             <Stack.Screen name="hotel-details/[id]/index" />
 
             <Stack.Screen
@@ -75,7 +70,7 @@ const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, head
                     headerSearchBarOptions: headerSearchBarOptions,
                 }}
             />
-        </JsStack>
+        </Stack>
     );
 };
 

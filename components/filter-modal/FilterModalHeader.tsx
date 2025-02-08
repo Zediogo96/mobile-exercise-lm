@@ -3,7 +3,8 @@ import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 interface FilterModalHeaderProps {
@@ -12,6 +13,7 @@ interface FilterModalHeaderProps {
 
 const FilterModalHeader: React.FC<FilterModalHeaderProps> = ({ title }) => {
     const router = useRouter();
+    const insets = useSafeAreaInsets();
 
     const colors = useColorsFromTheme();
     const styles = useMemo(() => makeStyles(colors), [colors]);
@@ -27,7 +29,7 @@ const FilterModalHeader: React.FC<FilterModalHeaderProps> = ({ title }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { marginTop: Platform.OS === 'ios' ? 0 : insets.top }]}>
             {/* Left section */}
             <View style={styles.leftContainer}>
                 <TouchableOpacity onPress={handleBackPress} style={styles.iconButton}>
