@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import Animated, { FadeInLeft, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 
 import GetInspiredBeach from '@/assets/images/get-inspired/get-inspired-beach.jpg';
@@ -14,8 +14,6 @@ import {
 } from '@/components/home/get-inspired-carousel/get-inspired-carousel-variables';
 import Colors from '@/constants/Colors';
 import useColorsFromTheme from '@/hooks/useColorsFromTheme';
-
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 // Refactored images array with labels
 const images = [

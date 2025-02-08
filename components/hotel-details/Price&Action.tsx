@@ -1,9 +1,10 @@
 // PriceAndAction.tsx
+import Colors from '@/constants/Colors';
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { BlurView } from 'expo-blur';
-import { Link } from 'expo-router';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface PriceSectionProps {
     hotelId: string;
@@ -15,12 +16,15 @@ interface PriceSectionProps {
 const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency, hotelId, bottomInset }) => {
     const currencySymbol = CURRENCY_SYMBOL_MAP[currency || 'USD'];
 
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
+
     return (
         <View style={styles.blurWrapper}>
             <BlurView
                 intensity={100}
                 tint="light"
-                blurReductionFactor={0.5}
+                blurReductionFactor={2}
                 experimentalBlurMethod="dimezisBlurView"
                 style={[styles.blurContainer, { paddingBottom: Math.max(bottomInset, 16) }]}
             >
@@ -34,72 +38,67 @@ const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency, hotelId,
                 </View>
 
                 {/* Right section */}
-                <Link
-                    href={{
-                        pathname: '/book/[id]',
-                        params: { id: hotelId },
-                    }}
-                    style={styles.viewDealButton}
-                >
+                <TouchableOpacity style={styles.viewDealButton}>
                     <Text style={styles.textButton}>Book now</Text>
-                </Link>
+                </TouchableOpacity>
             </BlurView>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 25,
-        alignItems: 'flex-end',
-        borderRadius: 25,
-    },
-    blurWrapper: {
-        borderRadius: 25,
-        overflow: 'hidden', // Ensures the blur effect is clipped
-        position: 'absolute',
-        width: '90%',
-        height: 100,
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        container: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 25,
+            alignItems: 'flex-end',
+            borderRadius: 25,
+        },
+        blurWrapper: {
+            borderRadius: 25,
+            overflow: 'hidden', // Ensures the blur effect is clipped
+            position: 'absolute',
+            width: '90%',
+            height: 100,
 
-        bottom: 20,
-        left: '5%',
-    },
-    blurContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 20,
-    },
+            bottom: 20,
+            left: '5%',
+        },
+        blurContainer: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: 20,
+        },
 
-    priceText: {
-        fontSize: 16,
-        color: '#666',
-        marginBottom: 10,
-    },
-    priceAmount: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#333',
-    },
-    perNightText: {
-        fontSize: 12,
-        fontWeight: 'normal',
-        color: '#666',
-    },
-    viewDealButton: {
-        backgroundColor: '#000',
-        paddingVertical: 12,
-        paddingHorizontal: 24,
-        borderRadius: 10,
-    },
-    textButton: {
-        fontWeight: '500',
-        color: '#fff',
-        fontSize: 15,
-        textAlign: 'center',
-    },
-});
+        priceText: {
+            fontSize: 16,
+            color: 'black',
+            fontWeight: '500',
+            marginBottom: 10,
+        },
+        priceAmount: {
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: colors.textTitle,
+        },
+        perNightText: {
+            fontSize: 12,
+            fontWeight: 'normal',
+        },
+        viewDealButton: {
+            backgroundColor: '#000',
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderRadius: 10,
+        },
+        textButton: {
+            fontWeight: '500',
+            color: '#fff',
+            fontSize: 15,
+            textAlign: 'center',
+        },
+    });
 
 export default PriceAndAction;

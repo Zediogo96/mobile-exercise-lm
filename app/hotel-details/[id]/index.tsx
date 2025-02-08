@@ -153,7 +153,7 @@ const Details = () => {
 
                     <View style={styles.divider} />
 
-                    <Description />
+                    <Description hotel={hotel} />
 
                     <CheckInOutDetails checkIn={hotel.checkIn} checkOut={hotel.checkOut} />
 

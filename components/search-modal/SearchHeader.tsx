@@ -1,14 +1,13 @@
+import AnimatedTextInput from '@/components/UI/animated-components/AnimatedTextInput';
+import AnimatedTouchableOpacity from '@/components/UI/animated-components/AnimatedTouchableOpacity';
 import Colors from '@/constants/Colors';
 import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { MaterialIcons } from '@expo/vector-icons'; // Import the icon from Expo
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo } from 'react';
-import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInRight } from 'react-native-reanimated';
-
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 type SearchHeaderProps = {
     searchQuery: string;

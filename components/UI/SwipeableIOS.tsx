@@ -1,7 +1,8 @@
 // SwipeableIOS.tsx
+import AnimatedTouchableOpacity from '@/components/UI/animated-components/AnimatedTouchableOpacity';
 import { FontAwesome } from '@expo/vector-icons';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
-import { Alert, Dimensions, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
+import { Alert, Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
     FadeOutLeft,
@@ -22,8 +23,6 @@ const DEFAULT_COMPONENT_WIDTH = width * 0.95;
 const DEFAULT_COMPONENT_BORDER_RADIUS = 10;
 const DEFAULT_SWIPE_THRESHOLD = 100;
 const DEFAULT_ACTION_THRESHOLD = DEFAULT_SWIPE_THRESHOLD * 2;
-
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 type SwipeableIOSProps = {
     callbackAction: () => void;

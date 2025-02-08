@@ -46,8 +46,15 @@ const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, head
                     header: () => <FilterModalHeader title="Filter" />,
                 }}
             />
-            <Stack.Screen name="hotel-details/[id]/index" />
-            <Stack.Screen name="book/[id]/index" />
+            <Stack.Screen
+                name="hotel-details/[id]/index"
+                options={{
+                    // workaround for issue of blur view affecting
+                    // animation, not allowing opacity to be set properly
+                    animation: Platform.OS === 'android' ? 'fade_from_bottom' : 'simple_push',
+                    animationDuration: Platform.OS === 'android' ? undefined : 200,
+                }}
+            />
 
             <Stack.Screen
                 name="filter-results/index"

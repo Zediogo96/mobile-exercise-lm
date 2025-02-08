@@ -1,5 +1,6 @@
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
@@ -12,11 +13,14 @@ type FilterAndSortActionsProps = {
 
 const FilterAndSortActions = ({ handleSortPress, disabled }: FilterAndSortActionsProps) => {
     const router = useRouter();
+    const isFocused = useIsFocused();
     const { hasFiltersApplied, hasSortApplied } = useFilterStore();
 
     const handleFilterPress = useCallback(() => {
         router.push('/filter-modal');
     }, []);
+
+    if (!isFocused) return null;
 
     return (
         <BlurView intensity={100} tint="dark" style={styles.blurView}>

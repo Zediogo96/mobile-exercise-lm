@@ -1,18 +1,17 @@
 import RatingStars from '@/components/hotel-details/RatingStars';
+import AnimatedTouchableOpacity from '@/components/UI/animated-components/AnimatedTouchableOpacity';
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
 import { Hotel } from '@/types/hotel.types';
 import { BlurView } from 'expo-blur';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { FadeInUp } from 'react-native-reanimated';
+import { StyleSheet, Text, View } from 'react-native';
+import { FadeInUp } from 'react-native-reanimated';
 
 interface HotelCardProps {
     hotel: Hotel;
     index: number;
     onPress: (id: string) => void;
 }
-
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 export const HotelSmallerCard = ({ hotel, index, onPress }: HotelCardProps) => {
     return (

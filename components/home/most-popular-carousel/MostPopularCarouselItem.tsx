@@ -1,10 +1,14 @@
 import FastImageWrapper from '@/components/Helper/FastImageWrapper';
-import { MOST_POPULAR_CAROUSEL_CARD_HEIGHT, MOST_POPULAR_CAROUSEL_CARD_WIDTH } from '@/components/home/most-popular-carousel/most-popular-carousel-variables';
+import {
+    MOST_POPULAR_CAROUSEL_CARD_HEIGHT,
+    MOST_POPULAR_CAROUSEL_CARD_WIDTH,
+} from '@/components/home/most-popular-carousel/most-popular-carousel-variables';
 
 import RatingStars from '@/components/hotel-details/RatingStars';
 import Colors from '@/constants/Colors';
 import { Hotel } from '@/types/hotel.types';
 import { Entypo } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import { Link } from 'expo-router';
 import React, { useMemo } from 'react';
@@ -16,6 +20,10 @@ const AnimatedFastImageWrapper = Animated.createAnimatedComponent(FastImageWrapp
 const MostPopularCarouselItem = (item: Hotel) => {
     const theme = useColorScheme() ?? 'light';
     const styles = useMemo(() => makeStyles(Colors[theme]), [theme]);
+
+    const isFocused = useIsFocused();
+
+    console.log('MostPopular -> isFocused', isFocused);
 
     return (
         <Link
@@ -31,29 +39,33 @@ const MostPopularCarouselItem = (item: Hotel) => {
                     source={{ uri: item.gallery[0] }}
                     resizeMode="cover"
                 />
-                <BlurView intensity={40} tint="dark" style={styles.topContainer}>
-                    <RatingStars count={item.stars} fontStyle={styles.fontStyleRatingStars} />
-                </BlurView>
+                {isFocused && (
+                    <BlurView intensity={40} tint="dark" style={styles.topContainer}>
+                        <RatingStars count={item.stars} fontStyle={styles.fontStyleRatingStars} />
+                    </BlurView>
+                )}
 
-                <BlurView
-                    blurReductionFactor={2}
-                    experimentalBlurMethod="dimezisBlurView"
-                    intensity={65}
-                    tint="light"
-                    style={styles.blurInformationContainer}
-                >
-                    <View style={{ flex: 1, rowGap: 3 }}>
-                        <Text style={[styles.text, styles.textMain]} numberOfLines={1}>
-                            {item.name}
-                        </Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-                            <Entypo name="location-pin" size={12} color="white" />
-                            <Text style={styles.text} numberOfLines={1}>
-                                {item.location.city}
+                {isFocused && (
+                    <BlurView
+                        blurReductionFactor={2}
+                        experimentalBlurMethod="dimezisBlurView"
+                        intensity={65}
+                        tint="light"
+                        style={styles.blurInformationContainer}
+                    >
+                        <View style={{ flex: 1, rowGap: 3 }}>
+                            <Text style={[styles.text, styles.textMain]} numberOfLines={1}>
+                                {item.name}
                             </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                                <Entypo name="location-pin" size={12} color="white" />
+                                <Text style={styles.text} numberOfLines={1}>
+                                    {item.location.city}
+                                </Text>
+                            </View>
                         </View>
-                    </View>
-                </BlurView>
+                    </BlurView>
+                )}
             </Animated.View>
         </Link>
     );
@@ -83,7 +95,7 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             alignItems: 'center',
             height: '25%',
             margin: 8,
-            overflow: 'hidden',
+
             padding: 8,
             borderRadius: 4,
             borderCurve: 'continuous',

@@ -1,5 +1,6 @@
+import AnimatedTextInput from '@/components/UI/animated-components/AnimatedTextInput';
 import React, { useEffect } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
     runOnJS,
@@ -129,7 +130,6 @@ const RangeSlider = ({
 
     // Add this line for Reanimated from v3.5.0
     Animated.addWhitelistedNativeProps({ text: true });
-    const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
     const minLabelText = useAnimatedProps(() => {
         return {

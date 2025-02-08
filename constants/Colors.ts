@@ -5,6 +5,8 @@ const common = {
     dotActive: '#007AFF', // iOS Blue
     // most popular carousel
     mostPopularCarouselTitle: '#fff',
+
+    readMoreButton: '#3b82f6',
 };
 
 export default {
@@ -48,6 +50,7 @@ export default {
         skeletonBackground: '#f0f0f0', // Very Light Gray Background
         skeletonTitleBackground: '#e0e0e0', // Slightly Darker Light Gray
 
+        // contacts
         phoneIcon: '#25D366', // Example: WhatsApp green
         emailIcon: '#007AFF', // Example: Blue
     },
@@ -91,10 +94,8 @@ export default {
         skeletonBackground: '#333333', // Darker Gray Background
         skeletonTitleBackground: '#282828', // Slightly Lighter Dark Gray
 
+        // contacts
         phoneIcon: '#25D366', // Example: WhatsApp green
         emailIcon: '#007AFF', // Example: Blue
-
-        // shadow
-        
     },
 };

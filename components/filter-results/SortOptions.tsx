@@ -1,7 +1,9 @@
+import Colors from '@/constants/Colors';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import { SORT_OPTION_LABELS, SortOption } from '@/types/filter.types';
 import { MaterialIcons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type SortOptionsProps = {
@@ -12,6 +14,9 @@ type SortOptionsProps = {
 const SortOptions = ({ onClose }: SortOptionsProps) => {
     const { sortOption, setSortOption } = useFilterStore();
 
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
+
     const handleSortSelect = (option: SortOption) => {
         setSortOption(option);
         onClose?.();
@@ -20,7 +25,7 @@ const SortOptions = ({ onClose }: SortOptionsProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Sort</Text>
+                <Text style={styles.headerTitle}>Sort by</Text>
             </View>
 
             <View style={styles.optionsContainer}>
@@ -37,43 +42,44 @@ const SortOptions = ({ onClose }: SortOptionsProps) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#FFFFFF',
-    },
-    header: {
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: '#E0E0E0',
-        backgroundColor: '#FFFFFF',
-    },
-    headerTitle: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#000000',
-    },
-    optionsContainer: {
-        padding: 16,
-    },
-    optionRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingVertical: 16,
-        paddingHorizontal: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: '#F0F0F0',
-    },
-    optionText: {
-        fontSize: 16,
-        color: '#333333',
-    },
-    selectedOptionText: {
-        color: '#007AFF',
-        fontWeight: '500',
-    },
-});
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: colors.cardBackground,
+        },
+        header: {
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottomWidth: 1.5,
+            borderBottomColor: colors.filterHeaderSeparator,
+        },
+        headerTitle: {
+            fontSize: 16,
+            fontWeight: '600',
+            color: colors.textTitle,
+        },
+        optionsContainer: {
+            padding: 16,
+        },
+        optionRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingVertical: 16,
+            paddingHorizontal: 8,
+            borderBottomWidth: 1,
+            borderBottomColor: colors.filterHeaderSeparator,
+        },
+        optionText: {
+            fontSize: 16,
+            color: colors.textSecondary,
+        },
+        selectedOptionText: {
+            color: '#007AFF',
+            fontWeight: '500',
+        },
+    });
 
 export default SortOptions;

@@ -37,6 +37,7 @@ const HotelList = () => {
                 if (!hotels) return null;
                 return <Text style={styles.topSectionQueryLength}>{hotels.length} hotels</Text>;
             },
+            
         });
     }, [hotels]);
 
@@ -88,7 +89,7 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             backgroundColor: colors.background,
         },
         bottomSheetContainer: {
-            backgroundColor: '#FFFFFF',
+            backgroundColor: colors.background,
         },
         title: {
             fontSize: 18,
@@ -110,16 +111,7 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             fontSize: 16,
             color: COLORS.textDark,
         },
-        topSection: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: 20,
-            paddingVertical: 15,
-            backgroundColor: COLORS.cardBackground,
-            borderBottomWidth: 1,
-            borderBottomColor: COLORS.border,
-        },
+
         topSectionTitle: {
             fontSize: 24,
             fontWeight: 'bold',
@@ -127,6 +119,6 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
         },
         topSectionQueryLength: {
             fontSize: 16,
-            color: COLORS.textGrey,
+            color: colors.textSecondary,
         },
     });

@@ -1684,7 +1684,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNCMaskedView (0.3.1):
+  - RNCMaskedView (0.2.8):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
@@ -2236,7 +2236,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 0a0eef9c8cd84c932ae1868832086c6441811e84
   ReactCommon: 3c1c8c6d777103c0e60e37c6c5f08e828e2a77c9
   RNCAsyncStorage: ff8f69859448bde50f1c25d3e7eb37555fed33ab
-  RNCMaskedView: de80352547bd4f0d607bf6bab363d826822bd126
+  RNCMaskedView: 90a18f1e65b81985232eb6f5ea594300a4b6a09f
   RNFastImage: 462a183c4b0b6b26fdfd639e1ed6ba37536c3b87
   RNFlashList: 4ba6592c49274024ef6521e0f21b1c90e50fdced
   RNGestureHandler: 16ef3dc2d7ecb09f240f25df5255953c4098819b
