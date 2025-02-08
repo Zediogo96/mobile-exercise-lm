@@ -1,8 +1,10 @@
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 interface FilterModalHeaderProps {
     title: string;
@@ -10,6 +12,10 @@ interface FilterModalHeaderProps {
 
 const FilterModalHeader: React.FC<FilterModalHeaderProps> = ({ title }) => {
     const router = useRouter();
+
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
+
     const { resetFilters } = useFilterStore((state) => state);
 
     const handleBackPress = () => {
@@ -25,7 +31,7 @@ const FilterModalHeader: React.FC<FilterModalHeaderProps> = ({ title }) => {
             {/* Left section */}
             <View style={styles.leftContainer}>
                 <TouchableOpacity onPress={handleBackPress} style={styles.iconButton}>
-                    <Ionicons name="chevron-back" size={22} color="black" />
+                    <Ionicons name="chevron-back" size={22} color={colors.textTitle} />
                 </TouchableOpacity>
             </View>
 
@@ -43,44 +49,45 @@ const FilterModalHeader: React.FC<FilterModalHeaderProps> = ({ title }) => {
         </View>
     );
 };
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        container: {
+            height: 50,
+            flexDirection: 'row',
+            backgroundColor: colors.filterHeaderBackground,
+            borderBottomWidth: 1,
+            borderBottomColor: colors.filterHeaderSeparator,
+            alignItems: 'center', // Vertically center all sections
+        },
+        leftContainer: {
+            flex: 1,
+            justifyContent: 'center',
+        },
 
-const styles = StyleSheet.create({
-    container: {
-        height: 50,
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-        alignItems: 'center', // Vertically center all sections
-    },
-    leftContainer: {
-        flex: 1,
-        justifyContent: 'center',
-    },
+        rightContainer: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            paddingRight: 10,
+        },
 
-    rightContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-        paddingRight: 10,
-    },
-
-    centerContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    iconButton: {
-        paddingHorizontal: 10,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    resetBtn: {
-        color: '#666',
-    },
-});
+        centerContainer: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        iconButton: {
+            paddingHorizontal: 10,
+        },
+        title: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            color: colors.textTitle,
+        },
+        resetBtn: {
+            color: colors.textSecondary,
+        },
+    });
 
 export default FilterModalHeader;

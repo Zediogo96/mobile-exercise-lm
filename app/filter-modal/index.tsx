@@ -66,7 +66,7 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
         },
 
         button: {
-            backgroundColor: 'black',
+            backgroundColor: colors.filterActionButton,
             padding: 16,
             borderRadius: 10,
             alignItems: 'center',

@@ -38,7 +38,10 @@ export default {
         bookmarkCardBackground: '#fff',
 
         // filter
+        filterHeaderBackground: '#fff',
         filterBackground: 'transparent',
+        filterHeaderSeparator: '#ccc',
+        filterActionButton: '#000',
 
         // skeleton
         skeletonHighlight: '#d6d6d6', // Light Gray Highlight
@@ -75,8 +78,12 @@ export default {
         bookmarkCardBackground: '#333333',
 
         // filter
+        filterHeaderBackground: '#111111',
         filterBackground: '#333333',
+        filterHeaderSeparator: '#333333',
+        filterActionButton: '#111111',
 
+        // skeleton
         skeletonHighlight: '#444444', // Dark Gray Highlight
         skeletonBackground: '#333333', // Darker Gray Background
         skeletonTitleBackground: '#282828', // Slightly Lighter Dark Gray
