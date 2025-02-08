@@ -1,12 +1,15 @@
 import HotelGallery from '@/components/filter-results/HotelImageGallery';
 import RatingStars from '@/components/hotel-details/RatingStars';
 import BookmarkButton from '@/components/UI/BookmarkButton';
+import Colors from '@/constants/Colors';
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 import { Hotel } from '@/types/hotel.types';
 import { Entypo } from '@expo/vector-icons';
 
 import { useRouter } from 'expo-router';
+import { useMemo } from 'react';
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
@@ -27,6 +30,10 @@ const CARD_BORDER_RADIUS = 15;
 
 const HotelCard = ({ hotel }: { hotel: Hotel }) => {
     const router = useRouter();
+
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
+
     const currencySymbol = CURRENCY_SYMBOL_MAP[hotel.currency || 'USD'];
 
     const { isBookmarked, addBookmark, removeBookmark } = useBookmarkStore();
@@ -61,12 +68,12 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
                     <Text style={styles.hotelName} numberOfLines={1}>
                         {hotel.name}
                     </Text>
-                    <RatingStars count={hotel.stars} fontSize={14} />
+                    <RatingStars count={hotel.stars} fontStyle={{ fontSize: 14 }} />
                 </View>
 
                 <View style={styles.detailsRow}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                        <Entypo name="location-pin" size={16} color={COLORS.textGrey} />
+                        <Entypo name="location-pin" size={16} color={colors.textSecondary} />
                         <Text style={styles.hotelLocation}>{hotel.location.city}</Text>
                     </View>
 
@@ -81,88 +88,82 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
 
 export default HotelCard;
 
-const styles = StyleSheet.create({
-    hotelCard: {
-        backgroundColor: COLORS.cardBackground,
-        width: CARD_WIDTH,
-        borderRadius: CARD_BORDER_RADIUS,
-        marginVertical: 8,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        hotelCard: {
+            backgroundColor: colors.cardBackground,
+            width: CARD_WIDTH,
+            borderRadius: CARD_BORDER_RADIUS,
+            marginVertical: 8,
+            boxShadow: '0px 1px 6px  rgba(104, 104, 104, 0.55)',
         },
-        shadowOpacity: 0.3,
-        shadowRadius: 3,
-        elevation: 4,
-    },
-    carouselContainer: {
-        height: IMAGE_HEIGHT,
-        width: '100%',
-    },
-    carouselImage: {
-        width: CARD_WIDTH,
-        height: IMAGE_HEIGHT,
-        overflow: 'hidden',
-        borderTopLeftRadius: CARD_BORDER_RADIUS,
-        borderTopRightRadius: CARD_BORDER_RADIUS,
-    },
-    paginationContainer: {
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
-        paddingVertical: 5,
-    },
-    paginationDot: {
-        width: 6,
-        height: 6,
-        borderRadius: 3,
-        backgroundColor: COLORS.dotActive,
-        marginHorizontal: 4,
-    },
-    paginationDotInactive: {
-        backgroundColor: COLORS.dotInactive,
-    },
-    informationContainer: {
-        padding: 15,
-        rowGap: 20,
-    },
-    headerRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 8,
-    },
-    detailsRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    locationContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-    },
-    hotelName: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#494848',
-        flex: 1,
-        marginRight: 10,
-    },
-    hotelLocation: {
-        fontSize: 14,
-        color: COLORS.textGrey,
-    },
-    price: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#494848',
-    },
-    perNightText: {
-        fontSize: 12,
-        fontWeight: 'normal',
-        color: COLORS.textGrey,
-    },
-});
+        carouselContainer: {
+            height: IMAGE_HEIGHT,
+            width: '100%',
+        },
+        carouselImage: {
+            width: CARD_WIDTH,
+            height: IMAGE_HEIGHT,
+            overflow: 'hidden',
+            borderTopLeftRadius: CARD_BORDER_RADIUS,
+            borderTopRightRadius: CARD_BORDER_RADIUS,
+        },
+        paginationContainer: {
+            position: 'absolute',
+            bottom: 0,
+            width: '100%',
+            paddingVertical: 5,
+        },
+        paginationDot: {
+            width: 6,
+            height: 6,
+            borderRadius: 3,
+            backgroundColor: COLORS.dotActive,
+            marginHorizontal: 4,
+        },
+        paginationDotInactive: {
+            backgroundColor: COLORS.dotInactive,
+        },
+        informationContainer: {
+            padding: 15,
+            rowGap: 20,
+        },
+        headerRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 8,
+        },
+        detailsRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+        },
+        locationContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+        },
+        hotelName: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: colors.textTitle,
+            flex: 1,
+            marginRight: 10,
+        },
+        hotelLocation: {
+            fontSize: 14,
+            color: colors.textSecondary,
+        },
+        price: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: colors.textTitle,
+        },
+        perNightText: {
+            fontSize: 12,
+            fontWeight: 'normal',
+            color: colors.textSecondary,
+        },
+    });

@@ -1,18 +1,18 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import FilterModalHeader from '@/components/filter-modal/FilterModalHeader';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 
+import NavigationStack from '@/components/navigation/NavigationStack';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Platform, StatusBar, TouchableOpacity } from 'react-native';
+import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export {
@@ -60,84 +60,30 @@ function RootLayoutNav() {
 
     const { searchQuery, setSearchQuery } = useFilterStore();
 
+    const theme = colorScheme === 'dark' ? DarkTheme : DefaultTheme;
+
+    const headerTintColor = theme.colors.text;
+
+    const headerSearchBarOptions = {
+        placeholder: 'Search for hotels',
+        hideWhenScrolling: false,
+        onChangeText: (text = { nativeEvent: { text: '' } }) => {
+            setSearchQuery(text.nativeEvent.text);
+        },
+        onBlur: () => {
+            setSearchQuery(searchQuery);
+        },
+    };
+
     return (
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <ThemeProvider value={theme}>
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <BottomSheetModalProvider>
                     <QueryClientProvider client={queryClient}>
-                        <Stack
-                            screenOptions={{
-                                headerShown: false,
-                                gestureEnabled: true,
-                                headerBackTitle: '',
-                                gestureDirection: 'horizontal',
-                            }}
-                        >
-                            <Stack.Screen name="(tabs)" />
-                            <Stack.Screen
-                                name="search-modal/index"
-                                options={{
-                                    ...Platform.select({
-                                        ios: {
-                                            presentation: 'transparentModal', // ✅ Makes modal background transparent
-                                        },
-                                        android: {
-                                            presentation: 'modal', // ✅ Makes modal background transparent
-                                        },
-                                    }),
-
-                                    animation: 'fade_from_bottom', // ✅ Smooth transition
-                                }}
-                            />
-                            <Stack.Screen
-                                name="filter-modal/index"
-                                options={{
-                                    presentation: 'modal', // ✅ Makes modal background transparent
-                                    animation: 'slide_from_bottom', // ✅ Smooth transition
-                                    headerShown: true,
-                                    header: () => <FilterModalHeader title="Filter" />,
-                                }}
-                            />
-                            <Stack.Screen name="hotel-details/[id]/index" />
-                            <Stack.Screen name="book/[id]/index" />
-
-                            <Stack.Screen
-                                name="filter-results/index"
-                                options={{
-                                    headerShown: true,
-                                    headerBlurEffect: 'regular',
-                                    headerTransparent: true,
-
-                                    headerTitle: 'Hotels',
-                                    headerShadowVisible: false,
-                                    headerLeft: () => {
-                                        return (
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    router.replace('/(tabs)');
-                                                }}
-                                                style={{ marginLeft: 5 }}
-                                            >
-                                                <FontAwesome name="chevron-left" size={15} color="black" />
-                                            </TouchableOpacity>
-                                        );
-                                    },
-
-                                    headerTintColor: 'black',
-
-                                    headerSearchBarOptions: {
-                                        placeholder: 'Search for hotels',
-                                        hideWhenScrolling: false,
-                                        onChangeText: (text) => {
-                                            setSearchQuery(text.nativeEvent.text);
-                                        },
-                                        onBlur: () => {
-                                            setSearchQuery(searchQuery);
-                                        },
-                                    },
-                                }}
-                            />
-                        </Stack>
+                        <NavigationStack
+                            headerTintColor={headerTintColor}
+                            headerSearchBarOptions={headerSearchBarOptions}
+                        />
                         <StatusBar translucent backgroundColor="transparent" />
                     </QueryClientProvider>
                 </BottomSheetModalProvider>

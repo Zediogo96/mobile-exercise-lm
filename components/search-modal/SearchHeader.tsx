@@ -1,10 +1,11 @@
+import Colors from '@/constants/Colors';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { MaterialIcons } from '@expo/vector-icons'; // Import the icon from Expo
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeIn, FadeInRight } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
@@ -17,7 +18,10 @@ type SearchHeaderProps = {
 
 export const SearchHeader = ({ searchQuery, setSearchQuery, hotelsCount }: SearchHeaderProps) => {
     const router = useRouter();
-    const inset = useSafeAreaInsets();
+
+    const colors = useColorsFromTheme();
+
+    const styles = useMemo(() => makeStyles(colors), [colors]);
 
     const handlePress = useCallback(() => {
         setSearchQuery('');
@@ -26,13 +30,20 @@ export const SearchHeader = ({ searchQuery, setSearchQuery, hotelsCount }: Searc
 
     return (
         <>
-            <View style={[styles.inputContainer, { ...Platform.select({ android: { paddingTop: 20 } }) }]}>
+            <View
+                style={[
+                    styles.inputContainer,
+                    { ...Platform.select({ android: { marginTop: 20 }, ios: { marginTop: 10 } }) },
+                ]}
+            >
+                <MaterialIcons name="search" size={24} color={colors.textSecondary} style={styles.searchIcon} />
                 <AnimatedTextInput
                     entering={FadeIn.delay(250)}
                     value={searchQuery}
                     onChangeText={setSearchQuery}
                     style={styles.input}
                     placeholder="Search for hotels, cities, or places"
+                    placeholderTextColor={colors.textSecondary}
                 />
                 <AnimatedTouchableOpacity onPress={handlePress} entering={FadeIn.delay(500)}>
                     <MaterialIcons name="close" size={24} color="white" />
@@ -56,62 +67,64 @@ export const SearchHeader = ({ searchQuery, setSearchQuery, hotelsCount }: Searc
     );
 };
 
-const styles = StyleSheet.create({
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginHorizontal: 20,
-        gap: 10,
-    },
-    input: {
-        flex: 1,
-        height: 50,
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        borderRadius: 10,
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        // shadow
-        shadowColor: 'rgba(0, 0, 0, 0.5)',
-        shadowOffset: { width: 0, height: 1 },
-        shadowRadius: 2,
-        shadowOpacity: 0.5,
-        elevation: 5,
-    },
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        inputContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginHorizontal: 20,
+            gap: 10,
+        },
+        input: {
+            flex: 1,
+            height: 50,
+            backgroundColor: colors.searchBarHomeColor,
+            borderRadius: 10,
+            paddingHorizontal: 15,
+            paddingVertical: 10,
+            paddingLeft: 40, // Add padding to account for the icon
+            boxShadow: '0px 1px 4px  rgba(104, 104, 104, 0.35)',
+        },
+        searchIcon: {
+            position: 'absolute',
+            left: 10, // Adjust position as needed
 
-    resultsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginHorizontal: 20,
-        marginVertical: 20,
-    },
-    blurView: {
-        padding: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderRadius: 10,
-        overflow: 'hidden',
-    },
-    resultsText: {
-        color: 'white',
+            zIndex: 1, // Ensure it's above the input
+        },
 
-        width: 70,
-        textAlign: 'center',
-    },
-    separator: {
-        height: 1,
-        width: '90%',
-        backgroundColor: 'rgba(255, 255, 255, 1)',
-        marginHorizontal: 20,
-        marginBottom: 20,
-    },
-    sectionTitle: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        color: 'white',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: 0, height: 1 },
-        textShadowRadius: 2,
-    },
-});
+        resultsContainer: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginHorizontal: 20,
+            marginVertical: 20,
+        },
+        blurView: {
+            padding: 5,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderRadius: 10,
+            overflow: 'hidden',
+        },
+        resultsText: {
+            color: 'white',
+            width: 70,
+            textAlign: 'center',
+        },
+        separator: {
+            height: 1,
+            width: '90%',
+            backgroundColor: 'rgba(255, 255, 255, 1)',
+            marginHorizontal: 20,
+            marginBottom: 20,
+        },
+        sectionTitle: {
+            fontSize: 25,
+            fontWeight: 'bold',
+            color: 'white',
+            textShadowColor: 'rgba(0, 0, 0, 0.75)',
+            textShadowOffset: { width: 0, height: 1 },
+            textShadowRadius: 2,
+        },
+    });

@@ -5,7 +5,7 @@ import TopSection from '@/components/home/TopSection';
 import GetInspiredCarousel from '@/components/home/get-inspired-carousel/GetInspiredCarousel';
 import MostPopularCarousel from '@/components/home/most-popular-carousel/MostPopularCarousel';
 import GetInspiredSkeleton from '@/components/home/skeletons/GetInspiredSkeleton';
-import CarouselSkeleton from '@/components/home/skeletons/MostPopularSkeleton';
+import MostPopularSkeleton from '@/components/home/skeletons/MostPopularSkeleton';
 import Colors from '@/constants/Colors';
 import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { useMostPopularHotels } from '@/services/react-query/hotels';
@@ -22,7 +22,7 @@ export default function TabOneScreen() {
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <TopSection />
-                {isLoading ? <CarouselSkeleton /> : <MostPopularCarousel />}
+                {isLoading ? <MostPopularSkeleton /> : <MostPopularCarousel />}
                 {isLoading ? <GetInspiredSkeleton /> : <GetInspiredCarousel />}
                 <View style={{ height: 100 }} />
             </ScrollView>

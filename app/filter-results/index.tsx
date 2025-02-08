@@ -2,6 +2,8 @@ import FilterAndSortActions from '@/components/filter-results/FilterAndSortActio
 import HotelListSkeleton from '@/components/filter-results/HotelListSkeleton';
 import ResultsList from '@/components/filter-results/ResultsList';
 import SortOptions from '@/components/filter-results/SortOptions';
+import Colors from '@/constants/Colors';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { useHotelsByFilter } from '@/services/react-query/hotels';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from 'expo-router';
@@ -22,6 +24,9 @@ const HotelList = () => {
     const { data: hotels, isLoading, error } = useHotelsByFilter();
     const navigation = useNavigation();
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
 
     // Variables for bottom sheet
     const snapPoints = useMemo(() => ['50%'], []);
@@ -76,51 +81,52 @@ const HotelList = () => {
 
 export default HotelList;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.background,
-    },
-    bottomSheetContainer: {
-        backgroundColor: '#FFFFFF',
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    option: {
-        paddingVertical: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#E0E0E0',
-    },
-    optionText: {
-        fontSize: 16,
-    },
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: colors.background,
+        },
+        bottomSheetContainer: {
+            backgroundColor: '#FFFFFF',
+        },
+        title: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            marginBottom: 20,
+        },
+        option: {
+            paddingVertical: 15,
+            borderBottomWidth: 1,
+            borderBottomColor: '#E0E0E0',
+        },
+        optionText: {
+            fontSize: 16,
+        },
 
-    statusText: {
-        textAlign: 'center',
-        marginTop: 20,
-        fontSize: 16,
-        color: COLORS.textDark,
-    },
-    topSection: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingVertical: 15,
-        backgroundColor: COLORS.cardBackground,
-        borderBottomWidth: 1,
-        borderBottomColor: COLORS.border,
-    },
-    topSectionTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: COLORS.textDark,
-    },
-    topSectionQueryLength: {
-        fontSize: 16,
-        color: COLORS.textGrey,
-    },
-});
+        statusText: {
+            textAlign: 'center',
+            marginTop: 20,
+            fontSize: 16,
+            color: COLORS.textDark,
+        },
+        topSection: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: 20,
+            paddingVertical: 15,
+            backgroundColor: COLORS.cardBackground,
+            borderBottomWidth: 1,
+            borderBottomColor: COLORS.border,
+        },
+        topSectionTitle: {
+            fontSize: 24,
+            fontWeight: 'bold',
+            color: COLORS.textDark,
+        },
+        topSectionQueryLength: {
+            fontSize: 16,
+            color: COLORS.textGrey,
+        },
+    });

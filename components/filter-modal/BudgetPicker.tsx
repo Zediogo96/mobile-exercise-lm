@@ -1,6 +1,8 @@
 import RangeSlider from '@/components/UI/RangeSlider';
+import Colors from '@/constants/Colors';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, withSequence, withTiming } from 'react-native-reanimated';
 
@@ -9,6 +11,9 @@ const BudgetPicker = () => {
     const MAX_DEFAULT = 1000;
 
     const { priceRange, setPriceRange } = useFilterStore();
+
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
 
     // these need to be two separate useAnimatedStyle hooks
     // because if there is only one, the animation will be applied to both values
@@ -72,48 +77,39 @@ const BudgetPicker = () => {
 
 export default BudgetPicker;
 
-const styles = StyleSheet.create({
-    cardContainer: {
-        height: 200,
-        width: '95%',
-        alignSelf: 'center',
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        cardContainer: {
+            height: 200,
+            width: '95%',
+            alignSelf: 'center',
 
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 30,
+            backgroundColor: colors.cardBackground,
+            borderRadius: 10,
+            padding: 30,
 
-        // shadow
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 2.84,
-        elevation: 5,
-    },
-    title: { color: '#666', fontSize: 18, marginBottom: 20, fontWeight: 'bold' },
-    subTitle: { color: '#666', fontSize: 16, fontWeight: 'normal' },
-    sliderContainer: { flex: 1, marginTop: 20 },
+            boxShadow: '0px 2px 1px rgba(218, 215, 215, 0.25)',
+        },
+        title: { fontSize: 18, marginBottom: 20, fontWeight: 'bold', color: colors.textTitle },
+        subTitle: { fontSize: 16, fontWeight: 'normal', color: colors.textSecondary },
+        sliderContainer: { flex: 1, marginTop: 20 },
 
-    valuesContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 30 },
-    bottomCardContainer: {
-        flex: 1,
-        backgroundColor: 'white',
-        padding: 10,
-        borderRadius: 5,
-        maxWidth: '40%',
-        gap: 5,
+        valuesContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 30 },
+        bottomCardContainer: {
+            flex: 1,
+            backgroundColor: colors.subCardBackground,
+            padding: 10,
+            borderRadius: 5,
+            maxWidth: '40%',
+            gap: 5,
 
-        // shadow
-        shadowColor: '#000',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 1.5,
-        elevation: 5,
-    },
+            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.15)',
+        },
 
-    smallLabel: { fontSize: 12, color: 'black', letterSpacing: 1 },
-    valueText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#999',
-    },
-});
+        smallLabel: { fontSize: 12, color: 'black', letterSpacing: 1 },
+        valueText: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#999',
+        },
+    });

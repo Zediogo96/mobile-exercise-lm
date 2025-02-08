@@ -1,7 +1,8 @@
 import HotelCard from '@/components/filter-results/HotelCard';
-import { useThemeColor } from '@/components/Themed';
+import Colors from '@/constants/Colors';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { Hotel } from '@/types/hotel.types';
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown, LinearTransition } from 'react-native-reanimated';
 
@@ -10,12 +11,13 @@ type ResultsListProps = {
 };
 
 const ResultsList = ({ hotels }: ResultsListProps) => {
-    const darkText = useThemeColor({}, 'textDark');
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
 
     if (hotels?.length === 0) {
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
-                <Animated.Text entering={FadeInDown} style={[styles.noResults, { color: darkText }]}>
+                <Animated.Text entering={FadeInDown} style={styles.noResults}>
                     No results found
                 </Animated.Text>
             </View>
@@ -37,14 +39,16 @@ const ResultsList = ({ hotels }: ResultsListProps) => {
 
 export default memo(ResultsList);
 
-const styles = StyleSheet.create({
-    listContainer: {
-        alignItems: 'center',
-        paddingVertical: 16,
-    },
-    noResults: {
-        textAlign: 'center',
-        marginTop: 20,
-        fontSize: 16,
-    },
-});
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        listContainer: {
+            alignItems: 'center',
+            backgroundColor: colors.background,
+        },
+        noResults: {
+            textAlign: 'center',
+            marginTop: 20,
+            fontSize: 16,
+            color: colors.textSecondary,
+        },
+    });

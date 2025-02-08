@@ -1,9 +1,5 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
-
 const common = {
     tabBarTextColor: '#fff',
-
     border: '#E0E0E0',
     dotInactive: 'rgba(0, 0, 0, 0.2)',
     dotActive: '#007AFF', // iOS Blue
@@ -15,11 +11,9 @@ export default {
     light: {
         ...common,
         text: '#333333', // Dark Gray
-        tint: tintColorLight,
+
         tabIconDefault: '#A0A4A8', // Medium Gray
-        tabIconSelected: tintColorLight,
-        background: '#F7F7F7', // Light Gray Background
-        cardBackground: '#FFFFFF', // White Card Background
+
         textTitle: '#222222', // Very Dark Gray for Titles
         textSecondary: '#666666', // Medium-Dark Gray for Secondary Text
         textGrey: '#777777', // Medium Gray
@@ -27,7 +21,12 @@ export default {
         filterButton: '#444444', // Dark Gray Filter Button
         searchBarHomeColor: '#FAFAFA', // Very Light Gray Search Bar
         textDark: '#333333', // Dark Gray
-        shadow: 'rgba(0, 0, 0, 0.08)', // Subtle Shadow
+        shadow: 'rgba(50, 50, 50, 0.08)', // Warmer Shadow
+
+        // background
+        background: '#F6F4F1', // Light Gray Background
+        cardBackground: '#FAFAFA', // Very Light Gray Card Background
+        subCardBackground: '#FFFFFF', // White Card Background
 
         // navbar
         navbarBackground: '#FFFFFF',
@@ -37,15 +36,21 @@ export default {
 
         // bookmarks
         bookmarkCardBackground: '#fff',
+
+        // filter
+        filterBackground: 'transparent',
+
+        // skeleton
+        skeletonHighlight: '#d6d6d6', // Light Gray Highlight
+        skeletonBackground: '#f0f0f0', // Very Light Gray Background
+        skeletonTitleBackground: '#e0e0e0', // Slightly Darker Light Gray
     },
     dark: {
         ...common,
         text: '#E0E0E0', // Light Gray
-        tint: tintColorDark,
+
         tabIconDefault: '#A0A4A8', // Medium Gray
-        tabIconSelected: tintColorDark,
-        background: '#1A1A1A', // Dark Gray Background
-        cardBackground: '#252525', // Darker Gray Card Background
+
         textTitle: '#FFFFFF', // White for Titles
         textSecondary: '#BDBDBD', // Medium Light Gray for Secondary Text
         textGrey: '#AAAAAA', // Medium Gray
@@ -55,6 +60,11 @@ export default {
         textDark: '#F0F0F0', // Very Light Gray
         shadow: 'rgba(0, 0, 0, 0.3)', // More Pronounced Shadow
 
+        // background
+        background: '#1A1A1A', // Dark Gray Background
+        cardBackground: '#252525', // Darker Gray Card Background
+        subCardBackground: '#333333', // Darker Gray Card Background
+
         // navbar
         navbarBackground: '#444444',
         tabBarActiveColor: '#fff',
@@ -63,5 +73,12 @@ export default {
 
         // bookmarks
         bookmarkCardBackground: '#333333',
+
+        // filter
+        filterBackground: '#333333',
+
+        skeletonHighlight: '#444444', // Dark Gray Highlight
+        skeletonBackground: '#333333', // Darker Gray Background
+        skeletonTitleBackground: '#282828', // Slightly Lighter Dark Gray
     },
 };

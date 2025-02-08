@@ -1,7 +1,9 @@
+import AnimatedCheckbox from '@/components/UI/AnimatedCheckBox';
+import Colors from '@/constants/Colors';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface RatingOption {
     score: string;
@@ -38,31 +40,12 @@ const ratingOptions: RatingOption[] = [
     },
 ];
 
-interface AnimatedCheckboxProps {
-    selected: boolean;
-    onPress: () => void;
-}
-
-const AnimatedCheckbox: React.FC<AnimatedCheckboxProps> = ({ selected, onPress }) => {
-    const scale = useSharedValue(selected ? 1 : 0);
-
-    useEffect(() => {
-        scale.value = withTiming(selected ? 1 : 0, { duration: 300 });
-    }, [selected, scale]);
-
-    const animatedStyle = useAnimatedStyle(() => ({
-        transform: [{ scale: scale.value }],
-    }));
-
-    return (
-        <TouchableOpacity style={styles.checkbox} onPress={onPress}>
-            <Animated.View style={[styles.checkboxInner, animatedStyle]} />
-        </TouchableOpacity>
-    );
-};
-
 const UserRating: React.FC = () => {
     const { userRating, setUserRating } = useFilterStore();
+
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
+
     // Assume userRating is an array of numeric rating values (or rating option values)
     // Allow multiple selection or override selection as needed
 
@@ -99,84 +82,53 @@ const UserRating: React.FC = () => {
 
 export default UserRating;
 
-const styles = StyleSheet.create({
-    container: {
-        marginVertical: 20,
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        container: {
+            marginVertical: 20,
 
-        width: '95%',
-        alignSelf: 'center',
-        padding: 30,
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        // Subtle shadows for elevation
-        shadowColor: '#666',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 2.84,
-        elevation: 5,
-    },
-    title: {
-        fontSize: 18,
+            width: '95%',
+            alignSelf: 'center',
+            padding: 30,
+            backgroundColor: colors.cardBackground,
+            borderRadius: 10,
 
-        fontWeight: 'bold',
-        color: '#666',
-    },
-    ratingRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 16,
-    },
-    ratingInfo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    scoreContainer: {
-        width: 50,
-        height: 25,
-        borderRadius: 5,
+            boxShadow: '0px 2px 1px rgba(218, 215, 215, 0.25)',
+        },
+        title: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: colors.textTitle,
+        },
+        ratingRow: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: 16,
+        },
+        ratingInfo: {
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+        scoreContainer: {
+            width: 50,
+            height: 25,
+            borderRadius: 5,
 
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: 20,
 
-        // shadow
-        shadowColor: '#000',
-        shadowOffset: { width: 0.5, height: 0.5 },
-        shadowOpacity: 0.5,
-        shadowRadius: 1.5,
-        elevation: 5,
-    },
-    scoreText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 14,
-    },
-    ratingLabel: {
-        color: 'gray',
-        fontWeight: '600',
-    },
-    checkbox: {
-        width: 20,
-        height: 20,
-
-        borderRadius: 4,
-        justifyContent: 'center',
-        alignItems: 'center',
-
-        backgroundColor: '#fff',
-
-        // shadow
-        shadowColor: '#000',
-        shadowOffset: { width: 0.5, height: 0.5 },
-        shadowOpacity: 0.5,
-        shadowRadius: 1.5,
-        elevation: 5,
-    },
-    checkboxInner: {
-        width: 14,
-        height: 14,
-        borderRadius: 4,
-        backgroundColor: '#aaa',
-    },
-});
+            // shadow
+            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.35)',
+        },
+        scoreText: {
+            color: '#fff',
+            fontWeight: 'bold',
+            fontSize: 14,
+        },
+        ratingLabel: {
+            color: 'gray',
+            fontWeight: '600',
+        },
+    });
