@@ -1,6 +1,12 @@
+import Colors from '@/constants/Colors';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
+import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const Description = () => {
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
+
     return (
         <View>
             <Text style={styles.title}>Description</Text>
@@ -16,19 +22,21 @@ const Description = () => {
 
 export default Description;
 
-const styles = StyleSheet.create({
-    title: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginVertical: 20,
-    },
-    card: {
-        padding: 16,
-    },
-    text: {
-        fontSize: 14,
-        color: '#666',
-        fontWeight: '400',
-        letterSpacing: 0.5,
-    },
-});
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        title: {
+            fontSize: 18,
+            fontWeight: '600',
+            marginVertical: 20,
+            color: colors.textTitle,
+        },
+        card: {
+            padding: 16,
+        },
+        text: {
+            fontSize: 14,
+            color: colors.textSecondary,
+            fontWeight: '400',
+            letterSpacing: 0.5,
+        },
+    });

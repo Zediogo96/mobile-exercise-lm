@@ -47,6 +47,9 @@ export default {
         skeletonHighlight: '#d6d6d6', // Light Gray Highlight
         skeletonBackground: '#f0f0f0', // Very Light Gray Background
         skeletonTitleBackground: '#e0e0e0', // Slightly Darker Light Gray
+
+        phoneIcon: '#25D366', // Example: WhatsApp green
+        emailIcon: '#007AFF', // Example: Blue
     },
     dark: {
         ...common,
@@ -87,5 +90,11 @@ export default {
         skeletonHighlight: '#444444', // Dark Gray Highlight
         skeletonBackground: '#333333', // Darker Gray Background
         skeletonTitleBackground: '#282828', // Slightly Lighter Dark Gray
+
+        phoneIcon: '#25D366', // Example: WhatsApp green
+        emailIcon: '#007AFF', // Example: Blue
+
+        // shadow
+        
     },
 };

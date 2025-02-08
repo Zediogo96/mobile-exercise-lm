@@ -64,7 +64,7 @@ const BudgetPicker = () => {
                         <Text style={styles.smallLabel}> Min </Text>
                         <Animated.Text style={[styles.valueText, minValueStyle]}>€ {priceRange.min}</Animated.Text>
                     </View>
-                    <Text style={{ fontSize: 20 }}> - </Text>
+                    <Text style={styles.hyphen}> - </Text>
                     <View style={styles.bottomCardContainer}>
                         <Text style={styles.smallLabel}> Max </Text>
                         <Animated.Text style={[styles.valueText, maxValueStyle]}>€ {priceRange.max}</Animated.Text>
@@ -106,10 +106,11 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.15)',
         },
 
-        smallLabel: { fontSize: 12, color: 'black', letterSpacing: 1 },
+        smallLabel: { fontSize: 12, letterSpacing: 1, color: colors.textSecondary },
         valueText: {
             fontSize: 16,
             fontWeight: 'bold',
-            color: '#999',
+            color: colors.textTitle,
         },
+        hyphen: { fontSize: 16, color: colors.textTitle },
     });

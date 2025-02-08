@@ -79,6 +79,7 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             flex: 1,
             height: 50,
             backgroundColor: colors.searchBarHomeColor,
+            color: colors.text,
             borderRadius: 10,
             paddingHorizontal: 15,
             paddingVertical: 10,

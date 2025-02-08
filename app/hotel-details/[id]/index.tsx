@@ -9,13 +9,15 @@ import LocationText from '@/components/hotel-details/LocationText';
 import PriceAndAction from '@/components/hotel-details/Price&Action';
 import RatingStars from '@/components/hotel-details/RatingStars';
 import BookmarkButton from '@/components/UI/BookmarkButton';
+import Colors from '@/constants/Colors';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 
 import { useHotelById } from '@/services/react-query/hotels';
 import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -28,6 +30,9 @@ const AnimatedFastImageWrapper = Animated.createAnimatedComponent(FastImageWrapp
 const Details = () => {
     const insets = useSafeAreaInsets();
     const router = useRouter();
+
+    const colors = useColorsFromTheme();
+    const styles = useMemo(() => makeStyles(colors), [colors]);
 
     const { id } = useLocalSearchParams();
     const { data: hotel } = useHotelById(id as string);
@@ -70,7 +75,7 @@ const Details = () => {
         <>
             <Animated.ScrollView
                 showsVerticalScrollIndicator={false}
-                style={s.container}
+                style={styles.container}
                 scrollEventThrottle={16}
                 onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
                     useNativeDriver: true,
@@ -99,7 +104,7 @@ const Details = () => {
                             renderItem={({ item }) => (
                                 <AnimatedFastImageWrapper
                                     source={{ uri: item }}
-                                    style={[s.headerImage]}
+                                    style={[styles.headerImage]}
                                     resizeMode="cover"
                                 />
                             )}
@@ -108,7 +113,7 @@ const Details = () => {
                         <AnimatedFastImageWrapper
                             source={{ uri: hotel.gallery[0] }}
                             style={[
-                                s.headerImage,
+                                styles.headerImage,
                                 { transform: [{ scale: headerScale }, { translateY: headerTranslateY }] },
                             ]}
                             resizeMode="cover"
@@ -120,8 +125,13 @@ const Details = () => {
                 </View>
 
                 {/* Floating buttons overlay */}
-                <View style={[s.floatingContainer, { top: insets.top + 5 }]}>
-                    <BlurView experimentalBlurMethod="dimezisBlurView" intensity={25} tint="light" style={s.iconButton}>
+                <View style={[styles.floatingContainer, { top: insets.top + 5 }]}>
+                    <BlurView
+                        experimentalBlurMethod="dimezisBlurView"
+                        intensity={25}
+                        tint="light"
+                        style={styles.iconButton}
+                    >
                         <TouchableOpacity onPress={router.back}>
                             <Ionicons name="chevron-back" size={22} color="black" />
                         </TouchableOpacity>
@@ -131,9 +141,9 @@ const Details = () => {
                 </View>
 
                 {/* The rest of your content */}
-                <View style={s.detailsContainer}>
-                    <View style={s.hotelNameContainer}>
-                        <Text style={s.hotelName}>{hotel.name}</Text>
+                <View style={styles.detailsContainer}>
+                    <View style={styles.hotelNameContainer}>
+                        <Text style={styles.hotelName}>{hotel.name}</Text>
                         <RatingStars count={hotel.stars} />
                     </View>
 
@@ -141,7 +151,7 @@ const Details = () => {
 
                     <AmenitiesSection />
 
-                    <View style={s.divider} />
+                    <View style={styles.divider} />
 
                     <Description />
 
@@ -152,7 +162,7 @@ const Details = () => {
                     <LocationMap hotel={hotel} />
                 </View>
 
-                <View style={s.bottomSpacer} />
+                <View style={styles.bottomSpacer} />
             </Animated.ScrollView>
             <PriceAndAction
                 price={hotel.price}
@@ -164,59 +174,62 @@ const Details = () => {
     );
 };
 
-const s = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    headerImage: {
-        width: IMAGE_WIDTH,
-        height: IMAGE_HEIGHT,
-    },
-    detailsContainer: {
-        flex: 1,
-        paddingHorizontal: 25,
-        padding: 35,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        marginTop: -30,
-        borderCurve: 'continuous',
-        backgroundColor: '#fff',
-    },
-    hotelName: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
+const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: colors.background,
+        },
+        headerImage: {
+            width: IMAGE_WIDTH,
+            height: IMAGE_HEIGHT,
+        },
+        detailsContainer: {
+            flex: 1,
+            paddingHorizontal: 25,
+            padding: 35,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            marginTop: -30,
+            borderCurve: 'continuous',
+            backgroundColor: colors.cardBackground,
+        },
+        hotelNameContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
+        hotelName: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: colors.textTitle,
+        },
 
-    floatingContainer: {
-        position: 'absolute',
-        left: 20,
-        right: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    iconButton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.4)',
-        overflow: 'hidden',
-    },
-    hotelNameContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    divider: {
-        height: 1,
-        backgroundColor: '#E0E0E0',
-        marginTop: 20,
-    },
-    bottomSpacer: {
-        height: 100,
-    },
-});
+        floatingContainer: {
+            position: 'absolute',
+            left: 20,
+            right: 20,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+        },
+        iconButton: {
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+            overflow: 'hidden',
+        },
+        divider: {
+            height: 1,
+            backgroundColor: '#E0E0E0',
+            marginTop: 20,
+        },
+        bottomSpacer: {
+            height: 100,
+            backgroundColor: colors.cardBackground,
+        },
+    });
 
 export default Details;
