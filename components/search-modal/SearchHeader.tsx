@@ -1,9 +1,10 @@
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import AnimatedTextInput from '@/components/UI/animated-components/AnimatedTextInput';
 import AnimatedTouchableOpacity from '@/components/UI/animated-components/AnimatedTouchableOpacity';
 import Colors from '@/constants/Colors';
 import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { MaterialIcons } from '@expo/vector-icons'; // Import the icon from Expo
-import { BlurView } from 'expo-blur';
+
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
@@ -54,10 +55,10 @@ export const SearchHeader = ({ searchQuery, setSearchQuery, hotelsCount }: Searc
                     Filtered hotels
                 </Animated.Text>
                 <Animated.View entering={FadeInRight.delay(250)}>
-                    <BlurView style={styles.blurView} intensity={35} tint="dark">
+                    <BlurFallbackView style={styles.blurView} intensity={35} tint="dark">
                         <MaterialIcons name="search" size={20} color="white" />
                         <Text style={styles.resultsText}>{hotelsCount || 0} results</Text>
-                    </BlurView>
+                    </BlurFallbackView>
                 </Animated.View>
             </View>
 

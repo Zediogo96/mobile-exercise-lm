@@ -1,9 +1,10 @@
 import BudgetPicker from '@/components/filter-modal/BudgetPicker';
 import StarsPicker from '@/components/filter-modal/StarsPicker';
 import UserRating from '@/components/filter-modal/UserRatingPicker';
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import Colors from '@/constants/Colors';
 import useColorsFromTheme from '@/hooks/useColorsFromTheme';
-import { BlurView } from 'expo-blur';
+
 import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -32,14 +33,14 @@ export default function FilterModal() {
                 <UserRating />
 
                 {/* View at the bottom to add padding */}
-                <View style={{ height: insets.bottom + 50 }} />
+                <View style={{ height: 100 }} />
             </ScrollView>
             {/* View results button */}
-            <BlurView intensity={20} tint="light" style={styles.bottomContainer}>
+            <BlurFallbackView intensity={20} tint="light" style={styles.bottomContainer}>
                 <TouchableOpacity style={styles.button} onPress={onViewResults}>
                     <Text style={styles.buttonText}>View Results</Text>
                 </TouchableOpacity>
-            </BlurView>
+            </BlurFallbackView>
         </>
     );
 }

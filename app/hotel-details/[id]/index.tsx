@@ -1,3 +1,4 @@
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import FastImageWrapper from '@/components/Helper/FastImageWrapper';
 import AmenitiesSection from '@/components/hotel-details/AmenitiesSection';
 import CheckInOutDetails from '@/components/hotel-details/CheckInOutDetails';
@@ -15,7 +16,7 @@ import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { useHotelById } from '@/services/react-query/hotels';
 import { useBookmarkStore } from '@/services/zustand/bookmarksStore';
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
+
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -126,8 +127,8 @@ const Details = () => {
 
                 {/* Floating buttons overlay */}
                 <View style={[styles.floatingContainer, { top: insets.top + 5 }]}>
-                    <BlurView
-                        experimentalBlurMethod="dimezisBlurView"
+                    <BlurFallbackView
+                        experimentalBlurMethod="dimezisBlurFallbackView"
                         intensity={25}
                         tint="light"
                         style={styles.iconButton}
@@ -135,7 +136,7 @@ const Details = () => {
                         <TouchableOpacity onPress={router.back}>
                             <Ionicons name="chevron-back" size={22} color="black" />
                         </TouchableOpacity>
-                    </BlurView>
+                    </BlurFallbackView>
 
                     <BookmarkButton bookmarked={bookmarked} handleBookmarkPress={handleBookmarkPress} />
                 </View>

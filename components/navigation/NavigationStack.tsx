@@ -1,5 +1,7 @@
 import FilterModalHeader from '@/components/filter-modal/FilterModalHeader';
+import { JsStack } from '@/components/navigation/JsStack';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { TransitionPresets } from '@react-navigation/stack';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { Platform, TouchableOpacity } from 'react-native';
@@ -13,7 +15,7 @@ const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, head
     const router = useRouter();
 
     return (
-        <Stack
+        <JsStack
             screenOptions={{
                 headerShown: false,
                 gestureEnabled: true,
@@ -37,24 +39,19 @@ const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, head
                     animation: 'fade_from_bottom', // ✅ Smooth transition
                 }}
             />
-            <Stack.Screen
+
+            <JsStack.Screen
                 name="filter-modal/index"
                 options={{
-                    presentation: 'modal', // ✅ Makes modal background transparent
-                    animation: 'slide_from_bottom', // ✅ Smooth transition
+                    ...TransitionPresets.ModalPresentationIOS,
+                    presentation: 'modal',
+                    gestureEnabled: true,
                     headerShown: true,
                     header: () => <FilterModalHeader title="Filter" />,
                 }}
             />
-            <Stack.Screen
-                name="hotel-details/[id]/index"
-                options={{
-                    // workaround for issue of blur view affecting
-                    // animation, not allowing opacity to be set properly
-                    animation: Platform.OS === 'android' ? 'fade_from_bottom' : 'simple_push',
-                    animationDuration: Platform.OS === 'android' ? undefined : 200,
-                }}
-            />
+
+            <Stack.Screen name="hotel-details/[id]/index" />
 
             <Stack.Screen
                 name="filter-results/index"
@@ -78,7 +75,7 @@ const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, head
                     headerSearchBarOptions: headerSearchBarOptions,
                 }}
             />
-        </Stack>
+        </JsStack>
     );
 };
 

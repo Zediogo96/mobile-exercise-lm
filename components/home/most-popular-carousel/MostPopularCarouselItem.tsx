@@ -1,3 +1,4 @@
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import FastImageWrapper from '@/components/Helper/FastImageWrapper';
 import {
     MOST_POPULAR_CAROUSEL_CARD_HEIGHT,
@@ -8,11 +9,9 @@ import RatingStars from '@/components/hotel-details/RatingStars';
 import Colors from '@/constants/Colors';
 import { Hotel } from '@/types/hotel.types';
 import { Entypo } from '@expo/vector-icons';
-import { useIsFocused } from '@react-navigation/native';
-import { BlurView } from 'expo-blur';
 import { Link } from 'expo-router';
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { Platform, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 const AnimatedFastImageWrapper = Animated.createAnimatedComponent(FastImageWrapper);
@@ -21,9 +20,9 @@ const MostPopularCarouselItem = (item: Hotel) => {
     const theme = useColorScheme() ?? 'light';
     const styles = useMemo(() => makeStyles(Colors[theme]), [theme]);
 
-    const isFocused = useIsFocused();
-
-    console.log('MostPopular -> isFocused', isFocused);
+    const colors = Platform.select({
+        ios: {},
+    });
 
     return (
         <Link
@@ -39,33 +38,24 @@ const MostPopularCarouselItem = (item: Hotel) => {
                     source={{ uri: item.gallery[0] }}
                     resizeMode="cover"
                 />
-                {isFocused && (
-                    <BlurView intensity={40} tint="dark" style={styles.topContainer}>
-                        <RatingStars count={item.stars} fontStyle={styles.fontStyleRatingStars} />
-                    </BlurView>
-                )}
 
-                {isFocused && (
-                    <BlurView
-                        blurReductionFactor={2}
-                        experimentalBlurMethod="dimezisBlurView"
-                        intensity={65}
-                        tint="light"
-                        style={styles.blurInformationContainer}
-                    >
-                        <View style={{ flex: 1, rowGap: 3 }}>
-                            <Text style={[styles.text, styles.textMain]} numberOfLines={1}>
-                                {item.name}
+                <BlurFallbackView intensity={40} tint="dark" style={styles.topContainer}>
+                    <RatingStars count={item.stars} fontStyle={styles.fontStyleRatingStars} />
+                </BlurFallbackView>
+
+                <BlurFallbackView intensity={65} tint="light" style={styles.blurInformationContainer}>
+                    <View style={{ flex: 1, rowGap: 3 }}>
+                        <Text style={[styles.text, styles.textMain]} numberOfLines={1}>
+                            {item.name}
+                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                            <Entypo name="location-pin" size={12} color={Platform.OS === 'ios' ? 'white' : 'black'} />
+                            <Text style={styles.text} numberOfLines={1}>
+                                {item.location.city}
                             </Text>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-                                <Entypo name="location-pin" size={12} color="white" />
-                                <Text style={styles.text} numberOfLines={1}>
-                                    {item.location.city}
-                                </Text>
-                            </View>
                         </View>
-                    </BlurView>
-                )}
+                    </View>
+                </BlurFallbackView>
             </Animated.View>
         </Link>
     );
@@ -97,11 +87,12 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             margin: 8,
 
             padding: 8,
-            borderRadius: 4,
+            borderRadius: 8,
             borderCurve: 'continuous',
+            overflow: 'hidden',
         },
         text: {
-            color: colors.mostPopularCarouselTitle,
+            color: Platform.OS === 'ios' ? 'white' : 'black',
             fontSize: 11,
         },
         textMain: {

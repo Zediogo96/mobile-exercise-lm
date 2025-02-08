@@ -1,8 +1,8 @@
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import RatingStars from '@/components/hotel-details/RatingStars';
 import AnimatedTouchableOpacity from '@/components/UI/animated-components/AnimatedTouchableOpacity';
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
 import { Hotel } from '@/types/hotel.types';
-import { BlurView } from 'expo-blur';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
@@ -16,7 +16,7 @@ interface HotelCardProps {
 export const HotelSmallerCard = ({ hotel, index, onPress }: HotelCardProps) => {
     return (
         <AnimatedTouchableOpacity onPress={() => onPress(hotel.id.toString())} entering={FadeInUp.delay(index * 50)}>
-            <BlurView intensity={5} tint="light" style={styles.card}>
+            <BlurFallbackView intensity={5} tint="light" style={styles.card}>
                 <View style={styles.centeredRow}>
                     <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
                         {hotel.name}
@@ -33,7 +33,7 @@ export const HotelSmallerCard = ({ hotel, index, onPress }: HotelCardProps) => {
                         <Text style={styles.perNight}> / night</Text>
                     </Text>
                 </View>
-            </BlurView>
+            </BlurFallbackView>
         </AnimatedTouchableOpacity>
     );
 };

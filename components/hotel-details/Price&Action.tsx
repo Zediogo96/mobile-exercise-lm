@@ -1,8 +1,9 @@
 // PriceAndAction.tsx
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import Colors from '@/constants/Colors';
 import { CURRENCY_SYMBOL_MAP } from '@/constants/currencies';
 import useColorsFromTheme from '@/hooks/useColorsFromTheme';
-import { BlurView } from 'expo-blur';
+
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -21,11 +22,11 @@ const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency, hotelId,
 
     return (
         <View style={styles.blurWrapper}>
-            <BlurView
+            <BlurFallbackView
                 intensity={100}
                 tint="light"
                 blurReductionFactor={2}
-                experimentalBlurMethod="dimezisBlurView"
+                experimentalBlurMethod="dimezisBlurFallbackView"
                 style={[styles.blurContainer, { paddingBottom: Math.max(bottomInset, 16) }]}
             >
                 {/* Left section */}
@@ -41,7 +42,7 @@ const PriceAndAction: React.FC<PriceSectionProps> = ({ price, currency, hotelId,
                 <TouchableOpacity style={styles.viewDealButton}>
                     <Text style={styles.textButton}>Book now</Text>
                 </TouchableOpacity>
-            </BlurView>
+            </BlurFallbackView>
         </View>
     );
 };

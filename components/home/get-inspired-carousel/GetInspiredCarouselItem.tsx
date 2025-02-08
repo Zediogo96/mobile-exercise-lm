@@ -1,3 +1,4 @@
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import {
     GET_INSPIRED_CARD_BORDER_RADIUS,
     GET_INSPIRED_CARD_HEIGHT,
@@ -5,8 +6,6 @@ import {
     GET_INSPIRED_MARGIN_CARDS,
 } from '@/components/home/get-inspired-carousel/get-inspired-carousel-variables';
 import AnimatedTouchableOpacity from '@/components/UI/animated-components/AnimatedTouchableOpacity';
-import { useIsFocused } from '@react-navigation/native';
-import { BlurView } from 'expo-blur';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { Extrapolate, FadeIn, interpolate, useAnimatedStyle } from 'react-native-reanimated';
@@ -14,10 +13,6 @@ import Animated, { Extrapolate, FadeIn, interpolate, useAnimatedStyle } from 're
 const PARALLAX_FACTOR = 30; // Controls parallax strength
 
 const GetInspiredCarouselItem = ({ item, index, scrollX }: { item: any; index: number; scrollX: any }) => {
-    const isFocused = useIsFocused();
-
-    console.log('GetInspiredCarouselItem -> isFocused', isFocused);
-
     const animatedStyle = useAnimatedStyle(() => {
         const inputRange = [
             (index - 1) * (GET_INSPIRED_CARD_WIDTH + GET_INSPIRED_MARGIN_CARDS),
@@ -59,16 +54,15 @@ const GetInspiredCarouselItem = ({ item, index, scrollX }: { item: any; index: n
         >
             <Animated.View style={[styles.card, animatedStyle]}>
                 <Animated.Image source={item.source} style={[styles.image, imageAnimatedStyle]} resizeMode="cover" />
-                {isFocused && (
-                    <BlurView
-                        intensity={10}
-                        style={{ position: 'absolute', right: 5, bottom: 5, borderRadius: 10, overflow: 'hidden' }}
-                    >
-                        <Animated.Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', margin: 10 }}>
-                            {item.label} {/* Directly using the label from the object */}
-                        </Animated.Text>
-                    </BlurView>
-                )}
+
+                <BlurFallbackView
+                    intensity={10}
+                    style={{ position: 'absolute', right: 5, bottom: 5, borderRadius: 10, overflow: 'hidden' }}
+                >
+                    <Animated.Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', margin: 10 }}>
+                        {item.label} {/* Directly using the label from the object */}
+                    </Animated.Text>
+                </BlurFallbackView>
             </Animated.View>
         </AnimatedTouchableOpacity>
     );

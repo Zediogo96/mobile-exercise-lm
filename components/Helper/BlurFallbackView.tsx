@@ -1,6 +1,6 @@
 import { BlurView } from 'expo-blur';
 import React from 'react';
-import { Platform, View, ViewStyle } from 'react-native';
+import { Platform, StyleSheet, View, ViewStyle } from 'react-native';
 
 interface BlurFallbackProps {
     intensity?: number;
@@ -9,7 +9,7 @@ interface BlurFallbackProps {
     children?: React.ReactNode;
 }
 
-const BlurFallbackView: React.FC<BlurFallbackProps> = ({ intensity = 20, tint = 'default', style, children }) => {
+const BlurFallback: React.FC<BlurFallbackProps> = ({ intensity = 20, tint = 'default', style, children }) => {
     if (Platform.OS === 'ios') {
         return (
             <BlurView style={style} intensity={intensity} tint={tint}>
@@ -18,19 +18,41 @@ const BlurFallbackView: React.FC<BlurFallbackProps> = ({ intensity = 20, tint = 
         );
     }
 
-    // Calculate RGBA based on intensity and tint for Android
-    let backgroundColor = 'rgba(255, 255, 255, 0.3)'; // Default light
-    if (tint === 'dark') {
-        backgroundColor = 'rgba(0, 0, 0, 0.3)'; // Dark
-    } else if (tint === 'default') {
-        backgroundColor = 'rgba(200, 200, 200, 0.3)'; // Default
-    }
+    const baseColor = tint === 'dark' ? 'rgba(0, 0, 0, ' : 'rgba(255, 255, 255, ';
+    const opacity = (intensity / 100) * 0.4; // Reduced opacity for layering
 
-    // Adjust opacity based on intensity (linear approximation)
-    const opacity = (intensity / 100) * 0.6; // Adjust multiplier as needed
-    const rgbaColor = backgroundColor.replace(/, 0\.3\)/, `, ${opacity.toFixed(2)})`);
-
-    return <View style={[style, { backgroundColor: rgbaColor }]}>{children}</View>;
+    return (
+        <View style={style}>
+            <View
+                style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: baseColor + (opacity * 0.8).toFixed(2) + ')',
+                }}
+            />
+            <View
+                style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: baseColor + (opacity * 0.6).toFixed(2) + ')',
+                    transform: [{ translateX: 1 }, { translateY: 1 }],
+                }}
+            />
+            <View
+                style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: baseColor + (opacity * 0.4).toFixed(2) + ')',
+                    transform: [{ translateX: -1 }, { translateY: -1 }],
+                }}
+            />
+            <View
+                style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: baseColor + (opacity * 0.2).toFixed(2) + ')',
+                    transform: [{ translateX: 2 }, { translateY: -2 }],
+                }}
+            />
+            {children}
+        </View>
+    );
 };
 
-export default BlurFallbackView;
+export default BlurFallback;

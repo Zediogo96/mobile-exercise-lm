@@ -1,5 +1,6 @@
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
+
 import * as Haptics from 'expo-haptics';
 import React, { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -27,13 +28,13 @@ const BookmarkButton = ({ bookmarked, handleBookmarkPress }: BookmarkButtonProps
     });
 
     return (
-        <BlurView experimentalBlurMethod="dimezisBlurView" intensity={25} tint="light" style={styles.iconButton}>
+        <BlurFallbackView intensity={25} tint="light" style={styles.iconButton}>
             <TouchableOpacity onPress={handleBookmarkPress} activeOpacity={0.7}>
                 <Animated.View style={animatedStyle}>
                     <Ionicons name={bookmarked ? 'bookmark' : 'bookmark-outline'} size={22} color="black" />
                 </Animated.View>
             </TouchableOpacity>
-        </BlurView>
+        </BlurFallbackView>
     );
 };
 

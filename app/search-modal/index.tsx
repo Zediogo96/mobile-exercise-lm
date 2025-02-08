@@ -1,9 +1,9 @@
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import EmptyResults from '@/components/search-modal/empty-results';
 import { HotelSmallerCard } from '@/components/search-modal/HotelSmallerCard';
 import { SearchHeader } from '@/components/search-modal/SearchHeader';
 import { useQuicksearchHotels } from '@/services/react-query/hotels';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
-import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -37,7 +37,7 @@ export default function SearchScreen() {
 
     return (
         <View style={styles.container}>
-            <BlurView intensity={35} tint="dark" style={[styles.blurContainer, { paddingTop: insets.top }]}>
+            <BlurFallbackView intensity={35} tint="dark" style={[styles.blurContainer, { paddingTop: insets.top }]}>
                 <SearchHeader
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
@@ -52,7 +52,7 @@ export default function SearchScreen() {
                 >
                     {renderResults()}
                 </ScrollView>
-            </BlurView>
+            </BlurFallbackView>
         </View>
     );
 }

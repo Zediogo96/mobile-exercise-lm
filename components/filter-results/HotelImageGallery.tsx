@@ -1,5 +1,6 @@
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import FastImageWrapper from '@/components/Helper/FastImageWrapper';
-import { BlurView } from 'expo-blur';
+
 import { useRouter } from 'expo-router';
 import React, { useCallback, useRef } from 'react';
 import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -91,11 +92,11 @@ interface CustomPaginationProps {
 
 const CustomPagination: React.FC<CustomPaginationProps> = ({ length, scrollX }) => {
     return (
-        <BlurView style={styles.paginationContainer} intensity={50} tint="light">
+        <BlurFallbackView style={styles.paginationContainer} intensity={50} tint="light">
             {Array.from({ length }).map((_, index) => (
                 <AnimatedDot key={index} index={index} scrollX={scrollX} />
             ))}
-        </BlurView>
+        </BlurFallbackView>
     );
 };
 

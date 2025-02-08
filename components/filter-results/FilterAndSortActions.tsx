@@ -1,7 +1,8 @@
+import BlurFallbackView from '@/components/Helper/BlurFallbackView';
 import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
-import { BlurView } from 'expo-blur';
+
 import { useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -13,17 +14,17 @@ type FilterAndSortActionsProps = {
 
 const FilterAndSortActions = ({ handleSortPress, disabled }: FilterAndSortActionsProps) => {
     const router = useRouter();
-    const isFocused = useIsFocused();
+
     const { hasFiltersApplied, hasSortApplied } = useFilterStore();
 
     const handleFilterPress = useCallback(() => {
         router.push('/filter-modal');
     }, []);
 
-    if (!isFocused) return null;
+
 
     return (
-        <BlurView intensity={100} tint="dark" style={styles.blurView}>
+        <BlurFallbackView intensity={100} tint="dark" style={styles.blurView}>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={handleFilterPress}>
                     <View>
@@ -43,7 +44,7 @@ const FilterAndSortActions = ({ handleSortPress, disabled }: FilterAndSortAction
                     </View>
                 </TouchableOpacity>
             </View>
-        </BlurView>
+        </BlurFallbackView>
     );
 };
 
