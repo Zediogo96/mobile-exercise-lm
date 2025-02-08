@@ -1,8 +1,6 @@
 import FastImageWrapper from '@/components/Helper/FastImageWrapper';
-import {
-    MOST_POPULAR_CAROUSEL_CARD_HEIGHT,
-    MOST_POPULAR_CAROUSEL_CARD_WIDTH,
-} from '@/components/home/most-popular-carousel/MostPopularCarousel';
+import { MOST_POPULAR_CAROUSEL_CARD_HEIGHT, MOST_POPULAR_CAROUSEL_CARD_WIDTH } from '@/components/home/most-popular-carousel/most-popular-carousel-variables';
+
 import RatingStars from '@/components/hotel-details/RatingStars';
 import Colors from '@/constants/Colors';
 import { Hotel } from '@/types/hotel.types';

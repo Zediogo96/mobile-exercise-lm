@@ -1,19 +1,19 @@
 import { useMostPopularHotels } from '@/services/react-query/hotels';
 import { Hotel } from '@/types/hotel.types';
 import React, { useMemo, useRef } from 'react';
-import { Dimensions, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { StyleSheet, Text, useColorScheme, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-
+import {
+    MOST_POPULAR_CAROUSEL_CARD_HEIGHT,
+    MOST_POPULAR_CAROUSEL_CARD_WIDTH,
+    SLIDER_WIDTH,
+} from '@/components/home/most-popular-carousel/most-popular-carousel-variables';
 import MostPopularCarouselItem from '@/components/home/most-popular-carousel/MostPopularCarouselItem';
 import Colors from '@/constants/Colors';
 import Animated, { FadeInLeft } from 'react-native-reanimated';
 
 // Adjusted dimensions for smaller cards
-const SLIDER_WIDTH = screenWidth;
-export const MOST_POPULAR_CAROUSEL_CARD_WIDTH = screenWidth * 0.45;
-export const MOST_POPULAR_CAROUSEL_CARD_HEIGHT = screenHeight * 0.25;
 
 const MostPopularCarousel = () => {
     const theme = useColorScheme() ?? 'light';

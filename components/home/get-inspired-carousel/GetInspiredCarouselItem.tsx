@@ -3,7 +3,7 @@ import {
     GET_INSPIRED_CARD_HEIGHT,
     GET_INSPIRED_CARD_WIDTH,
     GET_INSPIRED_MARGIN_CARDS,
-} from '@/components/home/get-inspired-carousel/GetInspiredCarousel';
+} from '@/components/home/get-inspired-carousel/get-inspired-carousel-variables';
 import { BlurView } from 'expo-blur';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';

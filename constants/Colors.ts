@@ -29,10 +29,14 @@ export default {
         textDark: '#333333', // Dark Gray
         shadow: 'rgba(0, 0, 0, 0.08)', // Subtle Shadow
 
+        // navbar
         navbarBackground: '#FFFFFF',
         tabBarActiveColor: 'black',
         tabBarInactiveColor: '#bbb',
         tabBarShadowColor: 'rgba(0, 0, 0, 0.1)',
+
+        // bookmarks
+        bookmarkCardBackground: '#fff',
     },
     dark: {
         ...common,
@@ -56,5 +60,8 @@ export default {
         tabBarActiveColor: '#fff',
         tabBarInactiveColor: '#bbb',
         tabBarShadowColor: 'rgba(0, 0, 0, 0.1)',
+
+        // bookmarks
+        bookmarkCardBackground: '#333333',
     },
 };

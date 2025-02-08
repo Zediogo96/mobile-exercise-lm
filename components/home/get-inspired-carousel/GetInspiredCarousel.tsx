@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInLeft, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 
 import GetInspiredBeach from '@/assets/images/get-inspired/get-inspired-beach.jpg';
@@ -8,17 +8,14 @@ import GetInspiredFestival from '@/assets/images/get-inspired/get-inspired-festi
 import GetInspiredRelax from '@/assets/images/get-inspired/get-inspired-relax.jpg';
 import GetInspiredRustic from '@/assets/images/get-inspired/get-inspired-rustic.jpg';
 import GetInspiredCarouselItem from '@/components/home/get-inspired-carousel/GetInspiredCarouselItem';
+import {
+    GET_INSPIRED_CARD_WIDTH,
+    GET_INSPIRED_MARGIN_CARDS,
+} from '@/components/home/get-inspired-carousel/get-inspired-carousel-variables';
 import Colors from '@/constants/Colors';
 import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
-export const GET_INSPIRED_CARD_WIDTH = SCREEN_WIDTH * 0.4;
-export const GET_INSPIRED_CARD_HEIGHT = 200;
-export const GET_INSPIRED_CARD_BORDER_RADIUS = 20;
-
-export const GET_INSPIRED_MARGIN_CARDS = 8;
 
 // Refactored images array with labels
 const images = [
