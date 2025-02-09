@@ -82,9 +82,33 @@ This project utilizes `patch-package` to address issues in third-party libraries
 -   **`@react-native-masked-view/masked-view`:**
     -   Resolved a rendering issue on Android devices when used in conjunction with `react-native-skeleton-placeholder`. The original implementation resulted in a pitch-black background instead of the expected masked content. The patch ensures correct rendering of the masked view, allowing for proper display of skeleton placeholders.
 
-## Recordings
+## Recordings Showcase
 
 ### Home Screen
 
-<video src="/recordings/home-page-light.mov" controls="controls" style="max-width: 730px;">
-</video>
+https://github.com/user-attachments/assets/f818bbc9-cc8f-4a58-a17c-7b3c7d9d900a
+
+### Search 
+
+https://github.com/user-attachments/assets/9dca86b5-ae21-4c67-bd40-b1b44a1b78db
+
+### Filter
+
+https://github.com/user-attachments/assets/694d2a0c-baa0-4967-97fd-b44224fbd856
+
+### Details
+
+https://github.com/user-attachments/assets/fc5bbe38-d8bd-457b-b277-8d92aaa2c606
+
+### Bookmarks
+
+https://github.com/user-attachments/assets/4f7b7ea8-6835-4084-be7f-e17bceea7864
+
+### Dark Mode
+
+https://github.com/user-attachments/assets/67bb59dd-6b12-49b6-a5f4-cc3f82f69a4f
+
+
+
+
+
