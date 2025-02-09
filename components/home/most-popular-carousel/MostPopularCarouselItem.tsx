@@ -66,7 +66,7 @@ export default MostPopularCarouselItem;
 const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
     StyleSheet.create({
         card: {
-            borderRadius: 12, // Slightly reduced radius
+            borderRadius: 12,
             borderCurve: 'continuous',
 
             width: MOST_POPULAR_CAROUSEL_CARD_WIDTH,

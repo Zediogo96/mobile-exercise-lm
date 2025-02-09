@@ -53,11 +53,11 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             flexDirection: 'row',
             alignItems: 'center',
             marginRight: 15,
-            gap: 8, // Adds space between icon & text
+            gap: 8,
         },
         text: {
             fontSize: 14,
             fontWeight: '400',
-            color: colors.textTitle
+            color: colors.textTitle,
         },
     });

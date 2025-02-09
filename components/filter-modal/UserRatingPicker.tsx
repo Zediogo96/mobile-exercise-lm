@@ -119,7 +119,6 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             alignItems: 'center',
             marginRight: 20,
 
-            // shadow
             boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.35)',
         },
         scoreText: {

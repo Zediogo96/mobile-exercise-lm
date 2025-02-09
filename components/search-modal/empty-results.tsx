@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         fontWeight: 'bold',
 
-        // text shadow
         textShadowColor: 'rgba(0, 0, 0, 0.5)',
         textShadowOffset: { width: 0, height: 1 },
         textShadowRadius: 2,

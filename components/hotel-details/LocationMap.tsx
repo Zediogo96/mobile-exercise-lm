@@ -45,14 +45,14 @@ const s = StyleSheet.create({
         height: 250,
         marginTop: 20,
         borderRadius: 10,
-        overflow: 'hidden', // Ensure content is clipped
+        overflow: 'hidden',
 
         boxShadow: '0px 1px 2px 1px rgba(0, 0, 0, 0.15)',
     },
     mapWrapper: {
         flex: 1,
         borderRadius: 10,
-        overflow: 'hidden', // Clip the map inside
+        overflow: 'hidden',
     },
     map: {
         flex: 1,

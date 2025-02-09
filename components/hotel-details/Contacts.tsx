@@ -50,7 +50,7 @@ const ContactsSection: React.FC<ContactsSectionProps> = ({ contact }) => {
                     iconType="FontAwesome5"
                     text={phoneNumber}
                     onPress={handlePhonePress}
-                    iconColor={colors.phoneIcon} // Use the new color
+                    iconColor={colors.phoneIcon}
                     colors={colors}
                     styles={styles}
                 />
@@ -59,7 +59,7 @@ const ContactsSection: React.FC<ContactsSectionProps> = ({ contact }) => {
                     iconType="MaterialIcons"
                     text={email}
                     onPress={handleEmailPress}
-                    iconColor={colors.emailIcon} // Use the new color
+                    iconColor={colors.emailIcon}
                     colors={colors}
                     styles={styles}
                 />

@@ -59,7 +59,7 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             backgroundColor: colors.filterHeaderBackground,
             borderBottomWidth: 1,
             borderBottomColor: colors.filterHeaderSeparator,
-            alignItems: 'center', // Vertically center all sections
+            alignItems: 'center',
         },
         leftContainer: {
             flex: 1,
