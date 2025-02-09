@@ -86,4 +86,5 @@ This project utilizes `patch-package` to address issues in third-party libraries
 
 ### Home Screen
 
-[Home Screen Recording](/recordings/home-page-light.mov)
+<video src="/recordings/home-page-light.mov" controls="controls" style="max-width: 730px;">
+</video>
