@@ -1,13 +1,11 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
-import { useFilterStore } from '@/services/zustand/hotelFilterStore';
 
 import NavigationStack from '@/components/navigation/NavigationStack';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -56,34 +54,15 @@ const queryClient = new QueryClient();
 
 function RootLayoutNav() {
     const colorScheme = useColorScheme();
-    const router = useRouter();
-
-    const { searchQuery, setSearchQuery } = useFilterStore();
 
     const theme = colorScheme === 'dark' ? DarkTheme : DefaultTheme;
-
-    const headerTintColor = theme.colors.text;
-
-    const headerSearchBarOptions = {
-        placeholder: 'Search for hotels',
-        hideWhenScrolling: false,
-        onChangeText: (text = { nativeEvent: { text: '' } }) => {
-            setSearchQuery(text.nativeEvent.text);
-        },
-        onBlur: () => {
-            setSearchQuery(searchQuery);
-        },
-    };
 
     return (
         <ThemeProvider value={theme}>
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <BottomSheetModalProvider>
                     <QueryClientProvider client={queryClient}>
-                        <NavigationStack
-                            headerTintColor={headerTintColor}
-                            headerSearchBarOptions={headerSearchBarOptions}
-                        />
+                        <NavigationStack />
                         <StatusBar translucent backgroundColor="transparent" />
                     </QueryClientProvider>
                 </BottomSheetModalProvider>

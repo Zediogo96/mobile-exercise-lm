@@ -4,7 +4,7 @@ import Animated, { FadeInLeft } from 'react-native-reanimated';
 
 const EmptyResults = () => {
     return (
-        <Animated.Text entering={FadeInLeft} style={styles.text}>
+        <Animated.Text entering={FadeInLeft.delay(250)} style={styles.text}>
             No hotels found.
         </Animated.Text>
     );

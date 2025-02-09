@@ -1,14 +1,12 @@
 import BlurFallbackView from '@/components/Helper/BlurFallbackView';
-import AnimatedTextInput from '@/components/UI/animated-components/AnimatedTextInput';
-import AnimatedTouchableOpacity from '@/components/UI/animated-components/AnimatedTouchableOpacity';
 import Colors from '@/constants/Colors';
 import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { MaterialIcons } from '@expo/vector-icons'; // Import the icon from Expo
 
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeIn, FadeInRight } from 'react-native-reanimated';
+import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeIn, FadeInLeft, FadeInRight } from 'react-native-reanimated';
 
 type SearchHeaderProps = {
     searchQuery: string;
@@ -30,28 +28,28 @@ export const SearchHeader = ({ searchQuery, setSearchQuery, hotelsCount }: Searc
 
     return (
         <>
-            <View
+            <Animated.View
+                entering={FadeIn.delay(250)}
                 style={[
                     styles.inputContainer,
                     { ...Platform.select({ android: { marginTop: 20 }, ios: { marginTop: 10 } }) },
                 ]}
             >
                 <MaterialIcons name="search" size={24} color={colors.textSecondary} style={styles.searchIcon} />
-                <AnimatedTextInput
-                    entering={FadeIn.delay(250)}
+                <TextInput
                     value={searchQuery}
                     onChangeText={setSearchQuery}
                     style={styles.input}
                     placeholder="Search for hotels, cities, or places"
                     placeholderTextColor={colors.textSecondary}
                 />
-                <AnimatedTouchableOpacity onPress={handlePress} entering={FadeIn.delay(500)}>
+                <TouchableOpacity onPress={handlePress}>
                     <MaterialIcons name="close" size={24} color="white" />
-                </AnimatedTouchableOpacity>
-            </View>
+                </TouchableOpacity>
+            </Animated.View>
 
             <View style={styles.resultsContainer}>
-                <Animated.Text entering={FadeIn.delay(250)} style={styles.sectionTitle}>
+                <Animated.Text entering={FadeInLeft.delay(250)} style={styles.sectionTitle}>
                     Filtered hotels
                 </Animated.Text>
                 <Animated.View entering={FadeInRight.delay(250)}>
@@ -81,7 +79,7 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             backgroundColor: colors.searchBarHomeColor,
             color: colors.text,
             borderRadius: 10,
-            paddingHorizontal: 15,
+
             paddingVertical: 10,
             paddingLeft: 40, // Add padding to account for the icon
             boxShadow: '0px 1px 4px  rgba(104, 104, 104, 0.35)',

@@ -3,7 +3,7 @@ import Colors from '@/constants/Colors';
 import useColorsFromTheme from '@/hooks/useColorsFromTheme';
 import { Hotel } from '@/types/hotel.types';
 import React, { memo, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, LinearTransition } from 'react-native-reanimated';
 
 type ResultsListProps = {
@@ -25,15 +25,29 @@ const ResultsList = ({ hotels }: ResultsListProps) => {
     }
 
     return (
-        <Animated.FlatList
-            contentInsetAdjustmentBehavior="automatic"
-            contentContainerStyle={styles.listContainer}
-            itemLayoutAnimation={LinearTransition}
-            data={hotels}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <HotelCard hotel={item} />}
-        />
+        <View style={{ flex: 1 }}>
+            {Platform.OS === 'android' ? (
+                <Text
+                    style={{
+                        color: colors.textSecondary,
+                        fontSize: 16,
+                        textAlign: 'center',
+                        marginVertical: 5,
+                    }}
+                >
+                    {hotels?.length} hotels found
+                </Text>
+            ) : null}
+            <Animated.FlatList
+                contentInsetAdjustmentBehavior="automatic"
+                contentContainerStyle={styles.listContainer}
+                itemLayoutAnimation={LinearTransition}
+                data={hotels}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <HotelCard hotel={item} />}
+            />
+        </View>
     );
 };
 

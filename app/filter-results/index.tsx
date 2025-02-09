@@ -8,17 +8,7 @@ import { useHotelsByFilter } from '@/services/react-query/hotels';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
-const COLORS = {
-    background: '#F5F5F5',
-    cardBackground: '#FFFFFF',
-    textDark: '#1A1A1A',
-    textGrey: '#717171',
-    border: '#E0E0E0',
-    dotInactive: 'rgba(0, 0, 0, 0.2)',
-    dotActive: '#000',
-};
+import { Platform, StyleSheet, Text, View } from 'react-native';
 
 const HotelList = () => {
     const { data: hotels, isLoading, error } = useHotelsByFilter();
@@ -34,10 +24,10 @@ const HotelList = () => {
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => {
+                if (Platform.OS === 'android') return null;
                 if (!hotels) return null;
                 return <Text style={styles.topSectionQueryLength}>{hotels.length} hotels</Text>;
             },
-            
         });
     }, [hotels]);
 
@@ -109,14 +99,9 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             textAlign: 'center',
             marginTop: 20,
             fontSize: 16,
-            color: COLORS.textDark,
+            color: colors.text,
         },
 
-        topSectionTitle: {
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: COLORS.textDark,
-        },
         topSectionQueryLength: {
             fontSize: 16,
             color: colors.textSecondary,

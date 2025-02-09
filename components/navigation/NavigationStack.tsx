@@ -1,16 +1,16 @@
 import FilterModalHeader from '@/components/filter-modal/FilterModalHeader';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import useColorsFromTheme from '@/hooks/useColorsFromTheme';
+import { useFilterStore } from '@/services/zustand/hotelFilterStore';
+import { FontAwesome } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
-import { Platform, TouchableOpacity } from 'react-native';
+import { NativeSyntheticEvent, Platform, TextInputChangeEventData, TouchableOpacity } from 'react-native';
 
-type NavigationStackProps = {
-    headerTintColor: string;
-    headerSearchBarOptions: any;
-};
-
-const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, headerSearchBarOptions }) => {
+const NavigationStack: React.FC = () => {
     const router = useRouter();
+    const colors = useColorsFromTheme();
+
+    const { searchQuery, setSearchQuery } = useFilterStore();
 
     return (
         <Stack
@@ -40,7 +40,7 @@ const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, head
             <Stack.Screen
                 name="filter-modal/index"
                 options={{
-                    presentation: Platform.OS === 'ios' ? 'modal' : 'transparentModal',
+                    presentation: 'modal',
                     animation: 'slide_from_bottom', // ✅ Smooth transition
                     headerShown: true,
                     header: () => <FilterModalHeader title="Filter" />,
@@ -53,21 +53,38 @@ const NavigationStack: React.FC<NavigationStackProps> = ({ headerTintColor, head
                 options={{
                     headerShown: true,
                     headerBlurEffect: 'regular',
-                    headerTransparent: true,
+                    headerTransparent: Platform.OS === 'ios',
+                    headerLeft: () => {
+                        return Platform.OS === 'ios' ? (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    router.replace('/(tabs)');
+                                }}
+                                style={{ marginLeft: 5, marginRight: 10 }}
+                            >
+                                <FontAwesome name="chevron-left" size={15} color={colors.textTitle} />
+                            </TouchableOpacity>
+                        ) : null;
+                    },
+
                     headerTitle: 'Hotels',
-                    headerShadowVisible: false,
-                    headerLeft: () => (
-                        <TouchableOpacity
-                            onPress={() => {
-                                router.replace('/(tabs)');
-                            }}
-                            style={{ marginLeft: 5 }}
-                        >
-                            <FontAwesome name="chevron-left" size={15} color={headerTintColor} />
-                        </TouchableOpacity>
-                    ),
-                    headerTintColor: headerTintColor,
-                    headerSearchBarOptions: headerSearchBarOptions,
+
+                    headerTintColor: colors.text,
+                    headerSearchBarOptions: {
+                        placeholder: 'Search for hotels',
+                        headerIconColor: colors.textSecondary,
+                        hintTextColor: colors.textSecondary,
+                        tintColor: colors.textSecondary,
+                        shouldShowHintSearchIcon: true,
+
+                        hideWhenScrolling: true,
+                        onChangeText: (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                            setSearchQuery(e.nativeEvent.text);
+                        },
+                        onBlur: () => {
+                            setSearchQuery(searchQuery);
+                        },
+                    },
                 }}
             />
         </Stack>

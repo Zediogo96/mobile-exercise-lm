@@ -5,7 +5,7 @@ import { Platform, StyleSheet, View, ViewStyle } from 'react-native';
 interface BlurFallbackProps {
     intensity?: number;
     tint?: 'light' | 'dark' | 'default';
-    style?: ViewStyle;
+    style?: ViewStyle | ViewStyle[];
     children?: React.ReactNode;
 }
 
