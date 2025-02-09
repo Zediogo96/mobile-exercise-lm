@@ -81,3 +81,9 @@ This project utilizes `patch-package` to address issues in third-party libraries
     -   Fixed an issue related to event bubbling or incorrect event handling within the carousel. This ensures that touch events and other interactions are correctly propagated and processed by the carousel and its parent components.
 -   **`@react-native-masked-view/masked-view`:**
     -   Resolved a rendering issue on Android devices when used in conjunction with `react-native-skeleton-placeholder`. The original implementation resulted in a pitch-black background instead of the expected masked content. The patch ensures correct rendering of the masked view, allowing for proper display of skeleton placeholders.
+
+## Recordings
+
+### Home Screen
+
+[Home Screen Recording](/recordings/home-page-light.mov)

@@ -17,6 +17,7 @@ export default function SearchScreen() {
     const router = useRouter();
 
     const handleHotelPress = (hotelId: string) => {
+        setSearchQuery('');
         router.replace({
             pathname: '/hotel-details/[id]',
             params: { id: hotelId },

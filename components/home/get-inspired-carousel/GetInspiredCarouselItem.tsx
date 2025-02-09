@@ -57,7 +57,7 @@ const GetInspiredCarouselItem = ({ item, index, scrollX }: { item: any; index: n
 
                 <BlurFallbackView
                     intensity={10}
-                    style={{ position: 'absolute', right: 5, bottom: 5, borderRadius: 10, overflow: 'hidden' }}
+                    style={{ position: 'absolute', right: 5, bottom: 5, borderRadius: 15, overflow: 'hidden' }}
                 >
                     <Animated.Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', margin: 10 }}>
                         {item.label} {/* Directly using the label from the object */}

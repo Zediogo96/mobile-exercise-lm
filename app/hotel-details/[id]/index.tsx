@@ -127,12 +127,7 @@ const Details = () => {
 
                 {/* Floating buttons overlay */}
                 <View style={[styles.floatingContainer, { top: insets.top + 5 }]}>
-                    <BlurFallbackView
-                        experimentalBlurMethod="dimezisBlurFallbackView"
-                        intensity={25}
-                        tint="light"
-                        style={styles.iconButton}
-                    >
+                    <BlurFallbackView tint="light" style={styles.iconButton}>
                         <TouchableOpacity onPress={router.back}>
                             <Ionicons name="chevron-back" size={22} color="black" />
                         </TouchableOpacity>
@@ -144,7 +139,9 @@ const Details = () => {
                 {/* The rest of your content */}
                 <View style={styles.detailsContainer}>
                     <View style={styles.hotelNameContainer}>
-                        <Text style={styles.hotelName}>{hotel.name}</Text>
+                        <Text numberOfLines={2} lineBreakMode="tail" style={styles.hotelName}>
+                            {hotel.name}
+                        </Text>
                         <RatingStars count={hotel.stars} />
                     </View>
 
@@ -201,6 +198,7 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             justifyContent: 'space-between',
         },
         hotelName: {
+            width: '80%',
             fontSize: 18,
             fontWeight: 'bold',
             color: colors.textTitle,

@@ -29,15 +29,15 @@ const makeStyles = (colors: typeof Colors.light & typeof Colors.dark) =>
             flexDirection: 'row',
             alignItems: 'center',
             marginLeft: 5,
-            marginVertical: 8,
+            marginVertical: 12,
             gap: 8,
         },
         address: {
-            fontSize: 16,
+            fontSize: 14,
             color: colors.textLightGray,
         },
         city: {
-            fontSize: 16,
+            fontSize: 14,
             color: colors.textLightGray,
         },
     });
