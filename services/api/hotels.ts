@@ -16,5 +16,9 @@ export const fetchHotels = async ({
         await new Promise((resolve) => setTimeout(resolve, fakeLoadingTime));
     }
 
+    if (!data) {
+        throw new Error('Failed to fetch hotels');
+    }
+
     return data;
 };
