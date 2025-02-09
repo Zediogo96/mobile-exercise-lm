@@ -4,9 +4,33 @@
 
 To run this application, you will need the following:
 
--   **Node.js:** Version 18 or higher is recommended.
+-   `Node.js`: Version 18 or higher is recommended.
 
--   **npm:** Version 8 or higher is recommended. npm is typically installed with Node.js.
+-   `npm`: Version 8 or higher is recommended. npm is typically installed with Node.js.
+
+### Platform-Specific Setup
+
+This project uses `Expo 52`, which simplifies the build process. However, some platform-specific setup is still required.
+
+#### iOS Setup
+
+To build and run the iOS app, you will need:
+
+-   `Xcode 14` or higher (required by Expo 52)
+-   `CocoaPods` (required for native modules)
+
+#### Android Setup
+
+To build and run the Android app, you will need:
+
+-   `Android SDK` (API level 34 recommended, managed by Expo)
+-   `Java Development Kit (JDK) version 11` or higher (required by Expo 52)
+-   Ensure that the `ANDROID_HOME` environment variable is set correctly if you encounter any issues with the Android build process.
+
+### Simulators / Emulators used
+
+-   **iOS:** iPhone 16 (iOS 18.2)
+-   **Android:** Pixel 9 (API 35) - Android 15.0 ("Vanilla Icecream" | arm64 )
 
 ## Installation
 
@@ -52,31 +76,31 @@ This project leverages the following libraries to enhance functionality and deve
 
 **Core Framework & Navigation:**
 
--   **React Native:** The primary framework for building cross-platform mobile applications using JS / TS.
--   **Expo:** A platform that simplifies React Native development, providing tools and services for building, deploying, and updating apps.
--   **Expo Router:** A file-based routing library for React Native, simplifying navigation within the app.
+-   `React Native`: The primary framework for building cross-platform mobile applications using JS / TS.
+-   `Expo`: A platform that simplifies React Native development, providing tools and services for building, deploying, and updating apps.
+-   `Expo Router`: A file-based routing library for React Native, simplifying navigation within the app.
 
 **UI & Styling:**
 
--   **@expo/vector-icons:** Provides a wide range of vector icons for use in the app's UI.
--   **react-native-snap-carousel:** A carousel component for displaying a series of items in a visually engaging way.
--   **@gorhom/bottom-sheet:** Provides a bottom sheet component for displaying contextual information or actions. Used for implementing the filtering / sort options.
--   **react-native-skeleton-placeholder:** Displays skeleton loading placeholders while data is being fetched, improving the user experience.
--   **react-native-fast-image:** A performant image loading component for React Native, improving image loading speed and caching.
--   **expo-blur:** Provides blur effects for UI elements, enhancing visual appeal.
+-   `@expo/vector-icons`: Provides a wide range of vector icons for use in the app's UI.
+-   `react-native-snap-carousel`: A carousel component for displaying a series of items in a visually engaging way.
+-   `@gorhom/bottom-sheet`: Provides a bottom sheet component for displaying contextual information or actions. Used for implementing the filtering / sort options.
+-   `react-native-skeleton-placeholder`: Displays skeleton loading placeholders while data is being fetched, improving the user experience.
+-   `react-native-fast-image`: A performant image loading component for React Native, improving image loading speed and caching.
+-   `expo-blur`: Provides blur effects for UI elements, enhancing visual appeal.
 
 **Data Management & API:**
 
--   **Axios:** A promise-based HTTP client for making API requests to fetch hotel data.
--   **@tanstack/react-query:** A powerful data fetching and caching library, used to efficiently manage API data and reduce unnecessary requests, while providing a simple and intuitive API for loading, caching, error handling, and more.
--   **@react-native-async-storage/async-storage:** Provides a simple, asynchronous, persistent key-value storage system for React Native 
--   **Zustand:** A small, fast, and scalable bearbones state-management solution, used for managing global app state & also data persistence (bookmarks).
+-   `Axios`: A promise-based HTTP client for making API requests to fetch hotel data.
+-   `@tanstack/react-query`: A powerful data fetching and caching library, used to efficiently manage API data and reduce unnecessary requests, while providing a simple and intuitive API for loading, caching, error handling, and more.
+-   `@react-native-async-storage/async-storage`: Provides a simple, asynchronous, persistent key-value storage system for React Native
+-   `Zustand`: A small, fast, and scalable bearbones state-management solution, used for managing global app state & also data persistence (bookmarks).
 
 **Device Features & Enhancements:**
 
--   **react-native-gesture-handler:** Provides a declarative API for managing gestures in React Native, improving touch interactions.
--   **react-native-reanimated:** A powerful animation library for React Native, enabling smooth and performant animations.
--   **react-native-maps:** Provides a map component for displaying hotel locations.
+-   `react-native-gesture-handler`: Provides a declarative API for managing gestures in React Native, improving touch interactions.
+-   `react-native-reanimated`: A powerful animation library for React Native, enabling smooth and performant animations.
+-   `react-native-maps`: Provides a map component for displaying hotel locations.
 
 ## Library Issues & Patches
 
